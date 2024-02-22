@@ -1,39 +1,56 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
-import axios from 'axios';
+import Navbar from './Navbar'
+import about from './Pages/about'
+import features from './Pages/features'
+import gallery from './Pages/gallery'
+import home from './Pages/home'
+import login from './Pages/login'
+import Footer from './Footer'
+import signUp from './Pages/signUp'
+import homeLoggedIn from './Pages/homeLoggedIn'
+import createEvent from './Pages/createEvent'
 
 
-
-
-const YourComponent = () => {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get('http://127.0.0.1:8000/users/');
-      setData(response.data);
-      setError(null);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      setError('Error fetching data. Please try again.');
-    }
-  };
-
+function App(){
+ let Component
+  switch (window.location.pathname){
+  case "/home":
+    Component = home
+    break
+    case "/about":
+      Component = about
+      break
+      case "/features":
+        Component = features
+      break
+      case "/gallery":
+        Component = gallery
+      break
+      case "/login":
+        Component = login
+      break
+      case "/signUp":
+        Component = signUp
+      break
+      case "/homeLoggedIn":
+        Component = homeLoggedIn
+      break
+      case "/createEvent":
+        Component = createEvent
+      break
+ }
   return (
-    <div>
-      <button onClick={fetchData}>Fetch Data</button>
-      {error && <div>Error: {error}</div>}
-      {data && (
-        <div>
-          <h2>Data:</h2>
-          <pre>{JSON.stringify(data, null, 2)}</pre>
-        </div>
-      )}
-      </div>
-  );
-};
-
-export default YourComponent;
+  <div className='page-container'>
+    <div className='content-wrap'>
+  <Navbar />
+  <Component/>
+  
+  </div>
+  <Footer />
+  
+  </div>
+  )
+}
+export default App
