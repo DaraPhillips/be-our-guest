@@ -14,3 +14,16 @@ class Guest(models.Model):
 
     class Meta:
         db_table = 'guest'
+
+class Users(models.Model):
+    userId = models.AutoField(primary_key=True)
+    email = models.EmailField()
+    password = models.CharField(max_length=255)
+    firstName = models.CharField(max_length=100)
+    lastName = models.CharField(max_length=100)
+    phone = models.IntegerField(null=True)
+    address = models.CharField(max_length=255)
+    chat = models.IntegerField(null=True)
+
+    class Meta:
+        db_table = 'users'

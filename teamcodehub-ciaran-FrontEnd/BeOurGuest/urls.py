@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from app import forms, views
 from django.urls import path
-from app.views import hello_world
+from app.views import UsersViewSet, guests
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -16,6 +16,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from app.views import GuestViewSet
+from app.views import UsersViewSet
 
 
 
@@ -23,7 +24,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="SQLtoJSON",
         default_version='v1',
-        description="Converts sql data to json data",
+        description="Interacts with sql database and react frontend",
         terms_of_service="https://www.example.com/policies/terms/",
         contact=openapi.Contact(email="K00271287@student.tus.ie"),
         license=openapi.License(name="BSD License"),
@@ -35,6 +36,7 @@ schema_view = get_schema_view(
 
 router = DefaultRouter()
 router.register(r'guests', GuestViewSet, basename='guest')
+router.register(r'users', UsersViewSet, basename='users')
 
 urlpatterns = [
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
@@ -42,7 +44,9 @@ urlpatterns = [
    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
    
 
-    path('hello-world/', hello_world, name='hello-world'),
+    path('guests/', guests, name='guests'),
+    path('users/', views.users, name='users'),
+    path('register/', views.register_user, name='register'),
     path('', views.home, name='home'),
     path('contact/', views.contact, name='contact'),
     path('about/', views.about, name='about'),

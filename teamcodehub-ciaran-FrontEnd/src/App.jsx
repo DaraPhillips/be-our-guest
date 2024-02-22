@@ -13,7 +13,7 @@ const YourComponent = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/hello-world/');
+      const response = await axios.get('http://127.0.0.1:8000/users/');
       setData(response.data);
       setError(null);
     } catch (error) {
@@ -32,7 +32,7 @@ const YourComponent = () => {
           <pre>{JSON.stringify(data, null, 2)}</pre>
         </div>
       )}
-    </div>
+      </div>
   );
 };
 
