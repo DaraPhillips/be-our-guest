@@ -21,9 +21,23 @@ class Users(models.Model):
     password = models.CharField(max_length=255)
     firstName = models.CharField(max_length=100)
     lastName = models.CharField(max_length=100)
-    phone = models.IntegerField(null=True)
-    address = models.CharField(max_length=255)
-    chat = models.IntegerField(null=True)
+    userImage = models.ImageField(upload_to='user_images/', blank=True, null=True)
+    loginEnabled = models.IntegerField(choices=[(0, 'Disabled'), (1, 'Enabled')], default=1)
 
     class Meta:
         db_table = 'users'
+
+class Event(models.Model):
+    idevent = models.AutoField(primary_key=True)
+    hostID = models.IntegerField(null=True)
+    eventType = models.CharField(max_length=255)
+    venueDetailsID = models.IntegerField(null=True)
+    time = models.TimeField()
+    date = models.DateField()
+
+    def __str__(self):
+        return f"Event ID: {self.idevent}, Host ID: {self.hostID}, Event Type: {self.eventType}, Venue Details ID: {self.venueDetailsID}, Time: {self.time}, Date: {self.date}"
+
+    class Meta:
+        db_table = 'event'
+

@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'BeOurGuest.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'beourguest',
+        'NAME': 'beourguest2',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',

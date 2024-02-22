@@ -10,8 +10,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from django.http import JsonResponse
-from .models import Guest
-from .serializers import GuestSerializer 
+from .models import Event, Guest
+from .serializers import EventSerializer, GuestSerializer 
 from .models import Users
 from .serializers import UsersSerializer
 from rest_framework import viewsets
@@ -43,6 +43,19 @@ class UsersViewSet(viewsets.ViewSet):
         queryset = Users.objects.all()
         serializer = UsersSerializer(queryset, many=True)
         return Response(serializer.data)
+    
+class EventViewSet(viewsets.ViewSet):
+    """
+    A simple ViewSet for interacting with your API.
+    """
+
+    def list(self, request):
+        """
+        Return a list of all events.
+        """
+        queryset = Event.objects.all()
+        serializer = EventSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 def guests(request):
     guests = Guest.objects.all()
@@ -69,6 +82,27 @@ def register_user(request):
             serializer.save()
             return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def events(request):
+    events = Event.objects.all()
+
+    # Serialize all objects
+    serializer = EventSerializer(events, many=True)
+
+    # Return serialized data as JSON response
+    return JsonResponse(serializer.data, safe=False)
+
+
+@api_view(['POST'])
+def create_event(request):
+    if request.method == 'POST':
+        serializer = EventSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Event created successfully'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 def home(request):
     """Renders the home page."""

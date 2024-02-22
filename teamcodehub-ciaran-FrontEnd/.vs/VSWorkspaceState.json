@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\app",
+    "\\app\\templates",
     "\\BeOurGuest",
     "\\src"
   ],
+  "SelectedNode": "\\BeOurGuest\\settings.py",
   "PreviewInSolutionExplorer": false
 }
