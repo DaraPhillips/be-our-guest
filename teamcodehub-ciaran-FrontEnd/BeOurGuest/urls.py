@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from app import forms, views
 from django.urls import path
-from app.views import UsersViewSet, create_event, events
+from app.views import UsersViewSet, create_event, events, login
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -47,21 +47,22 @@ urlpatterns = [
     path('create_event/', create_event, name='create_event'),
     path('users/', views.users, name='users'),
     path('register/', views.register_user, name='register'),
+    path('login/', login, name='login'),
     path('', views.home, name='home'),
     path('contact/', views.contact, name='contact'),
     path('about/', views.about, name='about'),
-    path('login/',
-         LoginView.as_view
-         (
-             template_name='app/login.html',
-             authentication_form=forms.BootstrapAuthenticationForm,
-             extra_context=
-             {
-                 'title': 'Log in',
-                 'year' : datetime.now().year,
-             }
-         ),
-         name='login'),
+    # path('login/',
+    #      LoginView.as_view
+    #      (
+    #          template_name='app/login.html',
+    #          authentication_form=forms.BootstrapAuthenticationForm,
+    #          extra_context=
+    #          {
+    #              'title': 'Log in',
+    #              'year' : datetime.now().year,
+    #          }
+    #      ),
+    #      name='login'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('admin/', admin.site.urls),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

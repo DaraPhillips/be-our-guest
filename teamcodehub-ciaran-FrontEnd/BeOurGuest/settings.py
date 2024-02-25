@@ -66,7 +66,7 @@ ROOT_URLCONF = 'BeOurGuest.urls'
 CORS_ALLOWED_ORIGINS = [
     "http://192.168.56.1",
     "http://127.0.0.1:3000",
-    'http://localhost:5173',
+    'http://localhost:5174',
 ]
 
 # Template configuration 
@@ -102,7 +102,18 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+#AUTHENTICATION_BACKENDS = [    'django.contrib.auth.backends.ModelBackend',]
 
+AUTHENTICATION_BACKENDS = ['app.authBackend.EmailBackend']
+AUTH_USER_MODEL = 'app.Users'
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 1},  # Set min_length to 1 to allow any length password
+        'validate_password': False,    # Disable password validation
+    },
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -133,3 +144,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
 STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+

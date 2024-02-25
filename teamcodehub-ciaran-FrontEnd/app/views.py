@@ -12,11 +12,13 @@ from rest_framework.renderers import JSONRenderer
 from django.http import JsonResponse
 from .models import Event, Guest
 from .serializers import EventSerializer, GuestSerializer 
-from .models import Users
+from .models import users
 from .serializers import UsersSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action, api_view
+from django.contrib.auth import authenticate
+
 
 class GuestViewSet(viewsets.ViewSet):
     """
@@ -40,7 +42,7 @@ class UsersViewSet(viewsets.ViewSet):
         """
         Return a list of all users.
         """
-        queryset = Users.objects.all()
+        queryset = users.objects.all()
         serializer = UsersSerializer(queryset, many=True)
         return Response(serializer.data)
     
@@ -68,20 +70,64 @@ def guests(request):
 
 @api_view(['GET'])
 def users(request):
-    users = Users.objects.all()
+    users = users.objects.all()
     serializer = UsersSerializer(users, many=True)
     return JsonResponse(serializer.data, safe=False)
+
+from django.contrib.auth.hashers import make_password
 
 @api_view(['POST'])
 def register_user(request):
     if request.method == 'POST':
         serializer = UsersSerializer(data=request.data)
         if serializer.is_valid():
+            # Retrieve the password from the serializer data
             password = serializer.validated_data['password']
-            serializer.validated_data['password'] = password
+            
+            # Hash the password using make_password
+            hashed_password = make_password(password)
+            
+            # Update the serializer data with the hashed password
+            serializer.validated_data['password'] = hashed_password
+            
+            # Save the user with the hashed password
             serializer.save()
+            
             return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+from django.contrib.auth import authenticate
+
+
+@api_view(['POST'])
+def login(request):
+    if request.method == 'POST':
+        # Extract email and password from the request data
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        # Check if email and password are provided
+        if not email or not password:
+            return Response({'error': 'Email and password are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Authenticate user
+        print('Authentication for:', email) 
+        user = authenticate(request, email=email, password=password)
+
+        if user is not None:
+            # User is authenticated
+            # Return success response with user data
+            print('User authenticated:', email)  # Debug print
+            return JsonResponse({'message': 'Login successful', 'user_id': user.pk, 'email': user.email})
+        else:
+            # Authentication failed
+            # Return error response
+            print('Authentication failed for:', email)
+            return JsonResponse({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+    else:
+        # Handle other HTTP methods
+        return JsonResponse({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['GET'])
 def events(request):

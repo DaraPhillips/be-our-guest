@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event, Guest
+from .models import Event, Guest, users
 
 class GuestSerializer(serializers.ModelSerializer):
     eventId = serializers.IntegerField()
@@ -9,11 +9,9 @@ class GuestSerializer(serializers.ModelSerializer):
         model = Guest
         fields = ['guestId', 'eventId', 'description', 'tableId']
 
-from .models import Users
-
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Users
+        model = users
         fields = ['userId', 'email', 'password', 'firstName', 'lastName', 'userImage', 'loginEnabled']
 
 class EventSerializer(serializers.ModelSerializer):
