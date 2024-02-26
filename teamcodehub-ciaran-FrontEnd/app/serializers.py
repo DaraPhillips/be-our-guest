@@ -15,11 +15,7 @@ class UsersSerializer(serializers.ModelSerializer):
         fields = ['userId', 'email', 'password', 'firstName', 'lastName', 'userImage', 'loginEnabled']
 
 class EventSerializer(serializers.ModelSerializer):
-    hostID = serializers.IntegerField()
-    venueDetailsID = serializers.IntegerField()
-    time = serializers.TimeField()
-    date = serializers.DateField()
-
     class Meta:
         model = Event
         fields = ['idevent', 'hostID', 'eventType', 'venueDetailsID', 'time', 'date']
+
