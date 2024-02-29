@@ -7,7 +7,7 @@ from django.urls import path
 from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from app import forms, views
-from django.urls import path
+from django.urls import path,include
 from app.views import UsersViewSet, create_event, events, login
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view

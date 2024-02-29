@@ -364,7 +364,7 @@ CREATE TABLE `event` (
   CONSTRAINT `fk_event_eventType1` FOREIGN KEY (`eventType`) REFERENCES `eventtype` (`eventTypeID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_event_host` FOREIGN KEY (`hostID`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_event_venueDetails1` FOREIGN KEY (`venueDetailsID`) REFERENCES `venuedetails` (`venueDetailsID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -373,7 +373,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES (1,NULL,NULL,NULL,'00:00:12','0000-00-00');
+INSERT INTO `event` VALUES (1,NULL,NULL,NULL,'00:00:12','0000-00-00'),(7,4,2,2,'12:00:00','2025-08-10'),(8,4,2,2,'12:00:00','2025-08-10'),(9,10,2,NULL,'12:00:00','2024-08-01');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -388,7 +388,7 @@ CREATE TABLE `eventtype` (
   `eventTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`eventTypeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -397,6 +397,7 @@ CREATE TABLE `eventtype` (
 
 LOCK TABLES `eventtype` WRITE;
 /*!40000 ALTER TABLE `eventtype` DISABLE KEYS */;
+INSERT INTO `eventtype` VALUES (2,'Wedding');
 /*!40000 ALTER TABLE `eventtype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -445,7 +446,7 @@ CREATE TABLE `users` (
   `last_login` datetime DEFAULT NULL,
   PRIMARY KEY (`userId`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -454,7 +455,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'john','doe','Example@hotmail.com','1234',NULL,1,NULL),(4,'a','a','a@hotmail.com','123',NULL,1,NULL),(7,'a','a','j@hotmail.com','123',NULL,1,NULL),(8,'f','f','f@hotmail.com','f','',1,NULL),(9,'a2','a2','a@gmail.com','123','',1,NULL);
+INSERT INTO `users` VALUES (1,'john','doe','Example@hotmail.com','1234',NULL,1,NULL),(4,'a','a','a@hotmail.com','123',NULL,1,NULL),(7,'a','a','j@hotmail.com','123',NULL,1,NULL),(8,'f','f','f@hotmail.com','f','',1,NULL),(9,'a2','a2','a@gmail.com','123','',1,NULL),(10,'Emily','Smith','emily@example.com','password123','',1,NULL),(11,'John','Doe','john@example.com','password456','',1,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -474,7 +475,7 @@ CREATE TABLE `venuedetails` (
   PRIMARY KEY (`venueDetailsID`),
   KEY `fk_venueDetails_countries1` (`countriesID`),
   CONSTRAINT `fk_venueDetails_countries1` FOREIGN KEY (`countriesID`) REFERENCES `countries` (`countriesID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -483,6 +484,7 @@ CREATE TABLE `venuedetails` (
 
 LOCK TABLES `venuedetails` WRITE;
 /*!40000 ALTER TABLE `venuedetails` DISABLE KEYS */;
+INSERT INTO `venuedetails` VALUES (2,NULL,'a','b','c');
 /*!40000 ALTER TABLE `venuedetails` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -495,4 +497,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-25  0:30:58
+-- Dump completed on 2024-02-27 13:19:25

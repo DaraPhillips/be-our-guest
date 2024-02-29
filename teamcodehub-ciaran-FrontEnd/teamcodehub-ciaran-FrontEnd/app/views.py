@@ -24,6 +24,7 @@ from django.contrib.auth.hashers import check_password, make_password #sn for lo
 from django.views.decorators.csrf import csrf_exempt #sn for the create event api call 
 
 
+
 class GuestViewSet(viewsets.ViewSet):
     """
     A simple ViewSet for interacting with your API.
@@ -132,6 +133,7 @@ def login(request):
     else:
         # Handle other HTTP methods
         return JsonResponse({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+   
 
 @api_view(['GET'])
 def events(request):
@@ -248,13 +250,13 @@ def login_with_validation(request):
         # Handle other HTTP methods
         return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    #sn api for create event 
-@csrf_exempt
-@api_view(['POST'])
-def create_event(request):
-    if request.method == 'POST':
-        serializer = EventSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'message': 'Event created successfully'}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#    #sn api for create event 
+#@csrf_exempt
+#@api_view(['POST'])
+#def create_event(request):
+#    if request.method == 'POST':
+#        serializer = EventSerializer(data=request.data)
+#        if serializer.is_valid():
+#            serializer.save()
+#            return Response({'message': 'Event created successfully'}, status=status.HTTP_201_CREATED)
+#        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

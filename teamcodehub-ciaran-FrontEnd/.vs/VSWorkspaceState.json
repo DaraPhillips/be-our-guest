@@ -4,8 +4,9 @@
     "\\app",
     "\\app\\templates",
     "\\BeOurGuest",
-    "\\src"
+    "\\src",
+    "\\src\\Pages"
   ],
-  "SelectedNode": "\\app\\serializers.py",
+  "SelectedNode": "\\app\\views.py",
   "PreviewInSolutionExplorer": false
 }

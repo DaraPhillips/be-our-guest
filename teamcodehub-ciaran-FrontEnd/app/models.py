@@ -57,7 +57,7 @@ class users(AbstractBaseUser):
 
     def __str__(self):
         return self.email
-    
+   
     class Meta:
         db_table = 'users'
 
@@ -75,3 +75,24 @@ class Event(models.Model):
     class Meta:
         db_table = 'event'
 
+class Countries(models.Model):
+    # Assuming this model defines the countries table
+    countriesId = models.AutoField(primary_key=True)
+
+    def __str__(self):
+        return self.countryName
+    class Meta:
+        db_table = 'countries'
+       
+class VenueDetails(models.Model):
+    venueDetailsID = models.AutoField(primary_key=True)
+    countriesID = models.ForeignKey(Countries, on_delete=models.CASCADE, db_column='countriesID')  # Specify the column name explicitly
+    name = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    zipcode = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"Venue ID: {self.venueDetailsID}, Name: {self.name}, Country: {self.countriesID}"
+
+    class Meta:
+        db_table = 'VenueDetails'

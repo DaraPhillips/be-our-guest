@@ -63,6 +63,10 @@ urlpatterns = [
     #          }
     #      ),
     #      name='login'),
+
+        path('register_validation/', views.register_user_with_validation, name='register_validation'),
+    path('login_validation/', views.login_with_validation, name='login_validation'),
+
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('admin/', admin.site.urls),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

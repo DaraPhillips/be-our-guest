@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-
+import { Navigate } from 'react-router-dom';
 
 import './signupStyle.css'
 import axios from 'axios';
@@ -16,7 +16,7 @@ export default function signUp() {
         email: '',
         password: ''
     });
-
+    const [registered, setRegistered] = useState(false);
 
     // Event handler for form submission
     const handleSubmit = async (event) => {
@@ -27,6 +27,7 @@ export default function signUp() {
             const response = await axios.post('http://127.0.0.1:8000/register/', formData);
             console.log('Signup successful:', response.data);
             // Optionally redirect to login page or show a success message
+            setRegistered(true);
         } catch (error) {
             console.error('Error signing up:', error);
             // Optionally show an error message
@@ -43,7 +44,9 @@ export default function signUp() {
         }));
     };
 
-
+    if (registered) {
+        return <Navigate to="/login" />;
+    }
 
 
     return (
