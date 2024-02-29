@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom'; // Import Navigate instead of Redirect
+import { Navigate } from 'react-router-dom';
 import './login.css';
 
 export default function Login() {
@@ -16,7 +16,7 @@ export default function Login() {
         try {
             // Send POST request to login endpoint
             console.log('formData:', formData);
-            const response = await axios.post('http://127.0.0.1:8000/login_validation/', formData);
+            const response = await axios.post('http://127.0.0.1:8000/login/', formData);
             console.log('Login successful:', response.data);
             // Set loggedIn to true after successful login
             setLoggedIn(true);
@@ -36,7 +36,7 @@ export default function Login() {
 
     // If loggedIn is true, redirect to create_event page
     if (loggedIn) {
-        return <Navigate to="/create_event" />; // Use Navigate instead of Redirect
+        return <Navigate to="/create_event" />;
     }
 
     return (

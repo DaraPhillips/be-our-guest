@@ -10,32 +10,20 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from django.http import JsonResponse
-from .models import Event, Guest
-from .serializers import EventSerializer, GuestSerializer 
+from .models import Countries, Event, Guest
+from .serializers import CountriesSerializer, EventSerializer, VenueDetailsSerializer
 from .models import users
 from .serializers import UsersSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action, api_view
 from django.contrib.auth import authenticate
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 from django.contrib.auth.hashers import BCryptSHA256PasswordHasher  #password hasher (sn)
 from django.contrib.auth.hashers import check_password, make_password #sn for login validation 
 from django.views.decorators.csrf import csrf_exempt #sn for the create event api call 
-
-
-class GuestViewSet(viewsets.ViewSet):
-    """
-    A simple ViewSet for interacting with your API.
-    """
-
-    def list(self, request):
-        """
-        Return a list of all guests.
-        """
-        queryset = Guest.objects.all()
-        serializer = GuestSerializer(queryset, many=True)
-        return Response(serializer.data)
     
 class UsersViewSet(viewsets.ViewSet):
     """
@@ -143,112 +131,50 @@ def events(request):
     # Return serialized data as JSON response
     return JsonResponse(serializer.data, safe=False)
 
-
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Event, VenueDetails, users
-from .serializers import EventSerializer, UsersSerializer, VenueDetailsSerializer
-from django.http import JsonResponse
-from rest_framework.exceptions import ParseError
 @api_view(['POST'])
 def create_event(request):
     if request.method == 'POST':
         # Extract data from request
         event_data = request.data.get('event')
-        bride_data = request.data.get('bride')
-        groom_data = request.data.get('groom')
-        venue_data = request.data.get('venueDetails')
 
-        # Create or retrieve bride user
-        if bride_data:
-            bride_email = bride_data.get('email')
-            bride, _ = users.objects.get_or_create(email=bride_email, defaults=bride_data)
+        # Create event instance
+        event_serializer = EventSerializer(data=event_data)
+        if event_serializer.is_valid():
+            event_instance = event_serializer.save()
 
-        # Create or retrieve groom user
-        if groom_data:
-            groom_email = groom_data.get('email')
-            groom, _ = users.objects.get_or_create(email=groom_email, defaults=groom_data)
-
-            # Assign host ID if bride is defined
-            if bride_data:
-                host_id = bride.userId  # Make sure bride is defined before accessing its userId
-
-                # Create event with host ID
-                event_serializer = EventSerializer(data=event_data)
-                if event_serializer.is_valid():
-                    event_instance = event_serializer.save(hostID=host_id, **event_data)
-                    event_id = event_instance.idevent
-
-                    # Create venue details
-                    venue_data['countriesID'] = int(venue_data['countriesID'])  # Convert countriesID to int
-                    venue_data['venueDetailsID'] = event_id  # Set venueDetailsID to event ID
-                    venue_serializer = VenueDetailsSerializer(data=venue_data)
-                    if venue_serializer.is_valid():
-                        venue_serializer.save()
-                        return Response({'message': 'Event and VenueDetails created successfully'}, status=status.HTTP_201_CREATED)
-                    else:
-                        # Rollback event creation if venue details could not be saved
-                        event_instance.delete()
-                        error_details = {'venue_errors': venue_serializer.errors}
-                        return Response(error_details, status=status.HTTP_400_BAD_REQUEST)
-                else:
-                    error_details = {'event_errors': event_serializer.errors}
-                    return Response(error_details, status=status.HTTP_400_BAD_REQUEST)
+            # Extract venue data from event data
+            venue_data = {
+                'countriesID': event_data.get('country'),
+                'name': event_data.get('venue'),
+                'address': event_data.get('address1'),
+                'zipcode': event_data.get('zip'),
+                'event': event_instance.pk,  # Associate venue with the event
+            }
+             # Create venue instance
+            venue_serializer = VenueDetailsSerializer(data=venue_data)
+            if venue_serializer.is_valid():
+                venue_instance = venue_serializer.save()
+                return Response({
+                    'message': 'Event and venue created successfully',
+                    'event_id': event_instance.pk,
+                    'venue_id': venue_instance.pk
+                }, status=status.HTTP_201_CREATED)
             else:
-                # Return a response indicating that bride data is missing
-                return Response({'error': 'Bride data is required'}, status=status.HTTP_400_BAD_REQUEST)
+                event_instance.delete()  # Rollback event creation
+                return Response(venue_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            # Return a response indicating that groom data is missing
-            return Response({'error': 'Groom data is required'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     else:
-        # Return a response indicating that the method is not allowed
         return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+@api_view(['GET'])
+def get_countries(request):
+    countries = Countries.objects.all()
+    
+    serializer = CountriesSerializer(countries, many=True)
 
-
-#@api_view(['POST'])
-#def create_event(request):
-#    if request.method == 'POST':
-#        # Extract data from request
-#        event_data = request.data.get('event')
-#        bride_data = request.data.get('bride')
-#        groom_data = request.data.get('groom')
-#        venue_data = request.data.get('venueDetails')
-
-#        # Basic validation to ensure required data is present
-#        if not bride_data:
-#            return Response({'error': 'Bride data is missing'}, status=status.HTTP_400_BAD_REQUEST)
-#        if not groom_data:
-#            return Response({'error': 'Groom data is missing'}, status=status.HTTP_400_BAD_REQUEST)
-#        if not event_data:
-#            return Response({'error': 'Event data is missing'}, status=status.HTTP_400_BAD_REQUEST)
-
-#        # Create or retrieve bride user
-#        bride_email = bride_data.get('email')
-#        if not bride_email:
-#            return Response({'error': 'Bride email is missing'}, status=status.HTTP_400_BAD_REQUEST)
-#        bride, bride_created = users.objects.get_or_create(email=bride_email, defaults=bride_data)
-
-#        # Create or retrieve groom user
-#        groom_email = groom_data.get('email')
-#        if not groom_email:
-#            return Response({'error': 'Groom email is missing'}, status=status.HTTP_400_BAD_REQUEST)
-#        groom, groom_created = users.objects.get_or_create(email=groom_email, defaults=groom_data)
-
-#        # Assign host ID
-#        host_id = bride.userId
-
-#        # Create event with host ID
-#        event_serializer = EventSerializer(data=event_data)
-#        if event_serializer.is_valid():
-#            # Assuming your Event model has a field 'hostID'
-#            event_serializer.save(hostID=host_id)
-#            return Response({'message': 'Event created successfully'}, status=status.HTTP_201_CREATED)
-#        else:
-#            return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#    return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    return JsonResponse(serializer.data, safe=False)
 
 def home(request):
     """Renders the home page."""
@@ -304,9 +230,8 @@ def register_user_with_validation(request):
             # Hash the password using BCryptSHA256PasswordHasher
             hasher = BCryptSHA256PasswordHasher()
             hashed_password = hasher.encode(password, hasher.salt())
-            #hashed_password = hasher.encode(password)
 
-            # Update the serializer data with the hashed password-9
+            # Update the serializer data with the hashed password
             serializer.validated_data['password'] = hashed_password
 
             # Save the user with the hashed password
@@ -315,35 +240,7 @@ def register_user_with_validation(request):
             return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
-
-
-
-    
-#@api_view(['POST'])
-#def register_user(request):
-#    if request.method == 'POST':
-#        serializer = UsersSerializer(data=request.data)
-#        if serializer.is_valid():
-#            # Retrieve the password from the serializer data
-#            password = serializer.validated_data['password']
-            
-#            # Hash the password using make_password
-#            hashed_password = make_password(password)
-            
-#            # Update the serializer data with the hashed password
-#            serializer.validated_data['password'] = hashed_password
-            
-#            # Save the user with the hashed password
-#            serializer.save()
-            
-#            return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
-#        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
+    #sn login validation 
 
 @api_view(['POST'])
 def login_with_validation(request):
@@ -362,11 +259,8 @@ def login_with_validation(request):
         except users.DoesNotExist:
             return Response({'error': 'User with this email does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
-        # Create BCryptSHA256PasswordHasher instance for custom password checking
-        hasher = BCryptSHA256PasswordHasher()
-
         # Check if the provided password matches the hashed password in the database
-        if hasher.verify(password, user.password):
+        if check_password(password, user.password):
             # Passwords match, login successful
             return Response({'message': 'Login successful', 'user_id': user.pk, 'email': user.email})
         else:
@@ -376,45 +270,3 @@ def login_with_validation(request):
     else:
         # Handle other HTTP methods
         return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
-
-
-
-
-
-
-
-
-
-
-    #sn login validation 
-#@api_view(['POST'])
-#def login_with_validation(request):
-#    if request.method == 'POST':
-#        # Extract email and password from the request data
-#        email = request.data.get('email')
-#        password = request.data.get('password')
-
-#        # Check if email and password are provided
-#        if not email or not password:
-#            return Response({'error': 'Email and password are required'}, status=status.HTTP_400_BAD_REQUEST)
-
-#        try:
-#            # Retrieve the user from the database
-#            user = users.objects.get(email=email)
-#        except users.DoesNotExist:
-#            return Response({'error': 'User with this email does not exist'}, status=status.HTTP_404_NOT_FOUND)
-
-#        # Check if the provided password matches the hashed password in the database
-#        if check_password(password, user.password):
-#            # Passwords match, login successful
-#            return Response({'message': 'Login successful', 'user_id': user.pk, 'email': user.email})
-#        else:
-#            # Passwords don't match, login failed
-#            return Response({'error': 'Invalid deatils'}, status=status.HTTP_401_UNAUTHORIZED)
-
-#    else:
-#        # Handle other HTTP methods
-#        return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-

@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from app import forms, views
 from django.urls import path
-from app.views import UsersViewSet, create_event, events, login
+from app.views import UsersViewSet, create_event, events, get_countries, login, login_with_validation, register_user_with_validation
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -45,9 +45,12 @@ urlpatterns = [
 
     path('events/', events, name='events'),
     path('create_event/', create_event, name='create_event'),
+    path('countries/', get_countries, name='countries'),
     path('users/', views.users, name='users'),
     path('register/', views.register_user, name='register'),
     path('login/', login, name='login'),
+    path('register_user_with_validation/', register_user_with_validation, name='register_with_validation'),
+    path('login_with_validation/', login_with_validation, name='login_with_validation'),
     path('', views.home, name='home'),
     path('contact/', views.contact, name='contact'),
     path('about/', views.about, name='about'),
@@ -63,10 +66,6 @@ urlpatterns = [
     #          }
     #      ),
     #      name='login'),
-
-        path('register_validation/', views.register_user_with_validation, name='register_validation'),
-    path('login_validation/', views.login_with_validation, name='login_validation'),
-
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('admin/', admin.site.urls),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

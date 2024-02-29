@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
         'corsheaders',
         'drf_yasg',
-         'rest_framework',
 ]
 
 # Middleware framework
@@ -67,6 +66,7 @@ ROOT_URLCONF = 'BeOurGuest.urls'
 CORS_ALLOWED_ORIGINS = [
     "http://192.168.56.1",
     "http://127.0.0.1:3000",
+    'http://localhost:5175',
     'http://localhost:5174',
     'http://localhost:5173',
 ]
@@ -107,7 +107,7 @@ DATABASES = {
 #AUTHENTICATION_BACKENDS = [    'django.contrib.auth.backends.ModelBackend',]
 
 AUTHENTICATION_BACKENDS = ['app.authBackend.EmailBackend']
-AUTH_USER_MODEL = 'app.users'
+AUTH_USER_MODEL = 'app.Users'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
