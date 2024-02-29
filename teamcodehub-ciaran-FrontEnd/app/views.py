@@ -230,8 +230,9 @@ def register_user_with_validation(request):
             # Hash the password using BCryptSHA256PasswordHasher
             hasher = BCryptSHA256PasswordHasher()
             hashed_password = hasher.encode(password, hasher.salt())
+            #hashed_password = hasher.encode(password)
 
-            # Update the serializer data with the hashed password
+            # Update the serializer data with the hashed password-9
             serializer.validated_data['password'] = hashed_password
 
             # Save the user with the hashed password
@@ -240,7 +241,35 @@ def register_user_with_validation(request):
             return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    #sn login validation 
+
+
+
+
+
+    
+#@api_view(['POST'])
+#def register_user(request):
+#    if request.method == 'POST':
+#        serializer = UsersSerializer(data=request.data)
+#        if serializer.is_valid():
+#            # Retrieve the password from the serializer data
+#            password = serializer.validated_data['password']
+            
+#            # Hash the password using make_password
+#            hashed_password = make_password(password)
+            
+#            # Update the serializer data with the hashed password
+#            serializer.validated_data['password'] = hashed_password
+            
+#            # Save the user with the hashed password
+#            serializer.save()
+            
+#            return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
+#        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
 
 @api_view(['POST'])
 def login_with_validation(request):
@@ -259,8 +288,11 @@ def login_with_validation(request):
         except users.DoesNotExist:
             return Response({'error': 'User with this email does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
+        # Create BCryptSHA256PasswordHasher instance for custom password checking
+        hasher = BCryptSHA256PasswordHasher()
+
         # Check if the provided password matches the hashed password in the database
-        if check_password(password, user.password):
+        if hasher.verify(password, user.password):
             # Passwords match, login successful
             return Response({'message': 'Login successful', 'user_id': user.pk, 'email': user.email})
         else:
@@ -270,3 +302,44 @@ def login_with_validation(request):
     else:
         # Handle other HTTP methods
         return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+
+
+
+
+
+
+
+
+
+
+    #sn login validation 
+#@api_view(['POST'])
+#def login_with_validation(request):
+#    if request.method == 'POST':
+#        # Extract email and password from the request data
+#        email = request.data.get('email')
+#        password = request.data.get('password')
+
+#        # Check if email and password are provided
+#        if not email or not password:
+#            return Response({'error': 'Email and password are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+#        try:
+#            # Retrieve the user from the database
+#            user = users.objects.get(email=email)
+#        except users.DoesNotExist:
+#            return Response({'error': 'User with this email does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+#        # Check if the provided password matches the hashed password in the database
+#        if check_password(password, user.password):
+#            # Passwords match, login successful
+#            return Response({'message': 'Login successful', 'user_id': user.pk, 'email': user.email})
+#        else:
+#            # Passwords don't match, login failed
+#            return Response({'error': 'Invalid deatils'}, status=status.HTTP_401_UNAUTHORIZED)
+
+#    else:
+#        # Handle other HTTP methods
+#        return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

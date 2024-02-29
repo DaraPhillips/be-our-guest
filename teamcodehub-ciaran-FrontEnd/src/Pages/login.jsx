@@ -10,13 +10,14 @@ export default function Login() {
     });
     const [loggedIn, setLoggedIn] = useState(false);
 
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
             // Send POST request to login endpoint
             console.log('formData:', formData);
-            const response = await axios.post('http://127.0.0.1:8000/login/', formData);
+            const response = await axios.post('http://127.0.0.1:8000/login_validation/', formData);
             console.log('Login successful:', response.data);
             // Set loggedIn to true after successful login
             setLoggedIn(true);

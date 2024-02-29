@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-
+import { Navigate } from 'react-router-dom';
 
 import './signupStyle.css'
 import axios from 'axios';
@@ -24,14 +24,16 @@ export default function signUp() {
 
         try {
             // Send POST request to Django backend
-            const response = await axios.post('http://127.0.0.1:8000/register/', formData);
+            const response = await axios.post('http://127.0.0.1:8000/register_validation/', formData);
             console.log('Signup successful:', response.data);
             // Optionally redirect to login page or show a success message
+            setRegistered(true);
         } catch (error) {
             console.error('Error signing up:', error);
             // Optionally show an error message
         }
     };
+
 
 
     // Event handler for input changes
