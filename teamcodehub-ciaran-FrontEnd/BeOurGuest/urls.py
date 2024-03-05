@@ -46,14 +46,14 @@ urlpatterns = [
     path('events/', events, name='events'),
     path('create_event/', create_event, name='create_event'),
     path('countries/', get_countries, name='countries'),
-    path('users/', views.users, name='users'),
+    path('users/', views.get_users, name='users'),
     path('register/', views.register_user, name='register'),
     path('login/', login, name='login'),
 
     #path('register_user_with_validation/', register_user_with_validation, name='register_with_validation'),
-    #path('login_with_validation/', login_with_validation, name='login_with_validation'),
+    path('login_with_validation/', login_with_validation, name='login_with_validation'),
     path('register_validation/', views.register_user_with_validation, name='register_validation'),
-    path('login_validation/', views.login_with_validation, name='login_validation'),
+    #path('login_validation/', views.login_with_validation, name='login_validation'),
 
     path('', views.home, name='home'),
     path('contact/', views.contact, name='contact'),

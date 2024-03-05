@@ -17,7 +17,7 @@ export default function Login() {
         try {
             // Send POST request to login endpoint
             console.log('formData:', formData);
-            const response = await axios.post('http://127.0.0.1:8000/login_validation/', formData);
+            const response = await axios.post('http://127.0.0.1:8000/login_with_validation/', formData);
             console.log('Login successful:', response.data);
             // Set loggedIn to true after successful login
             setLoggedIn(true);
