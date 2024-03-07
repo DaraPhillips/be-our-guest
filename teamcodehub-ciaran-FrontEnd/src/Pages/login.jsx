@@ -2,66 +2,94 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
 import './login.css';
+import SvgEmail from '../Icons/EmailIcon';
+import SvgPassword from '../Icons/Password';
 
 export default function Login() {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: ''
-    });
-    const [loggedIn, setLoggedIn] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loginError, setLoginError] = useState(null);
+  const [loading, setLoading] = useState(false); // Add loading state
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    try {
+      setLoading(true);
 
-        try {
-            // Send POST request to login endpoint
-            console.log('formData:', formData);
-            const response = await axios.post('http://127.0.0.1:8000/login_with_validation/', formData);
-            console.log('Login successful:', response.data);
-            // Set loggedIn to true after successful login
-            setLoggedIn(true);
-        } catch (error) {
-            console.error('Error logging in:', error);
-            // Handle login error, display error message to user
-        }
-    };
+      // Send POST request to login endpoint
+      const response = await axios.post('http://127.0.0.1:8000/login_with_validation/', formData);
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData(prevData => ({
-            ...prevData,
-            [name]: value
-        }));
-    };
+      console.log('Login successful:', response.data);
 
-    // If loggedIn is true, redirect to create_event page
-    if (loggedIn) {
-        return <Navigate to="/create_event" />;
+      // Set loggedIn to true after successful login
+      setLoggedIn(true);
+    } catch (error) {
+      console.error('Error logging in:', error);
+
+      // Handle login error, display error message to user
+      setLoginError('Invalid Email and Password combination. Please try again.');
+    } finally {
+      setLoading(false);
     }
+  };
 
-    return (
-        <div className='login-form'>
-            <div className="form-container">
-                <p className="title">Login</p>
-                <form className="form" onSubmit={handleSubmit}>
-                    <div className="input-group">
-                        <label htmlFor="email">Email</label>
-                        <input type="text" name="email" id="email" placeholder="" value={formData.email} onChange={handleChange} required />
-                    </div>
-                    <div className="input-group">
-                        <label htmlFor="password">Password</label>
-                        <input type="password" name="password" id="password" placeholder="" value={formData.password} onChange={handleChange} required />
-                        <div className="forgot">
-                            <a rel="noopener noreferrer" href="#">Forgot your Password?</a>
-                        </div>
-                    </div>
-                    <button className="sign" id='login-button' type="submit">Login</button>
-                </form>
-                <p className="signup">Not a member?
-                    <a rel="noopener noreferrer" href="/signUp" className="">  Sign up</a>
-                </p>
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  // If loggedIn is true, redirect to create_event page
+  if (loggedIn) {
+    return <Navigate to="/create_event" />;
+  }
+
+  return (
+    <div className='login-form'>
+      <div className="form-container">
+        <p className="title">Log in</p>
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="input-group">
+            <label htmlFor="login-email"></label>
+            <div className="input-container">
+              <div className="icon"><SvgEmail /></div>
+              <input type="text" name="email" id="login-email" placeholder="Email" onChange={handleChange} />
             </div>
-        </div>
-    );
+          </div>
+          <div className="input-group">
+            <label htmlFor="login-password"></label>
+            <div className="input-container">
+              <div className="icon"><SvgPassword /></div>
+              <input type="password" name="password" id="login-password" placeholder="Password" onChange={handleChange} />
+            </div>
+            <div className="forgot">
+              <a rel="noopener noreferrer" href="#">Forgot your Password?</a>
+            </div>
+          </div>
+          {loading ? (
+            <div className="loading-spinner">
+              
+            </div>
+          ) : (
+            <>
+              {loginError && <p className="error-message">{loginError}</p>}
+              <button type="submit" className="sign" id='login-button'>
+                Log in
+              </button>
+            </>
+          )}
+        </form>
+        <p className="signup">
+          Not a member?{' '}
+          <a rel="noopener noreferrer" href="/signUp" className=""> Sign up</a>
+        </p>
+      </div>
+    </div>
+  );
 }
