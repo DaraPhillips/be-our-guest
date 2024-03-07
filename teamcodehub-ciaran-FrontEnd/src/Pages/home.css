@@ -1,56 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Vidaloka&display=swap');
 
-header{
-    text-align: center;
-    padding-top: 5rem;
-    padding-bottom: 3rem;
-
-}
-h1{
-    font-size: 3rem;
-    font-family: "Poiret One", sans-serif;
-    font-weight: 100;
-}
-h3{
-    font-family: "Roboto", sans-serif;
-    font-weight: 500;
+header {
+  text-align: center;
 }
 
-.button-div{
-    text-align: center;
-    padding-top: 15rem;
-    padding-bottom: 45rem;
-    background-image: url(/src/images/homeBackground.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
+.headerH1 {
+  font-family: "Vidaloka", "Roboto", sans-serif;
+  padding: 2em 4em 0em 4em;
+  padding-top: 2em;
+  padding-right: 2.5em;
+  padding-bottom: 0em;
+  padding-left: 2.1em;
+  text-align: left;
+  font-size: 48px;
+  margin-bottom: 0;
 }
+
+h1 {
+  font-size: 3rem;
+  font-family: "Vidaloka", sans-serif;
+  font-weight: bold;
+}
+
+h3 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-size: 1em;
+  padding: 1em 3em 1em 4em;
+}
+
+.button-div {
+  text-align: center;
+  padding-top: -4rem;
+  padding-bottom: 0rem;
+  background-image: ;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.button-div2 {
+  text-align: center;
+  padding-top: -4rem;
+  padding-bottom: 0rem;
+  background-image: ;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: -10em 0em 2em 40em;
+}
+
+
 
 button {
-    padding: 2.5em 7em;
-    font-size: 15px;
-    text-transform: uppercase;
-    letter-spacing: 2.5px;
-    font-weight: 500;
-    color: #FFFFFF;
-    background-color:#02092D;
-    border: none;
-    border-radius: 45px;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease 0s;
-    cursor: pointer;
-    outline: none;
-    font-family: "Roboto", sans-serif;
-  }
-  
-  button:hover {
-    background-color: #676B85;
-    box-shadow: 0px 15px 20px #393b49;
-    color: #fff;
-    transform: translateY(-7px);
-    
-  }
-  
-  button:active {
-    transform: translateY(-1px);
-  }
+  padding: 1.5em 3.5em;
+  font-size: 1.5em;
+  letter-spacing: 2.5px;
+  font-weight: bold;
+  color: #FFFFFF;
+  background-color: #02092D;
+  border: 3px solid #02092D;
+  border-radius: 100px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  font-family: "Roboto", sans-serif;
+}
+
+.more {padding: 1.5em 3.5em;
+  font-size: 1.5em;
+  letter-spacing: 2.5px;
+  font-weight: bold;
+  color: #02092D;
+  background-color: #fff;
+  border: 3px solid #02092D;
+  border-radius: 100px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  font-family: "Roboto", sans-serif;}
+
+.more:hover,
+.more:focus {
+  background-color: #C4A468;
+  color: #ffffff;
+}
+
+.more:active {
+  background: #09223b;
+  color: rgb(255, 255, 255, .7);
+}
+
+.more:disabled {
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, .08);
+  color: rgba(0, 0, 0, .3);
+}
+
+button:hover {
+  background-color: #676B85;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  color: #fff;
+  transform: translateY(0px);
+}
+
+button:active {
+  transform: translateY(-1px);
+}
+
+.home-pageDiv {
+  background-color: #D5D9E1;
+  width: 550px;
+  height: 562px;
+}
+
+/* ... carousel */
+
+.home-container {
+  display: flex;
+  flex-direction: row; /* Adjust the direction based on your layout */
+}
+
+.home-pageDiv {
+  flex: 1;
+  margin-left: 11em;
+  /* Add any other styles for the home page div */
+}
+
+.slick-slider {
+  width: 50%; /* Adjust the width of the carousel */
+}
+
+.slick-prev,
+.slick-next {
+  font-size: 1rem; /* Adjust the font size of the arrow buttons */
+}
+
+/* RSVP Container styles */
+.RsvpContainer {
+  background-color: #fff;
+  width: 1100px;
+  height: 550px;
+  margin: auto;
+}
+
+.rsvpH1 {font-family: "Vidaloka", "Roboto", sans-serif;
+  font-size: 48px;
+  margin-bottom: 0;
+  margin-left: 1em;
+  margin-top: 2em;
+}
+.rsvpImage {
+  width: 33%;
+  max-height: 250px;
+  margin-top: 3em;
+}
+
+.quoteContainer {
+width: 100%; 
+height: auto;  
+display:flex;
+justify-content: center; 
+align-items: center; 
+align-text:center;
+font-family: "Vidaloka" , "Roboto" , sans-serif;
+}
+
+.quoteTextbox {
+width: 1100px; 
+height: 550px; 
+background-color: #02092D; 
+color:#fff; 
+padding: 0em 11em;
+font-family: "Vidaloka" , "Roboto" , sans-serif;
+display:flex;
+justify-content: center; 
+align-items: center; 
+align-text:center;
+}
+
+.quoteH1 {font-family: "Vidaloka", "Roboto", sans-serif;}
+.apost1 {margin: 0em .2em .5em;}
+
+.apost2 {rotate: 180deg;
+  margin: 0em 0em .5em .2em;}

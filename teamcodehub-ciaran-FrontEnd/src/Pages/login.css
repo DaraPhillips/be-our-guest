@@ -13,13 +13,13 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 101%;
+  height: 144%;
   background-image: url(/src/images/loginImage.jpg);
-  opacity: 0.5; /* Adjust the opacity value as needed */
-  z-index: -1; /* Ensure this pseudo-element is behind other content */
+  opacity: 0.5;
+  z-index: -1;
   background-size: cover;
-    padding-bottom: 10rem; 
+  padding-bottom: 10rem; 
 }
 
 .form-container {
@@ -79,14 +79,13 @@
 .forgot {
   display: flex;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: 0.8em;
   line-height: 1rem;
   color: rgba(156, 163, 175,1);
- 
-  padding-top: 14px;
-  padding-bottom: 14px;
-  
-  
+  text-align: center;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  width: 35em;
 }
 
 .forgot a,.signup a {
@@ -97,7 +96,7 @@
 
 
 .forgot a:hover, .signup a:hover {
-  text-decoration: underline rgba(167, 139, 250, 1);
+  text-decoration: underline #C4A468;
 }
 
 .sign {
@@ -159,3 +158,38 @@
   padding-left: 0.75rem;
   padding-right: 0.75rem;
 }
+
+.loading-spinner {
+    width: 7em;
+    height: 7em;
+    display: inline-block;
+    position: relative;
+    margin-left: 8em;
+  }
+  .loading-spinner::after,
+  .loading-spinner::before {
+    content: '';  
+    width: 7em;
+    height: 7em;
+    border-radius: 50%;
+    background:  #C4A468;
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    animation: animloader 1s ease-in-out infinite;
+  }
+  .loading-spinner::after {
+    animation-delay: .1s;
+  }
+
+@keyframes animloader {
+    0%, 100% {
+      transform: scale(0);
+      opacity: 1;
+}
+    50% {
+      transform: scale(1);
+      opacity: 0;
+}
+  }

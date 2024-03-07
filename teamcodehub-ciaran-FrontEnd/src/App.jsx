@@ -1,68 +1,10 @@
-//import { useState } from 'react'
-
-//import './App.css'
-//import Navbar from './Navbar'
-//import about from './Pages/about'
-//import features from './Pages/features'
-//import gallery from './Pages/gallery'
-//import home from './Pages/home'
-//import login from './Pages/login'
-//import Footer from './Footer'
-//import signUp from './Pages/signUp'
-//import homeLoggedIn from './Pages/homeLoggedIn'
-//import createEvent from './Pages/createEvent'
-
-
-//function App(){
-// let Component
-//  switch (window.location.pathname){
-//  case "/home":
-//    Component = home
-//    break
-//    case "/about":
-//      Component = about
-//      break
-//      case "/features":
-//        Component = features
-//      break
-//      case "/gallery":
-//        Component = gallery
-//      break
-//      case "/login":
-//        Component = login
-//      break
-//      case "/signUp":
-//        Component = signUp
-//      break
-//      case "/homeLoggedIn":
-//        Component = homeLoggedIn
-//      break
-//      case "/createEvent":
-//        Component = createEvent
-//          break
-//      default:
-//          Component = home
-//          // Handle unknown routes by rendering a "Not Found" component or redirecting to a default route
-//          //Component = () => <div>Page Not Found</div>
-// }
-//  return (
-//  <div className='page-container'>
-//    <div className='content-wrap'>
-//  <Navbar />
-//  <Component/>
-
-//  </div>
-//  <Footer />
-
-//  </div>
-//  )
-//}
-//export default App
-
 
 //This one works!!!!!
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 import Navbar from './Navbar';
 import Footer from './Footer';
 import About from './Pages/About';
