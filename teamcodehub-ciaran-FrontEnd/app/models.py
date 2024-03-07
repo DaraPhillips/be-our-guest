@@ -2,7 +2,6 @@
 Definition of models.
 """
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 class Guest(models.Model):
     guestId = models.AutoField(primary_key=True)
@@ -16,7 +15,7 @@ class Guest(models.Model):
     class Meta:
         db_table = 'guest'
 
-
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class CustomUserManager(BaseUserManager):

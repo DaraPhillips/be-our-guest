@@ -420,7 +420,7 @@ def register_user_with_validation(request):
 @api_view(['POST'])
 def login_with_validation(request):
     if request.method == 'POST':
-        # Extract email and password from the request data
+        # Extract email and password from the request data  1A!password
         email = request.data.get('email')
         password = request.data.get('password')
 
