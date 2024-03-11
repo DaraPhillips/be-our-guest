@@ -1,28 +1,7 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\src\\App.jsx||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\App.jsx||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\src\\Pages\\login.jsx||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Pages\\login.jsx||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\src\\Pages\\signUp.jsx||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Pages\\signUp.jsx||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\src\\Pages\\login.css||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\Pages\\login.css||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\package.json||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:package.json||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    }
-  ],
+  "WorkspaceRootPath": "C:\\Users\\darap\\Documents\\teamcodehub-ciaran\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\",
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -30,7 +9,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -59,71 +38,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:1:0:{e8b06f52-6d01-11d2-aa7d-00c04f990343}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "package.json",
-              "DocumentMoniker": "C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\package.json",
-              "RelativeDocumentMoniker": "package.json",
-              "ToolTip": "C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\package.json",
-              "RelativeToolTip": "package.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACIAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-03-05T16:59:45.691Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "login.css",
-              "DocumentMoniker": "C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\src\\Pages\\login.css",
-              "RelativeDocumentMoniker": "src\\Pages\\login.css",
-              "ToolTip": "C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\src\\Pages\\login.css",
-              "RelativeToolTip": "src\\Pages\\login.css",
-              "ViewState": "AQIAAH0AAAAAAAAAAAAswKAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2024-03-05T16:01:22.295Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "login.jsx",
-              "DocumentMoniker": "C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\src\\Pages\\login.jsx",
-              "RelativeDocumentMoniker": "src\\Pages\\login.jsx",
-              "ToolTip": "C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\src\\Pages\\login.jsx",
-              "RelativeToolTip": "src\\Pages\\login.jsx",
-              "ViewState": "AQIAADAAAAAAAAAAAAAAAEcAAAAVAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
-              "WhenOpened": "2024-03-05T16:00:50.819Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "signUp.jsx",
-              "DocumentMoniker": "C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\src\\Pages\\signUp.jsx",
-              "RelativeDocumentMoniker": "src\\Pages\\signUp.jsx",
-              "ToolTip": "C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\src\\Pages\\signUp.jsx",
-              "RelativeToolTip": "src\\Pages\\signUp.jsx",
-              "ViewState": "AQIAABoAAAAAAAAAAAAswD0AAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
-              "WhenOpened": "2024-03-05T15:36:34.904Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "App.jsx",
-              "DocumentMoniker": "C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\src\\App.jsx",
-              "RelativeDocumentMoniker": "src\\App.jsx",
-              "ToolTip": "C:\\Users\\darap\\Desktop\\teamcodehub-ciaran-Backend-Api\\teamcodehub-ciaran-FrontEnd\\src\\App.jsx",
-              "RelativeToolTip": "src\\App.jsx",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAiAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
-              "WhenOpened": "2024-03-05T15:04:46.195Z",
-              "EditorCaption": ""
             }
           ]
         }

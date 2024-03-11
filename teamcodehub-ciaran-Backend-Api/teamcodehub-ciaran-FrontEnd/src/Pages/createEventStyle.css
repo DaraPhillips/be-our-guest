@@ -158,3 +158,15 @@ color:#02092D;
 
 .createBtn {font-size: 1.8em; 
             color: red;}
+
+.venueIcon {position: absolute;
+  top: 56%;
+  transform: translateY(-50%);
+  left: 5px;
+  width: 4em;}
+
+  .timeIcon {position: absolute;
+  top: 56%;
+  transform: translateY(-50%);
+  left: 5px;
+  width: 4em;}

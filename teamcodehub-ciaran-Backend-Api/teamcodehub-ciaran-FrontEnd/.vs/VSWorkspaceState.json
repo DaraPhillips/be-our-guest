@@ -2,11 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\templates",
-    "\\BeOurGuest",
-    "\\src",
-    "\\src\\Pages"
+    "\\src"
   ],
-  "SelectedNode": "\\src\\App.jsx",
+  "SelectedNode": "\\src\\Icons",
   "PreviewInSolutionExplorer": false
 }

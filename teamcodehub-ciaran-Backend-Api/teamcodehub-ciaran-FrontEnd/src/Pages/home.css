@@ -4,6 +4,8 @@ header {
   text-align: center;
 }
 
+
+
 .headerH1 {
   font-family: "Vidaloka", "Roboto", sans-serif;
   padding: 2em 4em 0em 4em;
@@ -114,23 +116,50 @@ button:active {
   background-color: #D5D9E1;
   width: 550px;
   height: 562px;
+   flex: 1;
+  margin-left: 11em;
+  max-width: 616px;
 }
 
 /* ... carousel */
 
 .home-container {
   display: flex;
-  flex-direction: row; /* Adjust the direction based on your layout */
-}
-
-.home-pageDiv {
-  flex: 1;
-  margin-left: 11em;
-  /* Add any other styles for the home page div */
+  flex-direction: row;
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Center items vertically */
 }
 
 .slick-slider {
   width: 50%; /* Adjust the width of the carousel */
+}
+
+/* Responsive styles */
+@media screen and (max-width: 3072px) {
+  .slick-slider {
+    width: 25%; /* Adjust the width for smaller screens */
+  }
+}
+@media screen and (max-width: 2560px) {
+  .slick-slider {
+    width: 30%; /* Adjust the width for even smaller screens */
+  }
+}
+
+@media screen and (max-width: 2208px) {
+  .slick-slider {
+    width: 35%; /* Adjust the width for even smaller screens */
+  }
+}
+@media screen and (max-width: 1696px) {
+  .slick-slider {
+    width: 40%; /* Adjust the width for even smaller screens */
+  }
+}
+@media screen and (max-width: 1536px) {
+  .slick-slider {
+    width: 50%; /* Adjust the width for even smaller screens */
+  }
 }
 
 .slick-prev,
