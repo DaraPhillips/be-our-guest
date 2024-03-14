@@ -1,0 +1,68 @@
+
+.top-boxes {
+    display: flex;
+    justify-content: center; /* Adjust as needed */
+    gap: 75px;
+}
+a{
+    text-decoration: none;
+}
+
+.inv-button,
+.events-button{
+   text-align: center;
+   
+    width: 190px;
+    height: 254px;
+    border-radius: 40px;
+    background: #FAFAFA;
+    /* box-shadow:  6px 6px 11px #c3c3c3,
+             -6px -6px 11px #fdfdfd; */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #676B85;
+    
+    
+    
+    }
+
+.inv-button:hover,
+.events-button:hover{
+    background-color: #FAFAFA;
+    box-shadow: 0px 15px 20px #393b49;
+    color: #676B85;
+    transform: translateY(0);
+
+}
+
+.homeLoggedIn-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:url(/src/images/homeLoggedInBackground.jpg) ;
+    opacity: 0.5; /* Adjust the opacity value as needed */
+    z-index: -1; /* Ensure this pseudo-element is behind other content */
+    background-size: cover;
+      padding-bottom: 10rem; 
+      background-position: center;
+    background-repeat: no-repeat;
+  }
+    
+
+  .inv-button img,
+  .events-button img {
+      width: 45px; /* Adjust the size of the image */
+      height: 50px; /* Adjust the size of the image */
+      margin-bottom: 35px; /* Adjust spacing between image and text */
+      
+  }
+
+
+
+       
