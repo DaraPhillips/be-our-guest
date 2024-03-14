@@ -11,7 +11,7 @@ from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from django.http import JsonResponse
 from .models import Countries, Event, Guest,VenueDetails
-from .serializers import CountriesSerializer, EventSerializer, MyTokenObtainPairSerializer, VenueDetailsSerializer
+from .serializers import CountriesSerializer, EventSerializer, EventUpdateSerializer, MyTokenObtainPairSerializer, VenueDetailsSerializer
 from .models import Users
 from .serializers import UsersSerializer
 from rest_framework import viewsets
@@ -127,100 +127,9 @@ def login(request):
     else:
         # Handle other HTTP methods
         return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
- 
-def events(request):
-    events = Event.objects.all()
-    # Serialize all objects
-    serializer = EventSerializer(events, many=True)
-    # Return serialized data as JSON response
-    return JsonResponse(serializer.data, safe=False)
-##this function should have date time formating and have business rules for the date 
-##the rules should be the respond has to come before the date of event and the event cannot be made in the past or today 
-#@api_view(['POST'])
-#@authentication_classes([JWTAuthentication])
-#@permission_classes([IsAuthenticated])
-#def create_event(request):
-#    logger = logging.getLogger(__name__)
-#    logger.info('Received request to create event')
-#    if request.method == 'POST':
-#        logger.debug('Extracting data from request...')
-#        # Extract data from request
-#        event_data = request.data.get('event')
-#        # Check if 'time' and 'date' fields are present
-#        if 'time' not in event_data or 'date' not in event_data:
-#            logger.error('Time and date fields are required')
-#            return Response({'error': 'Time and date fields are required'}, status=status.HTTP_400_BAD_REQUEST)
-#        # Validate time and date formats
-#        time_format = '%H:%M:%S'
-#        date_format = '%Y-%m-%d'
-#        time_str = event_data['time']
-#        # Add seconds if not provided
-#        if len(time_str.split(':')) == 2:
-#            time_str += ':00'
-#        date_str = event_data['date']
-#        if not time_str.strip() or not date_str.strip():
-#            logger.error('Time and date fields cannot be empty')
-#            return Response({'error': 'Time and date fields cannot be empty'}, status=status.HTTP_400_BAD_REQUEST)
-#        try:
-#            datetime.strptime(time_str, time_format)
-#            event_data['time'] = datetime.strptime(time_str, time_format).time()
-#            event_date = datetime.strptime(date_str, date_format).date()
-#        except ValueError as e:
-#            logger.error(f'Invalid time or date format: {e}')
-#            return Response({'error': 'Invalid time or date format'}, status=status.HTTP_400_BAD_REQUEST)
-#        # Ensure date is not today or in the past
-#        if event_date <= date.today():
-#            logger.error('Event date must be in the future')
-#            return Response({'error': 'Event date must be in the future'}, status=status.HTTP_400_BAD_REQUEST)
-#        # Check if respondByDate comes after the date
-#        respond_by_date_str = event_data.get('respondByDate')
-#        if respond_by_date_str:
-#            try:
-#                respond_by_date = datetime.strptime(respond_by_date_str, date_format).date()
-#                if respond_by_date > event_date:
-#                    logger.error('Respond by date cannot come after the event date')
-#                    return Response({'error': 'Respond by date cannot come after the event date'}, status=status.HTTP_400_BAD_REQUEST)
-#            except ValueError as e:
-#                logger.error(f'Invalid respond by date format: {e}')
-#                return Response({'error': 'Invalid respond by date format'}, status=status.HTTP_400_BAD_REQUEST)
-#        logger.debug('Creating event instance...')
-#        # Create event instance
-#        event_serializer = EventSerializer(data=event_data)
-#        if event_serializer.is_valid():
-#            event_instance = event_serializer.save()
-#            logger.debug('Extracting venue data from event data...')
-#            # Extract venue data from event data
-#            venue_data = {
-#                'countriesID': event_data.get('country'),
-#                'name': event_data.get('venue'),
-#                'address': event_data.get('address1'),
-#                'zipcode': event_data.get('zip'),
-#                'event': event_instance.pk,  # Associate venue with the event
-#            }
-#            logger.debug('Creating venue instance...')
-#            # Create venue instance
-#            venue_serializer = VenueDetailsSerializer(data=venue_data)
-#            if venue_serializer.is_valid():
-#                venue_instance = venue_serializer.save()
-#                logger.info('Event and venue created successfully')
-#                return Response({
-#                    'message': 'Event and venue created successfully',
-#                    'event_id': event_instance.pk,
-#                    'venue_id': venue_instance.pk
-#                }, status=status.HTTP_201_CREATED)
-#            else:
-#                event_instance.delete()  # Rollback event creation
-#                logger.error(f'Error creating venue: {venue_serializer.errors}')
-#                return Response({'error': 'Error creating venue', 'errors': venue_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-#        else:
-#            logger.error(f'Error creating event: {event_serializer.errors}')
-#            return Response({'error': 'Error creating event', 'errors': event_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-#    else:
-#        logger.warning('Method not allowed')
-#        return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
- 
- 
+
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def create_event(request):
     logger = logging.getLogger(__name__)
  
@@ -275,9 +184,11 @@ def create_event(request):
                 logger.error(f'Invalid respond by date format: {e}')
                 return Response({'error': 'Invalid respond by date format'}, status=status.HTTP_400_BAD_REQUEST)
  
-        # Get venueDetailsID and hostID from request data
+        # Get venueDetailsID from request data
         venue_details_id = event_data.pop('venue', None)
-        host_id = event_data.pop('host_id', None)
+ 
+        # Retrieve host ID from authenticated user
+        host_id = request.user.userId
  
         # Add venueDetailsID and hostID to event_data dictionary
         event_data['venueDetailsID'] = venue_details_id
@@ -302,7 +213,48 @@ def create_event(request):
     else:
         logger.warning('Method not allowed')
         return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
- 
+    
+@api_view(['PUT', 'PATCH'])
+@permission_classes([IsAuthenticated])
+def update_event(request, event_id):
+    try:
+        event = Event.objects.get(pk=event_id)
+    except Event.DoesNotExist:
+        return Response({'error': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    if event.hostID != request.user.id:
+        return Response({'error': 'You are not allowed to edit this event'}, status=status.HTTP_403_FORBIDDEN)
+
+    venue_name = request.data.get('venue')
+    if venue_name:
+        try:
+            venue_details = VenueDetails.objects.get(name=venue_name)
+        except VenueDetails.DoesNotExist:
+            return Response({'error': 'Venue details not found'}, status=status.HTTP_400_BAD_REQUEST)
+        # Update event with new venue details
+        event.venueDetailsID = venue_details
+
+    if request.method == 'PUT':
+        serializer = EventUpdateSerializer(event, data=request.data)
+    else:
+        serializer = EventUpdateSerializer(event, data=request.data, partial=True)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def events(request):
+    # Fetch all events along with their associated venue details
+    events = Event.objects.select_related('venueDetailsID').all()
+    
+    # Serialize the events along with their venue details
+    serialized_events = EventSerializer(events, many=True).data
+    
+    return Response(serialized_events)
 
 @api_view(['GET'])
 def get_countries(request):

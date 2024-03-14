@@ -27,7 +27,12 @@ export default function Login() {
       // Send POST request to login endpoint
       const response = await axios.post('http://127.0.0.1:8000/login_with_validation/', formData);
 
-      console.log('Login successful:', response.data);
+        console.log('Login successful:', response.data);
+
+        // Store the token in local storage
+        const token = response.data.token;
+        localStorage.setItem('jwtToken', token);
+        console.log('Token stored in local storage:', token);
 
       // Set loggedIn to true after successful login
       setLoggedIn(true);

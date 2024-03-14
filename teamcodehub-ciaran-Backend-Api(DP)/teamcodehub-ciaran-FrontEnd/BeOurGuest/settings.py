@@ -93,7 +93,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'f1bd2a4b-eaff-48c7-a492-b32c0ed11766'
 # JWT settings
 SIMPLE_JWT = {

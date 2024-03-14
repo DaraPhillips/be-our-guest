@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: beoursteven
+-- Host: 127.0.0.1    Database: beourguest2
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.4.27-MariaDB
 
@@ -364,7 +364,7 @@ CREATE TABLE `event` (
   CONSTRAINT `fk_event_eventType1` FOREIGN KEY (`eventType`) REFERENCES `eventtype` (`eventTypeID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_event_host` FOREIGN KEY (`hostID`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_event_venueDetails1` FOREIGN KEY (`venueDetailsID`) REFERENCES `venuedetails` (`venueDetailsID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -373,7 +373,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES (1,NULL,2,NULL,'04:25:00','2024-06-18','2024-03-31'),(2,NULL,2,NULL,'04:25:00','2024-06-18','2024-03-31');
+INSERT INTO `event` VALUES (23,NULL,2,4,'02:00:00','2024-07-18','2024-03-31'),(25,27,2,4,'10:10:00','2024-07-18','2024-03-31'),(26,28,2,4,'00:10:00','2024-07-25','2024-03-31'),(27,28,2,3,'02:10:00','2024-07-24','2024-03-31');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -409,12 +409,10 @@ DROP TABLE IF EXISTS `rsvp`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `rsvp` (
-  `rsvpID` int(11) NOT NULL AUTO_INCREMENT,
-  `eventId` int(11) DEFAULT NULL,
-  `guestId` int(11) DEFAULT NULL,
+  `eventId` int(11) NOT NULL,
+  `guestId` int(11) NOT NULL,
   `attending` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`rsvpID`),
-  KEY `fk_rsvp_event1` (`eventId`),
+  PRIMARY KEY (`eventId`,`guestId`),
   CONSTRAINT `fk_rsvp_event1` FOREIGN KEY (`eventId`) REFERENCES `event` (`idevent`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -446,7 +444,7 @@ CREATE TABLE `users` (
   `last_login` datetime DEFAULT NULL,
   PRIMARY KEY (`userId`),
   UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -455,7 +453,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'steven','nolan','steven@gmail.com','1234','',1,NULL),(3,'s','n','nolan@gmail.com','1234','',1,NULL),(4,'a','a','a@gmail.com','1234','',1,NULL),(5,'b','b','b@gmail.com','1234','',1,NULL),(10,'m','m','m@gmai.com','pbkdf2_sha256$720000$3UWOYnejHvGQT1ukDJ4yic$eeLNYwRShQ05/5Q52cV05SpICu7kgXqZH4fHuUfx1J0=','',1,NULL),(11,'r','r','r@gmail.com','pbkdf2_sha256$720000$ir138lB7soAlvEwUS8Z1h3$7+g5Qeb7Eda5TfxNDGQZ+R51fu0+l1rJhbaqIOLrzxI=','',1,NULL),(12,'p','p','p@gmail.com','pbkdf2_sha256$720000$dOqbwLUtblR9uPoTTgQVv2$8oCW+EQ5PnqqMH6B15U4h6TyY5U0TorDB3kMsBEa450=','',1,NULL),(13,'t','t','t@gmail.com','pbkdf2_sha256$720000$nxbaq6M4a5DB4NmTz3m7p4$C7j6eLBgzwsGLoq+2OwqobQnfdDqqCzeIfWAtnPhMCs=','',1,NULL),(14,'u','u','u@gmail.com','pbkdf2_sha256$720000$FNGp0LuR9VvRIDnGETZV5x$XqpKepH2J7EAZUsdPwc7qnU1c/2B0Rv+Wg9GbKcXVTU=','',1,NULL),(15,'y','y','y@gmail.com','pbkdf2_sha256$720000$TZJ85IkUYg0DI95qKTmWAa$g8Q6PL+U0ouDodv6b7vxTb33J0/5cAvAm6hqLSdkAiI=','',1,NULL),(16,'h','h','h@gmail.com','pbkdf2_sha256$720000$lEVnf7EhqLDTA2C55MnVig$zyeFQEglT5DuDn1JDbD2tkh3+qwsieeRnuGpA9q7zFA=','',1,NULL),(17,'Steven','Nolan','Nolan123@gmail.com','pbkdf2_sha256$720000$K1MGPxRXYcSZMbrS6O6KkW$6VtyZIDeLdK3V245i99sRcmz/K+qi5rtowrNq+tj2DY=','',1,NULL),(18,'George','Nolan','GNolan123@gmail.com','bcrypt_sha256$$2b$12$JghwKsdUN.zRlkQq9fw2weDDXzEL.OYuifQqvJJBFfh9rmCha3u7O','',1,NULL),(19,'c','c','c@gmail.com','bcrypt_sha256$$2b$12$gzqxSVlsbFrQyChhD/JLdOl.FgpS8H8WnbxPXPBHPiaq9dnmHGiOq','',1,NULL),(21,'aa','aa','aa@gmail.com','pbkdf2_sha256$720000$QK1uny7XkHCFKM49SXGuc5$J/Nb+6wuus62yixaPlx9YpQBGV5ZXLpLzTfFrSsC1jY=','',1,NULL),(22,'aSteven','aNolan','Steven123@gmail.com','pbkdf2_sha256$720000$0eQr3T9w0xqAztbFka2BE6$sDKibRCyz3qx/tqPPI3r/XybMliQ5HSHk9pZcHp779A=','',1,NULL),(23,'bSteven','bNolan','bSteven123@gmail.com','pbkdf2_sha256$720000$JMey0f2P3uniqFYBwEiT98$wK2fbwbPaDZkkIIAXLu8Hfz+J3JKiZPjOH0uaYh0lYU=','',1,NULL),(24,'Steven','Nolan','cSteven123@gmail.com','pbkdf2_sha256$720000$AL62bm4JyHbGn0pwF0PHzE$O3jLuCyHPEGgfCH0IEs/n0z7lYnrD1Pw+JQT4dSi7MY=','',1,NULL),(25,'h','h','ciaran@gmail.com','pbkdf2_sha256$720000$UEMcNhFFRbA2KtaXBDusv0$Z1r1NXDK5Y+UnbvuObISExR/kpXoI8WogBLHgL4w8yY=','',1,NULL);
+INSERT INTO `users` VALUES (1,'steven','nolan','steven@gmail.com','1234','',1,NULL),(3,'s','n','nolan@gmail.com','1234','',1,NULL),(4,'a','a','a@gmail.com','1234','',1,NULL),(5,'b','b','b@gmail.com','1234','',1,NULL),(10,'m','m','m@gmai.com','pbkdf2_sha256$720000$3UWOYnejHvGQT1ukDJ4yic$eeLNYwRShQ05/5Q52cV05SpICu7kgXqZH4fHuUfx1J0=','',1,NULL),(11,'r','r','r@gmail.com','pbkdf2_sha256$720000$ir138lB7soAlvEwUS8Z1h3$7+g5Qeb7Eda5TfxNDGQZ+R51fu0+l1rJhbaqIOLrzxI=','',1,NULL),(12,'p','p','p@gmail.com','pbkdf2_sha256$720000$dOqbwLUtblR9uPoTTgQVv2$8oCW+EQ5PnqqMH6B15U4h6TyY5U0TorDB3kMsBEa450=','',1,NULL),(13,'t','t','t@gmail.com','pbkdf2_sha256$720000$nxbaq6M4a5DB4NmTz3m7p4$C7j6eLBgzwsGLoq+2OwqobQnfdDqqCzeIfWAtnPhMCs=','',1,NULL),(14,'u','u','u@gmail.com','pbkdf2_sha256$720000$FNGp0LuR9VvRIDnGETZV5x$XqpKepH2J7EAZUsdPwc7qnU1c/2B0Rv+Wg9GbKcXVTU=','',1,NULL),(15,'y','y','y@gmail.com','pbkdf2_sha256$720000$TZJ85IkUYg0DI95qKTmWAa$g8Q6PL+U0ouDodv6b7vxTb33J0/5cAvAm6hqLSdkAiI=','',1,NULL),(17,'Steven','Nolan','Nolan123@gmail.com','pbkdf2_sha256$720000$K1MGPxRXYcSZMbrS6O6KkW$6VtyZIDeLdK3V245i99sRcmz/K+qi5rtowrNq+tj2DY=','',1,NULL),(18,'George','Nolan','GNolan123@gmail.com','bcrypt_sha256$$2b$12$JghwKsdUN.zRlkQq9fw2weDDXzEL.OYuifQqvJJBFfh9rmCha3u7O','',1,NULL),(19,'c','c','c@gmail.com','bcrypt_sha256$$2b$12$gzqxSVlsbFrQyChhD/JLdOl.FgpS8H8WnbxPXPBHPiaq9dnmHGiOq','',1,NULL),(21,'aa','aa','aa@gmail.com','pbkdf2_sha256$720000$QK1uny7XkHCFKM49SXGuc5$J/Nb+6wuus62yixaPlx9YpQBGV5ZXLpLzTfFrSsC1jY=','',1,NULL),(22,'aSteven','aNolan','Steven123@gmail.com','pbkdf2_sha256$720000$0eQr3T9w0xqAztbFka2BE6$sDKibRCyz3qx/tqPPI3r/XybMliQ5HSHk9pZcHp779A=','',1,NULL),(23,'bSteven','bNolan','bSteven123@gmail.com','pbkdf2_sha256$720000$JMey0f2P3uniqFYBwEiT98$wK2fbwbPaDZkkIIAXLu8Hfz+J3JKiZPjOH0uaYh0lYU=','',1,NULL),(24,'Steven','Nolan','cSteven123@gmail.com','pbkdf2_sha256$720000$AL62bm4JyHbGn0pwF0PHzE$O3jLuCyHPEGgfCH0IEs/n0z7lYnrD1Pw+JQT4dSi7MY=','',1,NULL),(25,'steven','noaln','gStevenNolan@gmail.com','pbkdf2_sha256$720000$fB5ZnNt5eUgJeM53P7YRQd$8aFcoQh9riEOt7t8b3ZRu7e6j1vsIGDcxhjeRsn2//k=','',1,NULL),(27,'hj','hj','h@hotmail.com','pbkdf2_sha256$720000$vs4eingJ4Obn4lab3vKyJY$DlDTYPdEUyhyIyNznHMyNKSBd8PH/HB8zboh78mgqhA=','',1,NULL),(28,'Ciaran','OConnor','KL@hotmail.com','pbkdf2_sha256$720000$xyLW4poOvxM1OuMGlzXHhd$svR68TGclTluTSYhC/Mc1kRkTF5zl/XKrXeQ9Q+OCh8=','',1,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -470,12 +468,14 @@ CREATE TABLE `venuedetails` (
   `venueDetailsID` int(11) NOT NULL AUTO_INCREMENT,
   `countriesID` int(11) DEFAULT NULL,
   `name` varchar(45) DEFAULT NULL,
-  `address` varchar(45) DEFAULT NULL,
+  `address1` varchar(45) DEFAULT NULL,
+  `address2` varchar(45) DEFAULT NULL,
+  `address3` varchar(45) DEFAULT NULL,
   `zipcode` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`venueDetailsID`),
   KEY `fk_venueDetails_countries1` (`countriesID`),
   CONSTRAINT `fk_venueDetails_countries1` FOREIGN KEY (`countriesID`) REFERENCES `countries` (`countriesId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -484,7 +484,7 @@ CREATE TABLE `venuedetails` (
 
 LOCK TABLES `venuedetails` WRITE;
 /*!40000 ALTER TABLE `venuedetails` DISABLE KEYS */;
-INSERT INTO `venuedetails` VALUES (1,4,'au','au','1231312');
+INSERT INTO `venuedetails` VALUES (1,1,'Adare Manor','Adare','Co. Limerick',NULL,'V94 W8WR'),(2,1,'Castle Leslie Estate','Glaslough','Co. Monaghan',NULL,'H18 FY04'),(3,1,'Tankardstown House','Tankardstown','Rathkenny','Co. Meath','C15 D535'),(4,1,'Virginia Park Lodge','Deerpark','Virginia','Co. Cavan',' A82 T2N6'),(5,1,'Dromoland Castle Hotel','Dromoland','Newmarket on Fergus','Co. Clare',' V95 ATD3'),(6,2,'melia durres','Gjiri i Lalezit','Plazhi San Pietro','Durres 2000',NULL);
 /*!40000 ALTER TABLE `venuedetails` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -497,4 +497,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-05 11:29:37
+-- Dump completed on 2024-03-14 10:46:23

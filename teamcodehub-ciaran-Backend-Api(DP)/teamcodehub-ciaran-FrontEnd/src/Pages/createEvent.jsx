@@ -87,29 +87,28 @@ export default function CreateEvent() {
     // Event handler for form submission
  
     const handleSubmit = async (event) => {
- 
         event.preventDefault();
- 
+
         try {
- 
-            // Send POST request to create event
- 
-            const response = await axios.post('http://127.0.0.1:8000/create_event/', { event: eventData });
- 
+            // Retrieve authentication token from localStorage or wherever it's stored
+            const token = localStorage.getItem('jwtToken');
+
+            // Send POST request to create event with authentication token included in headers
+            const response = await axios.post(
+                'http://127.0.0.1:8000/create_event/',
+                { event: eventData },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Include the JWT token in the Authorization header
+                    }
+                }
+            );
+
             console.log('Event created successfully:', response.data);
- 
-            // Optionally redirect to dashboard or show a success message
- 
             setEventCreated(true);
- 
         } catch (error) {
- 
             console.error('Error creating event:', error);
- 
-            // Optionally show an error message
- 
         }
- 
     };
  
     // Event handler for input changes
@@ -164,7 +163,7 @@ export default function CreateEvent() {
  
     if (eventCreated) {
  
-        return <Navigate to="./Pages/HomeLoggedIn" />;
+        return <Navigate to="./Pages/dashboard" />;
  
     }
  
@@ -189,31 +188,28 @@ export default function CreateEvent() {
                 <div className='event-details-container'>
  
                     <form className='host-form' onSubmit={handleSubmit}>
- 
-                        {/* COUNTRY DETAILS */}
- 
-                        <label className="country-deets" htmlFor="country-details">Country details</label>
- 
-                        <div className='details-group'>
- 
-                            <select name="country" id="country-id" value={eventData.country} onChange={handleChange}>
- 
-                                <option key="" value="">Select Country</option>
- 
-                                {countries.map(country => (
- 
-                                    <option key={country.countriesId} value={country.countriesId}>{country.countryName}</option>
- 
-                                ))}
- 
-                            </select>
- 
-                        </div>
- 
+
+
                         {/* VENUE DETAILS */}
  
                         <label className="Venue-deets" htmlFor="venue-details">Venue details</label>
- 
+
+                        <div className='details-group'>
+
+                            <select name="country" id="country-id" value={eventData.country} onChange={handleChange}>
+
+                                <option key="" value="">Select Country</option>
+
+                                {countries.map(country => (
+
+                                    <option key={country.countriesId} value={country.countriesId}>{country.countryName}</option>
+
+                                ))}
+
+                            </select>
+
+                        </div>
+
                         <div className='details-group'>
  
                             <select name="venue" id="venue-id" value={eventData.venue} onChange={handleVenueSelect}>
