@@ -1,0 +1,11 @@
+- open on github
+- add new file (64bit)
+- file icons
+- file path on footer
+- github copiolt --wont get approved 
+- mermaid.js
+- open visual studion code 
+- rainbow braces
+- sontarlint 
+- trailing whitespace 
+- visual stuio spell checker 

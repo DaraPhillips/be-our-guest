@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './dashboardStyleSheet.css';
 import AuthService from './AuthService';
+import axios from 'axios';
 
 export default function Dashboard() {
   const [likeImages, setLikeImages] = useState(['/src/images/likeBefore.png']);
   const [pinImages, setPinImages] = useState(['/src/images/pin.png']);
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const [eventDate, setEventDate] = useState(null);
+    const [timeRemaining, setTimeRemaining] = useState(null);
 
   const toggleLikeImage = (index) => {
     const newImages = [...likeImages];
@@ -25,6 +28,40 @@ export default function Dashboard() {
         : '/src/images/pin.png';
     setPinImages(newImages);
   };
+    useEffect(() => {
+        // Fetch event date from the backend
+        axios.get('http://127.0.0.1:8000/event-date')
+            .then(response => {
+                const eventData = response.data;
+                setEventDate(new Date(eventData.date)); // Convert string date to Date object
+            })
+            .catch(error => {
+                console.error('Error fetching event date:', error);
+            });
+    }, []);
+
+    useEffect(() => {
+        // Calculate time remaining until the event
+        if (eventDate) {
+            const intervalId = setInterval(() => {
+                const now = new Date();
+                const difference = eventDate - now;
+                if (difference <= 0) {
+                    clearInterval(intervalId);
+                    setTimeRemaining('Event has started!');
+                } else {
+                    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                    setTimeRemaining(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+                }
+            }, 1000);
+            // Cleanup function to clear interval
+            return () => clearInterval(intervalId);
+        }
+    }, [eventDate]);
+
 
   
   const handleLogout = () => {
@@ -43,7 +80,10 @@ export default function Dashboard() {
       <div className='header-wrap-dash'>
         <h3 className="dashboard">Dashboard</h3>
         <h1 className="weddingNames">Name and Name's Wedding</h1>
-        <h3 className="countdown">COUNTDOWN HERE</h3>
+              <div>
+                  <h1>Event Countdown</h1>
+                  {timeRemaining && <p>{timeRemaining}</p>}
+              </div>
       </div>
 
       <div className='dash-sidebar'>
