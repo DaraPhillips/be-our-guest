@@ -1,0 +1,71 @@
+.main-footer {
+  color: azure;
+  background-color: #676B85;
+  padding-top: 3em;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-bottom: 7rem;
+}
+
+.col {
+  flex: 1;
+  padding: 0 15px;
+}
+
+.col-small {
+  flex-basis: 100%;
+  text-align: center;
+}
+
+h4 {
+  color: #ffffff;
+  font-family: "Roboto", sans-serif;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  margin-bottom: 10px;
+  font-family: "Roboto", sans-serif;
+}
+
+ul li a {
+  color: #ffffff; /* Default text color */
+  transition: color 0.3s ease; /* Smooth transition effect */
+  text-decoration: none;
+}
+
+ul li a:hover {
+  color: #c4a468; /* Gold color on hover */
+}
+
+p {
+  margin: 0;
+}
+
+.footerLogo {
+  width: 54%;
+  height: auto;
+  max-height: 4em;
+}
+
+.copyRight {
+  color: #fff; /* Example text color */
+  font-size: .8em; /* Example font size */
+  /* Add other styles as needed */
+}
