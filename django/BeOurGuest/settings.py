@@ -11,7 +11,6 @@ from datetime import timedelta
 import os
 from pickle import FALSE
 import posixpath
-
 import logging
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,8 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-        'corsheaders',
-        'drf_yasg',
+    'corsheaders',
+    'drf_yasg',
 ]
 
 # Middleware framework
@@ -49,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-        'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 SWAGGER_SETTINGS = {
@@ -59,13 +58,15 @@ STATIC_URL = '/static/'
 
 ROOT_URLCONF = 'BeOurGuest.urls'
 
-CORS_ALLOWED_ORIGINS = [
-    "http://192.168.56.1",
-    "http://127.0.0.1:3000",
-    'http://localhost:5175',
-    'http://localhost:5174',
-    'http://localhost:5173',
-]
+CORS_ORIGIN_ALLOW_ALL = True  # Set this to True to allow requests from all origins
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://192.168.56.1",
+#     "http://127.0.0.1:3000",
+#     'http://localhost:5175',
+#     'http://localhost:5174',
+#     'http://localhost:5173',
+# ]
 
 # Template configuration 
 # https://docs.djangoproject.com/en/2.1/topics/templates/
@@ -96,7 +97,7 @@ REST_FRAMEWORK = {
 SECRET_KEY = 'f1bd2a4b-eaff-48c7-a492-b32c0ed11766'
 # JWT settings
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -134,8 +135,6 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
-from rest_framework_simplejwt.settings import api_settings
-
 # Set the custom JWT payload handler in the JWT settings
 #api_settings.JWT_PAYLOAD_HANDLER = 'your_module.custom_jwt_payload_handler'
 
@@ -165,22 +164,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Password validation
-# https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+# # Password validation
+# # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
+# AUTH_PASSWORD_VALIDATORS = [
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+#     },
+# ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/

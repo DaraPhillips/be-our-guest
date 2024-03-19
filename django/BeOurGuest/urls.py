@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from app import forms, views
 from django.urls import path
-from app.views import UsersViewSet, create_event, events, get_countries, login, get_venues
+from app.views import UsersViewSet, create_event, events, get_countries, get_users, login, get_venues
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -48,11 +48,10 @@ urlpatterns = [
     path('create_event/', create_event, name='create_event'),
     path('events/<int:event_id>/', views.update_event, name='update_event'),
     path('countries/', get_countries, name='countries'),
-    path('users/', views.get_users, name='users'),
+    path('users/', get_users, name='users'),
 
     path('venues/<int:country_id>/', views.get_venues_by_country, name='get_venues_by_country'),
 
-    path('users/', views.get_users, name='users'),
     path('register/', views.register_user, name='register'),
     path('login_with_validation/', login, name='login_with_validation'),
     path('venues/', get_venues, name='venues'),

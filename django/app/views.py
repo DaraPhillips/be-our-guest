@@ -1,38 +1,42 @@
 """
 Definition of views.
 """
-from contextvars import Token
-from datetime import datetime, date
-from django.shortcuts import render
-from django.http import HttpRequest
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.renderers import JSONRenderer
-from django.http import JsonResponse
-from .models import Countries, Event, Guest,VenueDetails
-from .serializers import CountriesSerializer, EventSerializer, EventUpdateSerializer, MyTokenObtainPairSerializer, VenueDetailsSerializer
-from .models import Users
-from .serializers import UsersSerializer
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import action, api_view
-from django.contrib.auth import authenticate
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-from django.contrib.auth.hashers import BCryptSHA256PasswordHasher  #password hasher (sn)
-from django.contrib.auth.hashers import check_password, make_password #sn for login validation 
-from django.views.decorators.csrf import csrf_exempt #sn for the create event api call
-from django.contrib.auth.hashers import make_password
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_jwt.settings import api_settings
-from rest_framework_simplejwt.tokens import RefreshToken
-from django.shortcuts import get_object_or_404
- 
-import re
 import logging
+import re
+from contextvars import Token
+from datetime import date, datetime
+
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+import jwt
+from rest_framework import status, viewsets
+from rest_framework.decorators import (action, api_view,
+                                       authentication_classes,
+                                       permission_classes)
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_jwt.settings import api_settings
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.http import JsonResponse
+
+from django.contrib.auth import authenticate
+from django.contrib.auth.hashers import \
+    BCryptSHA256PasswordHasher  # password hasher (sn)
+from django.contrib.auth.hashers import (  # sn for login validation
+    check_password, make_password)
+from django.http import HttpRequest, JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django.views.decorators.csrf import \
+    csrf_exempt  # sn for the create event api call
+
+from .models import Countries, Event, Guest, Users, VenueDetails
+from .serializers import (CountriesSerializer, EventSerializer,
+                          EventUpdateSerializer, MyTokenObtainPairSerializer,
+                          UsersSerializer, VenueDetailsSerializer)
+
 
 class UsersViewSet(viewsets.ViewSet):
     """
@@ -42,9 +46,10 @@ class UsersViewSet(viewsets.ViewSet):
         """
         Return a list of all users.
         """
-        queryset = users.objects.all()
+        queryset = Users.objects.all()
         serializer = UsersSerializer(queryset, many=True)
         return Response(serializer.data)
+    
 class EventViewSet(viewsets.ViewSet):
     """
     A simple ViewSet for interacting with your API.
@@ -56,20 +61,45 @@ class EventViewSet(viewsets.ViewSet):
         queryset = Event.objects.all()
         serializer = EventSerializer(queryset, many=True)
         return Response(serializer.data)
+    
 def guests(request):
     guests = Guest.objects.all()
     # Serialize all objects
     serializer = GuestSerializer(guests, many=True)
     # Return serialized data as JSON response
     return JsonResponse(serializer.data, safe=False)
+
 @api_view(['GET'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
-def get_users(request):
-    users = users.objects.all()
+def get_all_users(request):
+    users = Users.objects.all()
     serializer = UsersSerializer(users, many=True)
-    return JsonResponse(serializer.data, safe=False)
- 
+    response = JsonResponse(serializer.data, safe=False)
+    response["Access-Control-Allow-Origin"] = "http://localhost:5173"
+    return response
+
+@api_view(['GET'])
+def get_users(request):
+    token = request.GET.get('token')
+
+    if token:
+        try:
+            # Decode the token to get the user_id
+            decoded_token = jwt.decode(token, 'f1bd2a4b-eaff-48c7-a492-b32c0ed11766', algorithms=['HS256'])
+            user_id = decoded_token['userId']
+            # Retrieve the user based on the user_id
+            user = get_object_or_404(Users, pk=user_id)
+            # Serialize and return the user data
+            return Response({'id': user.userId, 'username': user.firstName, 'email': user.email})
+        except jwt.ExpiredSignatureError:
+            return Response({'error': 'Token has expired'}, status=status.HTTP_400_BAD_REQUEST)
+        except jwt.InvalidTokenError:
+            return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        # If no token is provided, return all users
+        users = Users.objects.all()
+        data = [{'id': user.id, 'username': user.username, 'email': user.email} for user in users]
+        return Response(data)
+
 @api_view(['POST'])
 def register_user(request):
     if request.method == 'POST':
@@ -115,8 +145,8 @@ def login(request):
             token = serializer.get_token(user)
             # Return success response with JWT token
             return Response({
-                'message': 'View Login successful',
-                'userId': user.userId,  
+                'message': 'Login successful',
+                'userId': user.userId,
                 'email': user.email,
                 'token': str(token.access_token)  # Include JWT token in response
             })
@@ -127,7 +157,6 @@ def login(request):
     else:
         # Handle other HTTP methods
         return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
- 
 def events(request):
     events = Event.objects.all()
     # Serialize all objects
@@ -135,7 +164,16 @@ def events(request):
     # Return serialized data as JSON response
     return JsonResponse(serializer.data, safe=False)
 
-
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def events(request):
+#     # Fetch all events along with their associated venue details
+#     events = Event.objects.select_related('venueDetailsID').all()
+    
+#     # Serialize the events along with their venue details
+#     serialized_events = EventSerializer(events, many=True).data
+    
+#     return Response(serialized_events)
 ##this function should have date time formating and have business rules for the date 
 ##the rules should be the respond has to come before the date of event and the event cannot be made in the past or today 
 ##this function doesnt extract the host id from the token 
@@ -327,22 +365,6 @@ def update_event(request, event_id):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def events(request):
-    # Fetch all events along with their associated venue details
-    events = Event.objects.select_related('venueDetailsID').all()
-    
-    # Serialize the events along with their venue details
-    serialized_events = EventSerializer(events, many=True).data
-    
-    return Response(serialized_events)
- 
- 
- 
-
- 
-
-@api_view(['GET'])
 def get_countries(request):
     countries = Countries.objects.all()
     serializer = CountriesSerializer(countries, many=True)
@@ -403,10 +425,6 @@ def validate_password(password):
     if not re.search("[!@#$%^&*()_+=\-[\]{};':\"|,.<>?]", password):
         return False, "Password must contain at least one special character."
     return True, None
-
-
-
-
 
 
 @api_view(['GET'])

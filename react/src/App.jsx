@@ -14,7 +14,7 @@ import Home from './Pages/Home';
 import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
 import CreateEvent from './Pages/CreateEvent';
-import ScrollToTop from './Pages/ScrollToTop'; // Import the ScrollToTop component
+import ScrollToTop from './Pages/ScrollToTop'; 
 import Dashboard from './Pages/Dashboard';
 import AuthService from './Pages/AuthService';
 
