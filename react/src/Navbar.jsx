@@ -12,6 +12,20 @@ const Navbar = () => {
   const [userInitial, setUserInitial] = useState('');
   const [shouldRefresh, setShouldRefresh] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Add a loading state
+  const [reloadOnce, setReloadOnce] = useState(false);
+
+//   useEffect(() => {
+//     // Check if reload has already occurred
+//     const hasReloaded = localStorage.getItem('hasReloaded');
+//     if (!hasReloaded) {
+//         // Reload the window
+//         console.log('Reloading window...');
+//         localStorage.setItem('hasReloaded', 'true');
+//         window.location.reload();
+//     } else {
+//         console.log('Window already reloaded.');
+//     }
+// }, []);
 
   useEffect(() => {
     setIsLoading(true); // Set loading to true initially
@@ -35,7 +49,6 @@ const Navbar = () => {
           const initial = firstName.charAt(0).toUpperCase();
           setUserInitial(initial);
           console.log('User initial:', initial);
-          setShouldRefresh(true); // Set refresh flag after fetching
         } else {
           console.error('No user data found in response.');
         }
@@ -48,6 +61,7 @@ const Navbar = () => {
   
     fetchUserInitial();
   }, []);
+
 
   useEffect(() => {
     // Update the button text based on the current route

@@ -31,6 +31,10 @@ from django.http import HttpRequest, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import \
     csrf_exempt  # sn for the create event api call
+import random
+import string
+from django.core.mail import send_mail
+from django.http import HttpResponse
 
 from .models import Countries, Event, Guest, Users, VenueDetails
 from .serializers import (CountriesSerializer, EventSerializer,
@@ -98,6 +102,57 @@ def get_users(request):
         users = Users.objects.all()
         data = [{'id': user.id, 'firstName': user.firstName, 'email': user.email} for user in users]
         return Response(data)
+
+@api_view(['POST'])
+def send_password_email(request):
+    if request.method == 'POST':
+        # Extract recipient email from the request data
+        recipient_email = request.data.get('recipient_email')
+        if not recipient_email:
+            return Response({'error': 'Email address is required'}, status=400)
+
+        # Generate a random password
+        password = generate_password()
+
+        # Send an email with the generated password
+        send_mail(
+            'Your New Password',
+            f'Your new password is: {password}',
+            'sender@example.com',
+            [recipient_email],  # Use the recipient email obtained from the request
+            fail_silently=False,
+        )
+
+        return Response({'message': 'Password email sent successfully!'})
+
+def generate_password(length=10):
+    # Define sets of characters to choose from
+    lowercase_letters = string.ascii_lowercase
+    uppercase_letters = string.ascii_uppercase
+    digits = string.digits
+    special_characters = string.punctuation
+
+    # Ensure at least one character from each category
+    password_characters = [
+        random.choice(lowercase_letters),
+        random.choice(uppercase_letters),
+        random.choice(digits),
+        random.choice(special_characters)
+    ]
+
+    # Generate the remaining characters randomly
+    remaining_length = length - len(password_characters)
+    password_characters.extend(random.choices(
+        lowercase_letters + uppercase_letters + digits + special_characters,
+        k=remaining_length
+    ))
+
+    # Shuffle the characters to ensure randomness
+    random.shuffle(password_characters)
+
+    # Concatenate the characters to form the password
+    password = ''.join(password_characters)
+    return password
 
 @api_view(['POST'])
 def register_user(request):

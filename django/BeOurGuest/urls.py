@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from app import forms, views
 from django.urls import path
-from app.views import UsersViewSet, create_event, events, get_countries, get_users, login, get_venues
+from app.views import UsersViewSet, create_event, events, get_countries, get_users, login, get_venues, send_password_email
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -51,6 +51,7 @@ urlpatterns = [
     path('users/', get_users, name='users'),
 
     path('venues/<int:country_id>/', views.get_venues_by_country, name='get_venues_by_country'),
+    path('send-password-email/', send_password_email, name='send_password_email'),
 
     path('register/', views.register_user, name='register'),
     path('login_with_validation/', login, name='login_with_validation'),

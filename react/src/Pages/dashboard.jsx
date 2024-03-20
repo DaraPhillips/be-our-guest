@@ -30,6 +30,8 @@ export default function Dashboard() {
     setPinImages(newImages);
   };
 
+  
+
   useEffect(() => {
     // Fetch event date from the backend
     axios.get('http://127.0.0.1:8000/event-date')
