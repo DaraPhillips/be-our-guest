@@ -17,6 +17,13 @@ const inputFields = [
   { name: 'confirmPassword', placeholder: 'Confirm Password', icon: <SvgConfirmPassword />, isPassword: true },
 ];
 
+const passwordRules = [
+  'Password must be at least 8 characters long',
+  'Password must contain at least one uppercase letter',
+  'Password must contain at least one lowercase letter',
+  'Password must contain at least one number',
+];
+
 export default function SignUp() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -64,6 +71,14 @@ export default function SignUp() {
 
     if (!formData.password) {
       fieldErrors.password = 'Password is required';
+    } else if (
+      !/(?=.*[a-z])/.test(formData.password) ||
+      !/(?=.*[A-Z])/.test(formData.password) ||
+      !/(?=.*[0-9])/.test(formData.password) ||
+      formData.password.length < 8
+    ) {
+      fieldErrors.password =
+        'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number (e.g. Aaa1234!)';
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -129,6 +144,14 @@ export default function SignUp() {
               {errors[field.name] && <p className="error-message">{errors[field.name]}</p>}
             </div>
           ))}
+          {/* Display password rules */}
+          {errors.password && (
+            <div className="password-rules">
+              {passwordRules.map((rule, index) => (
+                <p key={index} className="password-rule"></p>
+              ))}
+            </div>
+          )}
           <button className="sign" id="signup-button" type="submit" disabled={loading}>
             {loading ? 'Signing Up...' : 'Sign Up'}
           </button>
