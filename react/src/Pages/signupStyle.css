@@ -140,3 +140,5 @@
   left: 21.8em;
   width: 4em;
 }
+
+.password-rule {font-size: 14px; color: red; padding-top: .5em;}
