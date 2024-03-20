@@ -10,8 +10,12 @@ const Navbar = () => {
   // State to track whether to display login button
   const [buttonText, setButtonText] = useState('Log in');
   const [userInitial, setUserInitial] = useState('');
+  const [shouldRefresh, setShouldRefresh] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Add a loading state
 
   useEffect(() => {
+    setIsLoading(true); // Set loading to true initially
+  
     const fetchUserInitial = async () => {
       try {
         const token = localStorage.getItem('jwtToken');
@@ -22,26 +26,28 @@ const Navbar = () => {
         }
 
         const response = await axios.get(url);
-        const users = response.data;
+        console.log('API response:', response); // Log the entire response object
+        const user = response.data;
+        console.log('Received users:', user); // Log the users data
 
-        if (users.length > 0) {
-          const { firstName } = users[0]; // Assuming the API returns "firstName"
-          const initial = firstName.charAt(0).toUpperCase(); // Extract and uppercase the first letter
+        if (user) { // Check if user data exists
+          const { firstName } = user; // Destructure firstName property
+          const initial = firstName.charAt(0).toUpperCase();
           setUserInitial(initial);
           console.log('User initial:', initial);
+          setShouldRefresh(true); // Set refresh flag after fetching
         } else {
-          console.error('No user found for the provided token.');
-          // Handle no user scenario (e.g., display error message)
+          console.error('No user data found in response.');
         }
       } catch (error) {
         console.error('Error fetching user initial:', error);
-        // Handle API call errors (e.g., display error message)
+      } finally {
+        setIsLoading(false); // Set loading to false after fetching
       }
     };
-
+  
     fetchUserInitial();
   }, []);
-
 
   useEffect(() => {
     // Update the button text based on the current route
@@ -55,6 +61,7 @@ const Navbar = () => {
       setButtonText('Log in');
     }
   }, [location.pathname]);
+
 
   const handleButtonClick = () => {
     // Update the button text dynamically based on the current route
@@ -83,10 +90,12 @@ const Navbar = () => {
       {/* Additional buttons for the dashboard navbar */}
       {location.pathname === '/dashboard' && (
         <div className="dashboard-buttons">
-    <button className="profileCircle" onClick={() => console.log('Profile button clicked')}>
-      {/* Display user's initial */}
-      {userInitial}
-    </button>
+        <button className="profileCircle" onClick={() => console.log('Profile button clicked')}>
+          {/* Display user's initial or loading indicator */}
+          {userInitial && ( // Render only if userInitial has a value
+            <span>{userInitial}</span>
+          )}
+        </button>
           <button className="notifications" onClick={() => console.log('Notifications button clicked')}>
             {/* Notifications icon or text */}
             <SvgBellIcon/>

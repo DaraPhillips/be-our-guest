@@ -11,11 +11,11 @@ import About from './Pages/About';
 import Features from './Pages/Features';
 import Gallery from './Pages/Gallery';
 import Home from './Pages/Home';
-import Login from './Pages/Login';
+import Login from './Pages/login';
 import SignUp from './Pages/SignUp';
-import CreateEvent from './Pages/CreateEvent';
+import CreateEvent from './Pages/createEvent';
 import ScrollToTop from './Pages/ScrollToTop'; 
-import Dashboard from './Pages/Dashboard';
+import Dashboard from './Pages/dashboard';
 import AuthService from './Pages/AuthService';
 
 function App() {

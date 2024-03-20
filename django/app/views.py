@@ -80,7 +80,6 @@ def get_all_users(request):
 @api_view(['GET'])
 def get_users(request):
     token = request.GET.get('token')
-
     if token:
         try:
             # Decode the token to get the user_id
@@ -89,7 +88,7 @@ def get_users(request):
             # Retrieve the user based on the user_id
             user = get_object_or_404(Users, pk=user_id)
             # Serialize and return the user data
-            return Response({'id': user.userId, 'username': user.firstName, 'email': user.email})
+            return Response({'id': user.userId, 'firstName': user.firstName, 'email': user.email})
         except jwt.ExpiredSignatureError:
             return Response({'error': 'Token has expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.InvalidTokenError:
@@ -97,7 +96,7 @@ def get_users(request):
     else:
         # If no token is provided, return all users
         users = Users.objects.all()
-        data = [{'id': user.id, 'username': user.username, 'email': user.email} for user in users]
+        data = [{'id': user.id, 'firstName': user.firstName, 'email': user.email} for user in users]
         return Response(data)
 
 @api_view(['POST'])

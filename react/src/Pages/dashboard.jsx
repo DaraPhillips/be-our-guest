@@ -10,8 +10,8 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [eventDate, setEventDate] = useState(null);
   const [timeRemaining, setTimeRemaining] = useState(null);
-  const [userInitial, setUserInitial] = useState(null); // State to store the user's initial
 
+  
   const toggleLikeImage = (index) => {
     const newImages = [...likeImages];
     newImages[index] =
@@ -63,21 +63,6 @@ export default function Dashboard() {
       return () => clearInterval(intervalId);
     }
   }, [eventDate]);
-
-  useEffect(() => {
-    // Fetch user information after login
-    const fetchUserInitial = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/user-info'); // Replace this with the endpoint to get user information
-        const firstName = response.data.firstName;
-        setUserInitial(firstName.charAt(0)); // Set the user's initial
-      } catch (error) {
-        console.error('Error fetching user information:', error);
-      }
-    };
-
-    fetchUserInitial();
-  }, []);
 
   const handleLogout = () => {
     // Call your authentication service logout method
