@@ -131,10 +131,12 @@ def send_password_email(request):
             if not is_valid_password:
                 return Response({'error': f'Generated password failed validation: {password_error}'}, status=400)
 
+            hashed_password = make_password(password)
+            
             # Prepare user data with the generated password
             user_data = {
                 'email': email,
-                'password': password,  # Placeholder for hashed password
+                'password': hashed_password,  # Placeholder for hashed password
                 'firstName': first_name,
                 'lastName': last_name,
             }
@@ -242,6 +244,9 @@ def login(request):
                 'message': 'Login successful',
                 'userId': user.userId,
                 'email': user.email,
+                'real password': password,
+                'real password hs': make_password(password),
+                'real password hs1': make_password(password),
                 'token': str(token.access_token)  # Include JWT token in response
             })
         else:
