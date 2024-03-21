@@ -7,10 +7,11 @@ import axios from 'axios';
 export default function Dashboard() {
   const [likeImages, setLikeImages] = useState(['/src/images/likeBefore.png']);
   const [pinImages, setPinImages] = useState(['/src/images/pin.png']);
-    const navigate = useNavigate();
-    const [eventDate, setEventDate] = useState(null);
-    const [timeRemaining, setTimeRemaining] = useState(null);
+  const navigate = useNavigate();
+  const [eventDate, setEventDate] = useState(null);
+  const [timeRemaining, setTimeRemaining] = useState(null);
 
+  
   const toggleLikeImage = (index) => {
     const newImages = [...likeImages];
     newImages[index] =
@@ -28,52 +29,53 @@ export default function Dashboard() {
         : '/src/images/pin.png';
     setPinImages(newImages);
   };
-    useEffect(() => {
-        // Fetch event date from the backend
-        axios.get('http://127.0.0.1:8000/event-date')
-            .then(response => {
-                const eventData = response.data;
-                setEventDate(new Date(eventData.date)); // Convert string date to Date object
-            })
-            .catch(error => {
-                console.error('Error fetching event date:', error);
-            });
-    }, []);
-
-    useEffect(() => {
-        // Calculate time remaining until the event
-        if (eventDate) {
-            const intervalId = setInterval(() => {
-                const now = new Date();
-                const difference = eventDate - now;
-                if (difference <= 0) {
-                    clearInterval(intervalId);
-                    setTimeRemaining('Event has started!');
-                } else {
-                    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-                    setTimeRemaining(`${days}d ${hours}h ${minutes}m ${seconds}s`);
-                }
-            }, 1000);
-            // Cleanup function to clear interval
-            return () => clearInterval(intervalId);
-        }
-    }, [eventDate]);
-
 
   
+
+  useEffect(() => {
+    // Fetch event date from the backend
+    axios.get('http://127.0.0.1:8000/event-date')
+      .then(response => {
+        const eventData = response.data;
+        setEventDate(new Date(eventData.date)); // Convert string date to Date object
+      })
+      .catch(error => {
+        console.error('Error fetching event date:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    // Calculate time remaining until the event
+    if (eventDate) {
+      const intervalId = setInterval(() => {
+        const now = new Date();
+        const difference = eventDate - now;
+        if (difference <= 0) {
+          clearInterval(intervalId);
+          setTimeRemaining('Event has started!');
+        } else {
+          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+          setTimeRemaining(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+        }
+      }, 1000);
+      // Cleanup function to clear interval
+      return () => clearInterval(intervalId);
+    }
+  }, [eventDate]);
+
   const handleLogout = () => {
-  // Call your authentication service logout method
-  AuthService.logout();
+    // Call your authentication service logout method
+    AuthService.logout();
 
-  // Verify that the token is cleared from local storage
-  console.log("Token after logout:", localStorage.getItem('jwtToken'));
+    // Verify that the token is cleared from local storage
+    console.log("Token after logout:", localStorage.getItem('jwtToken'));
 
-  // Redirect to the login page or perform any other actions
-  navigate('/login');
-};
+    // Redirect to the login page or perform any other actions
+    navigate('/login');
+  };
 
   return (
     <div className='dashboard-page-body'>
