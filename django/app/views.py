@@ -106,40 +106,48 @@ def get_users(request):
 @api_view(['POST'])
 def send_password_email(request):
     if request.method == 'POST':
-        # Extract recipient emails from the request data (list or comma-separated string)
-        recipient_emails = request.data.get('recipient_emails')
-        if not recipient_emails:
-            return Response({'error': 'Email addresses are required'}, status=400)
+        # Extract recipient data from the request data
+        recipient_emails = request.data.get('recipients', [])  # Expect a list of dictionaries
 
-        # Validate and split recipient emails if comma-separated
-        if isinstance(recipient_emails, str):
-            recipient_emails = recipient_emails.split(',')
-        recipient_emails = [email.strip() for email in recipient_emails if email.strip()]
+        # Validate data structure
+        if not isinstance(recipient_emails, list):
+            return Response({'error': 'Invalid request format: "recipients" list expected'}, status=400)
 
-        if not recipient_emails:
-            return Response({'error': 'Please provide valid email addresses'}, status=400)
+        for recipient in recipient_emails:
+            # Extract and validate email, firstName, and lastName
+            email = recipient.get('email')
+            first_name = recipient.get('firstName')
+            last_name = recipient.get('lastName')
 
-        # Generate a dictionary to store unique passwords for each recipient
-        passwords = {}
+            if not email or not first_name or not last_name:
+                return Response({'error': 'Missing required fields: email, firstName, lastName'}, status=400)
 
-        # Send an email with a unique generated password to each recipient
-        for recipient_email in recipient_emails:
+            # Generate a unique password
             password = generate_password()
-            passwords[recipient_email] = password  # Store password for current recipient
+            hashed_password = make_password(password)  # Hash the password
 
+            # Create a new user account
+            user = Users.objects.create_user(
+                email=email,
+                password=hashed_password,
+                firstName=first_name,
+                lastName=last_name,
+                # Set other fields as needed
+            )
+            
             try:
                 send_mail(
                     'Your New Password',
                     f'Your new password is: {password}',
                     'sender@example.com',
-                    [recipient_email],  # Use the individual recipient email
+                    [recipient_emails],  # Use the individual recipient email
                     fail_silently=False,
                 )
             except Exception as e:
                 # Handle potential errors (e.g., sending failure)
-                return Response({'error': f'Failed to send email to {recipient_email}: {e}'}, status=500)
+                return Response({'error': f'Failed to send email to {recipient_emails}: {e}'}, status=500)
 
-        return Response({'message': 'Password email(s) sent successfully!', 'passwords': passwords})
+        return Response({'message': 'Password email(s) sent successfully!', 'password': password})
 
 
 
