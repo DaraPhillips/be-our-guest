@@ -106,24 +106,43 @@ def get_users(request):
 @api_view(['POST'])
 def send_password_email(request):
     if request.method == 'POST':
-        # Extract recipient email from the request data
-        recipient_email = request.data.get('recipient_email')
-        if not recipient_email:
-            return Response({'error': 'Email address is required'}, status=400)
+        # Extract recipient emails from the request data (list or comma-separated string)
+        recipient_emails = request.data.get('recipient_emails')
+        if not recipient_emails:
+            return Response({'error': 'Email addresses are required'}, status=400)
 
-        # Generate a random password
-        password = generate_password()
+        # Validate and split recipient emails if comma-separated
+        if isinstance(recipient_emails, str):
+            recipient_emails = recipient_emails.split(',')
+        recipient_emails = [email.strip() for email in recipient_emails if email.strip()]
 
-        # Send an email with the generated password
-        send_mail(
-            'Your New Password',
-            f'Your new password is: {password}',
-            'sender@example.com',
-            [recipient_email],  # Use the recipient email obtained from the request
-            fail_silently=False,
-        )
+        if not recipient_emails:
+            return Response({'error': 'Please provide valid email addresses'}, status=400)
 
-        return Response({'message': 'Password email sent successfully!'})
+        # Generate a dictionary to store unique passwords for each recipient
+        passwords = {}
+
+        # Send an email with a unique generated password to each recipient
+        for recipient_email in recipient_emails:
+            password = generate_password()
+            passwords[recipient_email] = password  # Store password for current recipient
+
+            try:
+                send_mail(
+                    'Your New Password',
+                    f'Your new password is: {password}',
+                    'sender@example.com',
+                    [recipient_email],  # Use the individual recipient email
+                    fail_silently=False,
+                )
+            except Exception as e:
+                # Handle potential errors (e.g., sending failure)
+                return Response({'error': f'Failed to send email to {recipient_email}: {e}'}, status=500)
+
+        return Response({'message': 'Password email(s) sent successfully!', 'passwords': passwords})
+
+
+
 
 def generate_password(length=10):
     # Define sets of characters to choose from
