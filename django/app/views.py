@@ -131,33 +131,32 @@ def send_password_email(request):
             if not is_valid_password:
                 return Response({'error': f'Generated password failed validation: {password_error}'}, status=400)
 
-            hashed_password = make_password(password)  # Hash the password
+            # Prepare user data with the generated password
+            user_data = {
+                'email': email,
+                'password': password,  # Placeholder for hashed password
+                'firstName': first_name,
+                'lastName': last_name,
+            }
 
-            # Check if user already exists (optional, depending on your logic)
-            try:
-                user = Users.objects.get(email=email)
-            except Users.DoesNotExist:
-                user = None  # User doesn't exist yet
+            # Create a new user account using the serializer
+            serializer = UsersSerializer(data=user_data)
+            if serializer.is_valid():
+                serializer.save()  # This will hash the password before saving the user
+                successful_emails.append(email)
+            else:
+                # Handle potential serializer errors (optional)
+                return Response(serializer.errors, status=400)
 
-            # Create a new user account if it doesn't exist (optional, depending on your logic)
-            if not user:
-                user = Users.objects.create_user(
-                    email=email,
-                    password=hashed_password,
-                    firstName=first_name,
-                    lastName=last_name,
-                    # Set other fields as needed
-                )
             try:
                 # Send the email regardless of user creation (informational)
                 send_mail(
                     'Your New Password',
-                    f'Your new password is: {password}',
+                    f'Your new password is: "{password}"',
                     'sender@example.com',
                     [email],  # Use the individual email address
                     fail_silently=False,
                 )
-                successful_emails.append(email)
             except Exception as e:
                 # Handle potential errors (e.g., sending failure)
                 return Response({'error': f'Failed to send email to {email}: {e}'}, status=500)
@@ -249,7 +248,12 @@ def login(request):
             # Passwords don't match, login failed
             return Response({'error': 'Invalid details',
                 'userId': user.userId,
-                'password': user.password,
+                'password': user.password, 
+                'real password': password,
+                'real password hs': make_password(password),
+                'real password hs1': make_password(password),
+                
+                
                 'email': user.email,}, status=status.HTTP_401_UNAUTHORIZED)
  
     else:
