@@ -113,8 +113,9 @@ def send_password_email(request):
         if not isinstance(recipient_emails, list):
             return Response({'error': 'Invalid request format: "recipients" list expected'}, status=400)
 
+        successful_emails = []  # Track successfully sent emails for the response
+
         for recipient in recipient_emails:
-            # Extract and validate email, firstName, and lastName
             email = recipient.get('email')
             first_name = recipient.get('firstName')
             last_name = recipient.get('lastName')
@@ -122,35 +123,48 @@ def send_password_email(request):
             if not email or not first_name or not last_name:
                 return Response({'error': 'Missing required fields: email, firstName, lastName'}, status=400)
 
-            # Generate a unique password
+            # Generate a random password
             password = generate_password()
+
+            # Validate the generated password before using it
+            is_valid_password, password_error = validate_password(password)
+            if not is_valid_password:
+                return Response({'error': f'Generated password failed validation: {password_error}'}, status=400)
+
             hashed_password = make_password(password)  # Hash the password
 
-            # Create a new user account
-            user = Users.objects.create_user(
-                email=email,
-                password=hashed_password,
-                firstName=first_name,
-                lastName=last_name,
-                # Set other fields as needed
-            )
-            
+            # Check if user already exists (optional, depending on your logic)
             try:
+                user = Users.objects.get(email=email)
+            except Users.DoesNotExist:
+                user = None  # User doesn't exist yet
+
+            # Create a new user account if it doesn't exist (optional, depending on your logic)
+            if not user:
+                user = Users.objects.create_user(
+                    email=email,
+                    password=hashed_password,
+                    firstName=first_name,
+                    lastName=last_name,
+                    # Set other fields as needed
+                )
+            try:
+                # Send the email regardless of user creation (informational)
                 send_mail(
                     'Your New Password',
                     f'Your new password is: {password}',
                     'sender@example.com',
-                    [recipient_emails],  # Use the individual recipient email
+                    [email],  # Use the individual email address
                     fail_silently=False,
                 )
+                successful_emails.append(email)
             except Exception as e:
                 # Handle potential errors (e.g., sending failure)
-                return Response({'error': f'Failed to send email to {recipient_emails}: {e}'}, status=500)
+                return Response({'error': f'Failed to send email to {email}: {e}'}, status=500)
 
-        return Response({'message': 'Password email(s) sent successfully!', 'password': password})
-
-
-
+        # Return a success message with details on sent emails
+        message = f'Password email(s) sent successfully to: {", ".join(successful_emails)}'
+        return Response({'message': message}, status=200)
 
 def generate_password(length=10):
     # Define sets of characters to choose from
@@ -160,19 +174,20 @@ def generate_password(length=10):
     special_characters = string.punctuation
 
     # Ensure at least one character from each category
-    password_characters = [
+    guaranteed_characters = [
         random.choice(lowercase_letters),
         random.choice(uppercase_letters),
         random.choice(digits),
-        random.choice(special_characters)
+        random.choice(special_characters),
     ]
 
-    # Generate the remaining characters randomly
-    remaining_length = length - len(password_characters)
-    password_characters.extend(random.choices(
-        lowercase_letters + uppercase_letters + digits + special_characters,
-        k=remaining_length
-    ))
+    # Calculate the remaining length for lowercase letters
+    remaining_length = length - len(guaranteed_characters)
+
+    # Generate the remaining characters with a preference for lowercase letters
+    password_characters = guaranteed_characters + random.choices(
+        lowercase_letters, k=remaining_length, weights=[1] * len(lowercase_letters)  # Use a weight of 1 for each lowercase letter
+    )
 
     # Shuffle the characters to ensure randomness
     random.shuffle(password_characters)
@@ -201,7 +216,6 @@ def register_user(request):
             return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
  
-@authentication_classes([JWTAuthentication])
 @api_view(['POST'])
 def login(request):
     if request.method == 'POST':
@@ -233,11 +247,15 @@ def login(request):
             })
         else:
             # Passwords don't match, login failed
-            return Response({'error': 'Invalid details'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'error': 'Invalid details',
+                'userId': user.userId,
+                'password': user.password,
+                'email': user.email,}, status=status.HTTP_401_UNAUTHORIZED)
  
     else:
         # Handle other HTTP methods
         return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 def events(request):
     events = Event.objects.all()
     # Serialize all objects
