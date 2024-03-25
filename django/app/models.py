@@ -78,22 +78,6 @@ class VenueDetails(models.Model):
     class Meta:
         db_table = 'VenueDetails'
  
- 
-#class Event(models.Model):
-#    idevent = models.AutoField(primary_key=True)
-#    hostID = models.IntegerField(null=True)
-#    eventType = models.CharField(max_length=255)
-#    venueDetailsID = models.ForeignKey(VenueDetails, on_delete=models.CASCADE, null=True)
-#    time = models.TimeField()
-#    date = models.DateField()
-#    respondByDate = models.DateField(default=timezone.now() + timezone.timedelta(days=30))
- 
-#    def __str__(self):
-#        return f"Event ID: {self.idevent}, Host ID: {self.hostID}, Event Type: {self.eventType}, Venue Details ID: {self.venueDetailsID}, Time: {self.time}, Date: {self.date}"
- 
-#    class Meta:
-#        db_table = 'event'
- 
 class Event(models.Model):
     idevent = models.AutoField(primary_key=True)
     hostID = models.IntegerField(null=True)
@@ -109,7 +93,34 @@ class Event(models.Model):
     class Meta:
         db_table = 'event'
  
+# class Event(models.Model):
+#     """Model for events"""
+#     id = models.AutoField(primary_key=True)
+#     host_user = models.ForeignKey("User", on_delete=models.CASCADE)
+#     venue_1 = models.ForeignKey("Venue", on_delete=models.CASCADE)
+#     venue_2 = models.ForeignKey("Venue", on_delete=models.CASCADE, null=True)
+#     venue_3 = models.ForeignKey("Venue", on_delete=models.CASCADE, null=True)
+#     event_type = models.CharField(max_length=255)
+#     venue_time_1 = models.TimeField()
+#     venue_time_2 = models.TimeField(null=True)
+#     venue_time_3 = models.TimeField(null=True)
+#     date = models.DateField()
+#     respond_by_date = models.DateField()
+#     wedding_type = models.ForeignKey("WeddingType", on_delete=models.CASCADE)
+#     venue_details_id = models.ForeignKey("Venue", on_delete=models.CASCADE)
+    
+# class GuestRsvp(models.Model):
+#     """Model for guest RSVPs to events"""
+#     id = models.AutoField(primary_key=True)
+#     guest = models.ForeignKey("User", on_delete=models.CASCADE)
+#     event = models.ForeignKey("Event", on_delete=models.CASCADE)
+#     is_attending = models.BooleanField(default=False)
+#     is_emailed = models.BooleanField(default=False)
+#     table = models.ForeignKey("Table", on_delete=models.CASCADE, null=True)
  
+#     def __str__(self):
+#         return f"Guest: {self.guest}, Event: {self.event}, Is Attending: {self.is_attending}, Table: {self.table}"
+        
 class Guest(models.Model):
     guestId = models.AutoField(primary_key=True)
     eventId = models.IntegerField(null=True)
