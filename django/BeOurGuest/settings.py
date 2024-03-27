@@ -155,6 +155,17 @@ DATABASES = {
     }
 }
 
+
+""" DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'beourguest4',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306',  # MySQL default port
+    }
+} """
 # Set DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #AUTHENTICATION_BACKENDS = [    'django.contrib.auth.backends.ModelBackend',]

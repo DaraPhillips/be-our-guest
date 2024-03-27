@@ -39,7 +39,8 @@ class User(AbstractBaseUser):
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
+        return str(self.email)  # Fix: Return a string representation of the email
+
 
 
 class County(models.Model):
@@ -96,6 +97,7 @@ class Table(models.Model):
 
 class Event(models.Model):
     """Model for events"""
+    """     host_user = models.ForeignKey(User, on_delete=models.CASCADE) """
     id = models.AutoField(primary_key=True)
     host_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     venue_1 = models.ForeignKey(Venue, related_name='venue_1', on_delete=models.CASCADE)
