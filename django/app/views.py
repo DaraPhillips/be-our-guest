@@ -2,37 +2,43 @@
 Definition of views.
 """
 from contextvars import Token
-from datetime import datetime, date
-from django.shortcuts import render
 from django.http import HttpRequest
 from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.renderers import JSONRenderer
-from django.http import JsonResponse
-from .models import Countries, Event, Guest,VenueDetails
-from .serializers import CountriesSerializer, EventSerializer, EventUpdateSerializer, MyTokenObtainPairSerializer, VenueDetailsSerializer
-from .models import Users
-from .serializers import UsersSerializer
-from rest_framework import viewsets
+from .models import County, Event, GuestRsvp, Table, User, Venue, VenueType, WeddingType, Chat, ChatMessage, Member
+from .models import User
+from .serializers import CountySerializer, EventSerializer, GuestRsvpSerializer, TableSerializer, UserSerializer, VenueSerializer, VenueTypeSerializer, WeddingTypeSerializer, ChatSerializer, ChatMessageSerializer, MemberSerializer, MyTokenObtainPairSerializer,EventUpdateSerializer
 from rest_framework.response import Response
-from rest_framework.decorators import action, api_view
+
 from django.contrib.auth import authenticate
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 from django.contrib.auth.hashers import BCryptSHA256PasswordHasher  #password hasher (sn)
-from django.contrib.auth.hashers import check_password, make_password #sn for login validation 
-from django.views.decorators.csrf import csrf_exempt #sn for the create event api call
-from django.contrib.auth.hashers import make_password
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_jwt.settings import api_settings
-from rest_framework_simplejwt.tokens import RefreshToken
 from django.shortcuts import get_object_or_404
- 
+
+
+from .models import User
+
+
+
+from datetime import datetime, date
 import re
 import logging
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.contrib.auth.hashers import make_password, check_password
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import get_user_model
+from rest_framework import viewsets, status
+from rest_framework.decorators import action, api_view, permission_classes, authentication_classes
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.tokens import RefreshToken
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
+UserModel = get_user_model()
 
 class UsersViewSet(viewsets.ViewSet):
     """
@@ -42,8 +48,8 @@ class UsersViewSet(viewsets.ViewSet):
         """
         Return a list of all users.
         """
-        queryset = users.objects.all()
-        serializer = UsersSerializer(queryset, many=True)
+        queryset = User.objects.all()
+        serializer = UserSerializer(queryset, many=True)
         return Response(serializer.data)
 class EventViewSet(viewsets.ViewSet):
     """
@@ -56,24 +62,19 @@ class EventViewSet(viewsets.ViewSet):
         queryset = Event.objects.all()
         serializer = EventSerializer(queryset, many=True)
         return Response(serializer.data)
-def guests(request):
-    guests = Guest.objects.all()
-    # Serialize all objects
-    serializer = GuestSerializer(guests, many=True)
-    # Return serialized data as JSON response
-    return JsonResponse(serializer.data, safe=False)
+
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def get_users(request):
-    users = users.objects.all()
-    serializer = UsersSerializer(users, many=True)
+    users = UserModel.objects.all()
+    serializer = UserSerializer(users, many=True)
     return JsonResponse(serializer.data, safe=False)
  
 @api_view(['POST'])
 def register_user(request):
     if request.method == 'POST':
-        serializer = UsersSerializer(data=request.data)
+        serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             # Retrieve the password from the serializer data
             password = serializer.validated_data['password']
@@ -104,8 +105,8 @@ def login(request):
  
         try:
             # Retrieve the user from the database or return a 404 if not found
-            user = Users.objects.get(email=email)
-        except Users.DoesNotExist:
+            user = UserModel.objects.get(email=email)
+        except UserModel.DoesNotExist:
             return Response({'error': 'User with this email does not exist'}, status=status.HTTP_404_NOT_FOUND)
  
         # Check if the provided password matches the hashed password in the database
@@ -134,95 +135,6 @@ def events(request):
     serializer = EventSerializer(events, many=True)
     # Return serialized data as JSON response
     return JsonResponse(serializer.data, safe=False)
-
-
-##this function should have date time formating and have business rules for the date 
-##the rules should be the respond has to come before the date of event and the event cannot be made in the past or today 
-##this function doesnt extract the host id from the token 
-#@api_view(['POST'])
-#@authentication_classes([JWTAuthentication])
-#@permission_classes([IsAuthenticated])
-#def create_event(request):
-#    logger = logging.getLogger(__name__)
- 
-#    logger.info('Received request to create event')
- 
-#    if request.method == 'POST':
-#        logger.debug('Extracting data from request...')
-#        # Extract data from request
-#        event_data = request.data.get('event')
- 
-#        # Check if 'time' and 'date' fields are present
-#        if 'time' not in event_data or 'date' not in event_data:
-#            logger.error('Time and date fields are required')
-#            return Response({'error': 'Time and date fields are required'}, status=status.HTTP_400_BAD_REQUEST)
- 
-#        # Validate time and date formats
-#        time_format = '%H:%M:%S'
-#        date_format = '%Y-%m-%d'
-#        time_str = event_data['time']
- 
-#        # Add seconds if not provided
-#        if len(time_str.split(':')) == 2:
-#            time_str += ':00'
- 
-#        date_str = event_data['date']
-#        if not time_str.strip() or not date_str.strip():
-#            logger.error('Time and date fields cannot be empty')
-#            return Response({'error': 'Time and date fields cannot be empty'}, status=status.HTTP_400_BAD_REQUEST)
- 
-#        try:
-#            datetime.strptime(time_str, time_format)
-#            event_data['time'] = datetime.strptime(time_str, time_format).time()
-#            event_date = datetime.strptime(date_str, date_format).date()
-#        except ValueError as e:
-#            logger.error(f'Invalid time or date format: {e}')
-#            return Response({'error': 'Invalid time or date format'}, status=status.HTTP_400_BAD_REQUEST)
- 
-#        # Ensure date is not today or in the past
-#        if event_date <= date.today():
-#            logger.error('Event date must be in the future')
-#            return Response({'error': 'Event date must be in the future'}, status=status.HTTP_400_BAD_REQUEST)
- 
-#        # Check if respondByDate comes after the date
-#        respond_by_date_str = event_data.get('respondByDate')
-#        if respond_by_date_str:
-#            try:
-#                respond_by_date = datetime.strptime(respond_by_date_str, date_format).date()
-#                if respond_by_date > event_date:
-#                    logger.error('Respond by date cannot come after the event date')
-#                    return Response({'error': 'Respond by date cannot come after the event date'}, status=status.HTTP_400_BAD_REQUEST)
-#            except ValueError as e:
-#                logger.error(f'Invalid respond by date format: {e}')
-#                return Response({'error': 'Invalid respond by date format'}, status=status.HTTP_400_BAD_REQUEST)
- 
-#        # Get venueDetailsID and hostID from request data
-#        venue_details_id = event_data.pop('venue', None)
-#        host_id = event_data.pop('host_id', None)
- 
-#        # Add venueDetailsID and hostID to event_data dictionary
-#        event_data['venueDetailsID'] = venue_details_id
-#        event_data['hostID'] = host_id
- 
-#        logger.debug('Creating event instance...')
-#        # Create event instance
-#        event_serializer = EventSerializer(data=event_data)
-#        if event_serializer.is_valid():
-#            # Save event instance
-#            event_instance = event_serializer.save()
- 
-#            logger.info('Event created successfully')
-#            return Response({
-#                'message': 'Event created successfully',
-#                'event_id': event_instance.pk,
-#            }, status=status.HTTP_201_CREATED)
-#        else:
-#            logger.error(f'Error creating event: {event_serializer.errors}')
-#            return Response({'error': 'Error creating event', 'errors': event_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
- 
-#    else:
-#        logger.warning('Method not allowed')
-#        return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -303,17 +215,17 @@ def update_event(request, event_id):
     except Event.DoesNotExist:
         return Response({'error': 'Event not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    if event.hostID != request.user.id:
+    if event.host_user != request.user.id:
         return Response({'error': 'You are not allowed to edit this event'}, status=status.HTTP_403_FORBIDDEN)
 
     venue_name = request.data.get('venue')
     if venue_name:
         try:
-            venue_details = VenueDetails.objects.get(name=venue_name)
-        except VenueDetails.DoesNotExist:
+            venue_details = Venue.objects.get(name=venue_name)
+        except Venue.DoesNotExist:
             return Response({'error': 'Venue details not found'}, status=status.HTTP_400_BAD_REQUEST)
         # Update event with new venue details
-        event.venueDetailsID = venue_details
+        event.venue = venue_details
 
     if request.method == 'PUT':
         serializer = EventUpdateSerializer(event, data=request.data)
@@ -341,18 +253,18 @@ def events(request):
  
 
  
-
+""" 
 @api_view(['GET'])
 def get_countries(request):
-    countries = Countries.objects.all()
+    countries = County.objects.all()
     serializer = CountriesSerializer(countries, many=True)
-    return JsonResponse(serializer.data, safe=False)
+    return JsonResponse(serializer.data, safe=False) """
  
  
 @api_view(['GET'])
 def get_venues(request):
-    venues = VenueDetails.objects.all()
-    serializer = VenueDetailsSerializer(venues, many=True)
+    venues = Venue.objects.all()
+    serializer = VenueSerializer(venues, many=True)
     return JsonResponse(serializer.data, safe=False)
  
  
@@ -411,8 +323,8 @@ def validate_password(password):
 
 @api_view(['GET'])
 def get_venues_by_country(request, country_id):
-    venues = VenueDetails.objects.filter(countriesId=country_id)
-    serializer = VenueDetailsSerializer(venues, many=True)
+    venues = Venue.objects.filter(countriesId=country_id)
+    serializer = VenueSerializer(venues, many=True)
     return JsonResponse(serializer.data, safe=False)
 
 

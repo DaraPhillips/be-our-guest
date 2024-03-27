@@ -11,10 +11,13 @@ from datetime import timedelta
 import os
 from pickle import FALSE
 import posixpath
+from pathlib import Path
+from django.conf import settings
 
 import logging
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -140,22 +143,24 @@ from rest_framework_simplejwt.settings import api_settings
 #api_settings.JWT_PAYLOAD_HANDLER = 'your_module.custom_jwt_payload_handler'
 
 WSGI_APPLICATION = 'BeOurGuest.wsgi.application'
+
+
 # Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'beourguest2',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Set DEFAULT_AUTO_FIELD
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #AUTHENTICATION_BACKENDS = [    'django.contrib.auth.backends.ModelBackend',]
 
 AUTHENTICATION_BACKENDS = ['app.authBackend.EmailBackend']
-AUTH_USER_MODEL = 'app.Users'
+AUTH_USER_MODEL = 'app.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -193,7 +198,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+""" STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static'])) """
+STATIC_ROOT = BASE_DIR / 'static'
 
 
 # Logging configuration

@@ -1,37 +1,85 @@
 from rest_framework import serializers
-from .models import Countries, Event, Guest, VenueDetails, Users
+from .models import County, Event, GuestRsvp, Table, User, Venue, VenueType, WeddingType, Chat, ChatMessage, Member
 from rest_framework_simplejwt.tokens import Token
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-class UsersSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Users
-        fields = ['userId', 'email', 'password', 'firstName', 'lastName', 'userImage', 'loginEnabled', 'last_login']
- 
-class VenueDetailsSerializer(serializers.ModelSerializer):
-    countriesId = serializers.PrimaryKeyRelatedField(queryset=Countries.objects.all())  # Keep consistent with model field name
 
+class CountySerializer(serializers.ModelSerializer):
     class Meta:
-        model = VenueDetails
-        fields = ['countriesId','venueDetailsID',  'name', 'address1', 'address2', 'address3', 'zipcode']
- 
+        model = County
+        fields = '__all__'
+
+
 class EventSerializer(serializers.ModelSerializer):
-    venue_details = VenueDetailsSerializer(source='venueDetailsID', read_only=True)  # Nested serializer for VenueDetails
-    
     class Meta:
         model = Event
-        fields = ['idevent', 'hostID', 'eventType', 'venueDetailsID', 'venue_details', 'time', 'date', 'respondByDate']
-    def create(self, validated_data):
-        # Assuming hostID is set automatically in the backend
-        return Event.objects.create(**validated_data)
-        
-class CountriesSerializer(serializers.ModelSerializer):
+        fields = '__all__'
+
+
+class GuestRsvpSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Countries
-        fields = ['countriesId', 'countryName']
- 
+        model = GuestRsvp
+        fields = '__all__'
+
+
+class TableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Table
+        fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+
+class VenueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Venue
+        fields = '__all__'
+
+
+class VenueTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VenueType
+        fields = '__all__'
+
+
+class WeddingTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WeddingType
+        fields = '__all__'
+
+
+class ChatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chat
+        fields = '__all__'
+
+
+class ChatMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatMessage
+        fields = '__all__'
+
+
+class MemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = '__all__'
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        # Add custom claims here if needed
+        return token
+
+
 class EventUpdateSerializer(serializers.ModelSerializer):
-    venueDetailsID = serializers.PrimaryKeyRelatedField(queryset=VenueDetails.objects.all())
+    venueDetailsID = serializers.PrimaryKeyRelatedField(queryset=Venue.objects.all())
     venue = serializers.CharField(max_length=255, source='venueDetailsID.name')
     address1 = serializers.CharField(max_length=255, source='venueDetailsID.address1')
     address2 = serializers.CharField(max_length=255, source='venueDetailsID.address2')
@@ -41,15 +89,3 @@ class EventUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ['eventType', 'venue', 'address1', 'address2', 'address3', 'zip', 'time', 'date', 'respondByDate']
-       
- 
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
- 
-        # Add custom claims
-        token['userId'] = user.userId
-        # Add other custom claims as needed
- 
-        return token
