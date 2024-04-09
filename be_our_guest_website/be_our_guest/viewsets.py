@@ -12,6 +12,8 @@ class UsersViewSet(viewsets.ViewSet):
     """
     API endpoint for interacting with users.
     """
+    queryset = User.objects.all()
+    serializer = UserSerializer(queryset, many=True)
 
     def list(self, _):
         """

@@ -19,6 +19,24 @@ from .models import (
 )
 
 
+class ChatMemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatMember
+        fields = "__all__"
+
+
+class ChatMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChatMessage
+        fields = "__all__"
+
+
+class ChatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chat
+        fields = "__all__"
+
+
 class CountySerializer(serializers.ModelSerializer):
     class Meta:
         model = County
@@ -31,10 +49,49 @@ class EventSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class EventUpdateSerializer(serializers.ModelSerializer):
+    venueDetailsID = serializers.PrimaryKeyRelatedField(queryset=Venue.objects.all())
+    venue = serializers.CharField(max_length=255, source="venueDetailsID.name")
+    address1 = serializers.CharField(max_length=255, source="venueDetailsID.address1")
+    address2 = serializers.CharField(max_length=255, source="venueDetailsID.address2")
+    address3 = serializers.CharField(max_length=255, source="venueDetailsID.address3")
+    zip = serializers.CharField(max_length=20, source="venueDetailsID.zipcode")
+
+    class Meta:
+        model = Event
+        fields = [
+            "eventType",
+            "venue",
+            "address1",
+            "address2",
+            "address3",
+            "zip",
+            "time",
+            "date",
+            "respondByDate",
+        ]
+
+
 class GuestRsvpSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventInvitation
         fields = "__all__"
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    """Token serializer for the User model."""
+
+    @classmethod
+    def get_token(cls, user):
+        """_summary_
+
+        Args:
+            user (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        return super().get_token(user)
 
 
 class TableSerializer(serializers.ModelSerializer):
@@ -68,61 +125,5 @@ class VenueTypeSerializer(serializers.ModelSerializer):
 class WeddingTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = WeddingType
-        fields = "__all__"
-
-
-class ChatSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Chat
-        fields = "__all__"
-
-
-class ChatMessageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ChatMessage
-        fields = "__all__"
-
-
-class ChatMemberSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ChatMember
-        fields = "__all__"
-
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    """Token serializer for the User model."""
-
-    @classmethod
-    def get_token(cls, user):
-        """_summary_
-
-        Args:
-            user (_type_): _description_
-
-        Returns:
-            _type_: _description_
-        """
-        return super().get_token(user)
-
-
-class EventUpdateSerializer(serializers.ModelSerializer):
-    venueDetailsID = serializers.PrimaryKeyRelatedField(queryset=Venue.objects.all())
-    venue = serializers.CharField(max_length=255, source="venueDetailsID.name")
-    address1 = serializers.CharField(max_length=255, source="venueDetailsID.address1")
-    address2 = serializers.CharField(max_length=255, source="venueDetailsID.address2")
-    address3 = serializers.CharField(max_length=255, source="venueDetailsID.address3")
-    zip = serializers.CharField(max_length=20, source="venueDetailsID.zipcode")
-
-    class Meta:
-        model = Event
-        fields = [
-            "eventType",
-            "venue",
-            "address1",
-            "address2",
-            "address3",
-            "zip",
-            "time",
-            "date",
-            "respondByDate",
-        ]
+        fields = "__all__" 
+        
