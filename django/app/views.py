@@ -155,7 +155,7 @@ def send_password_email(request):
                 send_mail(
                     'Your New Password',
                     f'Your new password is: "{password}"',
-                    'sender@example.com',
+                    'beourguest48@gmail.com',
                     [email],  # Use the individual email address
                     fail_silently=False,
                 )
