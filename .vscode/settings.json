@@ -1,5 +1,8 @@
 {
     "cSpell.words": [
-        "Ciaran"
+        "authtoken",
+        "Ciaran",
+        "simplejwt",
+        "viewsets"
     ]
 }
