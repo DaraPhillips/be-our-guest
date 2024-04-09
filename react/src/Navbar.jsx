@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UserInitial from './Pages/UserInitialCircle';
 import SvgBellIcon from './Icons/SvgBellIcon';
+import './Pages/navbar.css';
 
 const Navbar = () => {
   const location = useLocation();
@@ -49,12 +50,31 @@ const Navbar = () => {
 
       {/* Navigation Links */}
       {location.pathname !== '/dashboard' && (
-        <ul>
-          <li><Link to="/home">Home</Link></li>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/features">Features</Link></li>
-          <li><Link to="/gallery">Gallery</Link></li>
-        </ul>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">Navbar</a>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
       )}
 
       {/* Additional buttons for the dashboard navbar */}
@@ -78,7 +98,7 @@ const Navbar = () => {
             {buttonText}
           </button>
         ) : location.pathname !== '/dashboard' && (
-          <button className="loginBtn" onClick={handleButtonClick}>
+          <button className="btn btn-primary" onClick={handleButtonClick}>
             {buttonText}
           </button>
         )}
