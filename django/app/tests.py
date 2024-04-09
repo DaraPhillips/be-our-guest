@@ -7,7 +7,7 @@ import django
 from django.test import TestCase
 
 from django.contrib.auth.models import User
-from .models import Guest, Users, Event, Countries, VenueDetails
+from .models import Guest, User, Event, County, Venue
 from datetime import datetime, timedelta
 
 
@@ -47,7 +47,7 @@ class EventCreationTestCase(TestCase):
 
         # Create a test venue(needs to be changed to county)
         self.country = countries.objects.create(countryName='Test Country')
-        self.venue = VenueDetails.objects.create(name='Test Venue', address='123 Test St', zipcode='12345', countriesID=self.country)
+        self.venue = Venue.objects.create(name='Test Venue', address='123 Test St', zipcode='12345', countriesID=self.country)
 
     def test_create_event(self):
         # Test data
@@ -65,9 +65,9 @@ class EventCreationTestCase(TestCase):
 
         # Check if the event was created successfully
         self.assertIsNotNone(event)
-        self.assertEqual(event.hostID, self.user.id)
-        self.assertEqual(event.eventType, 'Wedding')
-        self.assertEqual(event.venueDetailsID, self.venue.id)
+        self.assertEqual(event.host_user, self.user.id)
+        self.assertEqual(event.event_type, 'Wedding')
+        self.assertEqual(event.venue, self.venue.id)
         self.assertEqual(str(event.time), '12:00:00')
         self.assertEqual(str(event.date), '2024-12-31')
         self.assertEqual(str(event.respondByDate), '2024-12-01')
@@ -78,8 +78,8 @@ class EventCreationTestCase(TestCase):
         self.user = User.objects.create(username='testuser')
 
         # Create a test venue(needs to be changed to country)
-        self.country = Countries.objects.create(countryName='Test Country')
-        self.venue = VenueDetails.objects.create(name='Test Venue', address='123 Test St', zipcode='12345', countriesID=self.country)
+        self.country = County.objects.create(countryName='Test Country')
+        self.venue = Venue.objects.create(name='Test Venue', address='123 Test St', zipcode='12345', countriesID=self.country)
 
     def test_create_event_in_past(self):
         # Test data for event in the past

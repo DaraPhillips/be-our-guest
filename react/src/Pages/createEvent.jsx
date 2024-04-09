@@ -453,6 +453,7 @@ export default function CreateEvent() {
 
             })
 
+
             .catch(error => {
 
                 console.error('Error fetching venues:', error);
@@ -579,9 +580,9 @@ export default function CreateEvent() {
     };
 
     if (eventCreated) {
- 
+
         return <Navigate to="./Pages/dashboard" />;
- 
+
     }
 
     return (
@@ -617,9 +618,9 @@ export default function CreateEvent() {
 
                                 <option key="" value="">Select Country</option>
 
-                                {countries.map(country => (
+                                {countries.map(county => (
 
-                                    <option key={country.countriesId} value={country.countriesId}>{country.countryName}</option>
+                                    <option key={county.id} value={county.id}>{county.name}</option>
 
                                 ))}
 
