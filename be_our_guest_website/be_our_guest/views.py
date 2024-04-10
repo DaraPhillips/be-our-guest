@@ -30,11 +30,14 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from rest_framework_jwt.settings import api_settings
 
-from .serializers import EventSerializer, VenueSerializer, UserSerializer, EventUpdateSerializer
-from .models import Event, Venue, User
+from .serializers import EventSerializer, MyTokenObtainPairSerializer, VenueSerializer, UserSerializer, EventUpdateSerializer
+from .models import Event, UserManager, Venue, User
 from jwt import decode, ExpiredSignatureError, InvalidTokenError
 from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
+
+from rest_framework.permissions import AllowAny
+from django.contrib.auth import authenticate
 
 
 
@@ -241,6 +244,7 @@ def generate_password(length=10):
     return password
 
 @api_view(["POST"])
+@permission_classes([AllowAny])  # Allow any user to register
 def register_user(request):
     if request.method == "POST":
         serializer = UserSerializer(data=request.data)
@@ -379,3 +383,109 @@ def validate_password(password):
     if not re.search("[!@#$%^&*()_+=\-[\]{};':\"|,.<>?]", password):
         return False, "Password must contain at least one special character."
     return True, None
+
+@api_view(["GET"])
+def get_venues_by_country(request, country_id):
+    venues = Venue.objects.filter(countriesId=country_id)
+    serializer = VenueSerializer(venues, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+
+@authentication_classes([JWTAuthentication])
+@permission_classes([AllowAny])  # Allow any user to register
+@api_view(["POST"])
+def login(request):
+    if request.method == "POST":
+        # Extract email and password from the request data
+        email = request.data.get("email")
+        password = request.data.get("password")
+
+        # Check if email and password are provided
+        if not email or not password:
+            return Response(
+                {"error": "Email and password are required"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            # Retrieve the user from the database or return a 404 if not found
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response(
+                {"error": "User with this email does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        # Check if the provided password matches the hashed password in the database
+        if check_password(password, user.password):
+            # Passwords match, generate JWT token
+            serializer = MyTokenObtainPairSerializer()
+            token = serializer.get_token(user)
+            # Return success response with JWT token
+            return Response(
+                {
+                    "message": "View Login successful",
+                    #"userId": user.id,
+                    "email": user.email,
+                    "token": str(token.access_token),  # Include JWT token in response
+                }
+            )
+        else:
+            # Passwords don't match, login failed
+            return Response(
+                {"error": "Invalid details"}, status=status.HTTP_401_UNAUTHORIZED
+            )
+
+    else:
+        # Handle other HTTP methods
+        return Response(
+            {"error": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED
+        )
+
+
+"""  
+@authentication_classes([])
+@permission_classes([AllowAny])
+@api_view(["POST"])
+def login(request):
+    if request.method == "POST":
+        # Extract email and password from the request data
+        email = request.data.get("email")
+        password = request.data.get("password")
+
+        # Check if email and password are provided
+        if not email or not password:
+            return Response(
+                {"error": "Email and password are required"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Authenticate the user
+        user = authenticate(email=email, password=password)
+
+        # Check if authentication was successful
+        if user:
+            # Generate JWT token
+            refresh = RefreshToken.for_user(user)
+            # Return success response with JWT token
+            return Response(
+                {
+                    "message": "Login successful",
+                    "userId": user.id,
+                    "email": user.email,
+                    "token": str(refresh.access_token),
+                },
+                status=status.HTTP_200_OK,
+            )
+        else:
+            # Authentication failed
+            return Response(
+                {"error": "Invalid email or password"},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+    else:
+        # Handle other HTTP methods
+        return Response(
+            {"error": "Method not allowed"},
+            status=status.HTTP_405_METHOD_NOT_ALLOWED,
+        ) """
