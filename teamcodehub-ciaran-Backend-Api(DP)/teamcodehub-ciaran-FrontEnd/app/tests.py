@@ -39,7 +39,8 @@ class ViewTest(TestCase):
         """Tests the about page."""
         response = self.client.get('/about')
         self.assertContains(response, 'About', 3, 200)
-      
+
+        
         
 class EventCreationTestCase(TestCase):
     def setUp(self):
@@ -142,8 +143,8 @@ class EventCreationTestCase(TestCase):
 
 class EventTestCase(TestCase):
     def test_different_locations(self):
-        location1 = "Location A"  
-        location2 = "Location B" 
+        location1 = "Location A"  # Example location for first event
+        location2 = "Location B"  # Example location for second event
         # Create two events with different locations
         event1 = Event.objects.create(location=location1)
         event2 = Event.objects.create(location=location2)
@@ -155,17 +156,17 @@ class EventTestCase(TestCase):
 
 class EventTestCase(TestCase):
     def test_same_start_time(self):
-        start_time = datetime(2024, 5, 15, 12, 0, 0)  
+        start_time = datetime(2024, 5, 15, 12, 0, 0)  # Example start time
         # Create an event with the start time
         Event.objects.create(start_time=start_time)
         # Attempt to create another event with the same start time
-        with self.assertRaises(Exception):  
+        with self.assertRaises(Exception):  # Adjust exception type as per your implementation
             Event.objects.create(start_time=start_time)
 
 class EventTestCase(TestCase):
     def test_different_start_times(self):
-        start_time1 = datetime(2024, 5, 15, 12, 0, 0)  
-        start_time2 = datetime(2024, 5, 16, 12, 0, 0)  
+        start_time1 = datetime(2024, 5, 15, 12, 0, 0)  # Example start time for first event
+        start_time2 = datetime(2024, 5, 16, 12, 0, 0)  # Example start time for second event
         # Create two events with different start times
         event1 = Event.objects.create(start_time=start_time1)
         event2 = Event.objects.create(start_time=start_time2)
@@ -173,6 +174,12 @@ class EventTestCase(TestCase):
         self.assertIsNotNone(event1)
         self.assertIsNotNone(event2)
 
+
+        # Create the event
+        event = Event.objects.create(**event_data)
+
+        # Check if the event was created successfully
+        self.assertIsNotNone(event)
 
     
 

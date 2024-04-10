@@ -58,8 +58,7 @@ class Countries(models.Model):
  
     class Meta:
         db_table = 'countries'
-
-
+ 
  
 class VenueDetails(models.Model):
     venueDetailsID = models.AutoField(primary_key=True)
