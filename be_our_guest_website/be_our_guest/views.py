@@ -126,7 +126,7 @@ def create_event(request):
         venue_details_id = event_data.pop("venue", None)
         # Retrieve host ID from authenticated user
         host_id = (
-            request.user.userId
+            request.user.id
         )  # Assuming the host ID is stored in the user object
         # Add venueDetailsID and hostID to event_data dictionary
         event_data["venueDetailsID"] = venue_details_id
@@ -194,7 +194,7 @@ def get_users(request):
             # Retrieve the user based on the user_id
             user = get_object_or_404(User, pk=user_id)
             # Serialize and return the user data
-            return Response({'id': user.userId, 'firstName': user.firstName, 'email': user.email})
+            return Response({'id': user.id, 'firstName': user.first_name, 'email': user.email})
         except jwt.ExpiredSignatureError:
             return Response({'error': 'Token has expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.InvalidTokenError:
@@ -202,7 +202,7 @@ def get_users(request):
     else:
         # If no token is provided, return all users
         users = User.objects.all()
-        data = [{'id': user.id, 'firstName': user.firstName, 'email': user.email} for user in users]
+        data = [{'id': user.id, 'firstName': user.first_name, 'email': user.email} for user in users]
         return Response(data)
  
 @api_view(["GET"])
@@ -397,11 +397,11 @@ def get_venues_by_country(request, country_id):
 def login(request):
     if request.method == "POST":
         # Extract email and password from the request data
-        email = request.data.get("email")
+        checkemail = request.data.get("email")
         password = request.data.get("password")
 
         # Check if email and password are provided
-        if not email or not password:
+        if not checkemail or not password:
             return Response(
                 {"error": "Email and password are required"},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -409,7 +409,9 @@ def login(request):
 
         try:
             # Retrieve the user from the database or return a 404 if not found
-            user = User.objects.get(email=email)
+            user = User.objects.get(email=checkemail)
+            logging.info(f"User id {user.id}")
+            logging.info(f"User first name {user.first_name}")
         except User.DoesNotExist:
             return Response(
                 {"error": "User with this email does not exist"},
@@ -425,7 +427,7 @@ def login(request):
             return Response(
                 {
                     "message": "View Login successful",
-                    #"userId": user.id,
+                    "Id": user.id,
                     "email": user.email,
                     "token": str(token.access_token),  # Include JWT token in response
                 }
@@ -443,49 +445,3 @@ def login(request):
         )
 
 
-"""  
-@authentication_classes([])
-@permission_classes([AllowAny])
-@api_view(["POST"])
-def login(request):
-    if request.method == "POST":
-        # Extract email and password from the request data
-        email = request.data.get("email")
-        password = request.data.get("password")
-
-        # Check if email and password are provided
-        if not email or not password:
-            return Response(
-                {"error": "Email and password are required"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        # Authenticate the user
-        user = authenticate(email=email, password=password)
-
-        # Check if authentication was successful
-        if user:
-            # Generate JWT token
-            refresh = RefreshToken.for_user(user)
-            # Return success response with JWT token
-            return Response(
-                {
-                    "message": "Login successful",
-                    "userId": user.id,
-                    "email": user.email,
-                    "token": str(refresh.access_token),
-                },
-                status=status.HTTP_200_OK,
-            )
-        else:
-            # Authentication failed
-            return Response(
-                {"error": "Invalid email or password"},
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
-    else:
-        # Handle other HTTP methods
-        return Response(
-            {"error": "Method not allowed"},
-            status=status.HTTP_405_METHOD_NOT_ALLOWED,
-        ) """
