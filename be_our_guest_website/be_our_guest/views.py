@@ -284,8 +284,8 @@ def send_password_email(request):
  
         for recipient in recipient_emails:
             email = recipient.get('email')
-            first_name = recipient.get('firstName')
-            last_name = recipient.get('lastName')
+            first_name = recipient.get('first_name')
+            last_name = recipient.get('last_name')
  
             if not email or not first_name or not last_name:
                 return Response({'error': 'Missing required fields: email, firstName, lastName'}, status=400)
