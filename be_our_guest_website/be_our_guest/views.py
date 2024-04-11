@@ -57,6 +57,7 @@ def index(_) -> HttpResponse:
 
 
 @api_view(["POST"])
+@authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def create_event(request):
     logger = logging.getLogger(__name__)
@@ -122,15 +123,31 @@ def create_event(request):
                     {"error": "Invalid respond by date format"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-        # Get venueDetailsID from request data
-        venue_details_id = event_data.pop("venue", None)
-        # Retrieve host ID from authenticated user
-        host_id = (
-            request.user.id
-        )  # Assuming the host ID is stored in the user object
-        # Add venueDetailsID and hostID to event_data dictionary
-        event_data["venueDetailsID"] = venue_details_id
-        event_data["hostID"] = host_id
+                event_data.setdefault("respondByDate", None)  # Set default for optional field
+
+        wedding_type_id = event_data.pop("weddingTypeID", None)
+        venue_1_id = event_data.pop("venue1ID", None)
+        venue_2_id = event_data.pop("venue2ID", None)
+        venue_3_id = event_data.pop("venue3ID", None)
+        venue_1_time = event_data.pop("venue1Time", None)
+        venue_2_time = event_data.pop("venue2Time", None)
+        venue_3_time = event_data.pop("venue3Time", None)
+    # at_table_id = event_data.pop("atTableID", None)
+
+        # Retrieve host ID from authenticated user (unchanged)
+        host_id = request.user.id
+
+        # Add all data to event_data dictionary
+        event_data["weddingType"] = wedding_type_id
+        event_data["venue_1"] = venue_1_id
+        event_data["venue_2"] = venue_2_id
+        event_data["venue_3"] = venue_3_id
+        event_data["venue_1_time"] = venue_1_time
+        event_data["venue_2_time"] = venue_2_time
+        event_data["venue_3_time"] = venue_3_time
+    # event_data["at_table"] = at_table_id
+        event_data["hostUser"] = host_id
+        
         logger.debug("Creating event instance...")
         # Create event instance
         event_serializer = EventSerializer(data=event_data)
@@ -157,6 +174,47 @@ def create_event(request):
             {"error": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED
         )
 
+@api_view(["PUT", "PATCH"])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def update_event(request, event_id):
+    try:
+        event = Event.objects.get(pk=event_id)
+    except Event.DoesNotExist:
+        return Response({"error": "Event not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    # Check user permission before proceeding
+    # if event.host_user != request.user.id:
+    #     return Response(
+    #         {"error": "You are not allowed to edit this event"},
+    #         status=status.HTTP_403_FORBIDDEN,
+    #     )
+
+    # Extract data from request (considering multiple fields)
+    serializer = EventUpdateSerializer(event, data=request.data, partial=True)
+    if serializer.is_valid():
+        # Access and update specific fields as needed
+        if "date" in request.data:
+            event.date = request.data["date"]
+        if "time" in request.data:
+            event.time = request.data["time"]
+
+        # Update venue if provided
+        venue_name = request.data.get("venue")
+        if venue_name:
+            try:
+                venue_details = Venue.objects.get(name=venue_name)
+                event.venue = venue_details
+            except Venue.DoesNotExist:
+                return Response(
+                    {"error": "Venue details not found"}, status=status.HTTP_400_BAD_REQUEST
+                )
+
+        # Save updated event instance
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 def dashboard(request):
     # Retrieve the event from the database (assuming you have a model named Event)
     event = (
@@ -174,8 +232,6 @@ def dashboard(request):
         # Handle case where there are no events
         return render(request, "app/dashboard.html", {"time_remaining": None})
 
-
-
 def events(request):
     events = Event.objects.all()
     # Serialize all objects
@@ -190,11 +246,11 @@ def get_users(request):
         try:
             # Decode the token to get the user_id
             decoded_token = jwt.decode(token, 'f1bd2a4b-eaff-48c7-a492-b32c0ed11766', algorithms=['HS256'])
-            user_id = decoded_token['userId']
+            user_id = decoded_token['id']
             # Retrieve the user based on the user_id
             user = get_object_or_404(User, pk=user_id)
             # Serialize and return the user data
-            return Response({'id': user.id, 'firstName': user.first_name, 'email': user.email})
+            return Response({'id': user.id, 'first_name': user.first_name, 'email': user.email})
         except jwt.ExpiredSignatureError:
             return Response({'error': 'Token has expired'}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.InvalidTokenError:
@@ -202,7 +258,7 @@ def get_users(request):
     else:
         # If no token is provided, return all users
         users = User.objects.all()
-        data = [{'id': user.id, 'firstName': user.first_name, 'email': user.email} for user in users]
+        data = [{'id': user.id, 'first_name': user.first_name, 'email': user.email} for user in users]
         return Response(data)
  
 @api_view(["GET"])
@@ -334,43 +390,6 @@ def send_password_email(request):
         message = f'Password email(s) sent successfully to: {", ".join(successful_emails)}'
         return Response({'message': message}, status=200)
  
-
-@api_view(["PUT", "PATCH"])
-@permission_classes([IsAuthenticated])
-def update_event(request, event_id):
-    try:
-        event = Event.objects.get(pk=event_id)
-    except Event.DoesNotExist:
-        return Response({"error": "Event not found"}, status=status.HTTP_404_NOT_FOUND)
-
-    if event.host_user != request.user.id:
-        return Response(
-            {"error": "You are not allowed to edit this event"},
-            status=status.HTTP_403_FORBIDDEN,
-        )
-
-    venue_name = request.data.get("venue")
-    if venue_name:
-        try:
-            venue_details = Venue.objects.get(name=venue_name)
-        except Venue.DoesNotExist:
-            return Response(
-                {"error": "Venue details not found"}, status=status.HTTP_400_BAD_REQUEST
-            )
-        # Update event with new venue details
-        event.venue = venue_details
-
-    if request.method == "PUT":
-        serializer = EventUpdateSerializer(event, data=request.data)
-    else:
-        serializer = EventUpdateSerializer(event, data=request.data, partial=True)
-
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 # Custom password validation function
 def validate_password(password):
     if len(password) < 8:
@@ -391,7 +410,7 @@ def get_venues_by_country(request, country_id):
 
 
 @authentication_classes([JWTAuthentication])
-@permission_classes([AllowAny])  # Allow any user to register
+@permission_classes([AllowAny])
 @api_view(["POST"])
 def login(request):
     if request.method == "POST":

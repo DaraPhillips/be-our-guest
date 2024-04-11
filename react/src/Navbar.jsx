@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UserInitial from './Pages/UserInitialCircle';
 import SvgBellIcon from './Icons/SvgBellIcon';
+import axios from 'axios'; // Import axios here
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [userInitial, setUserInitial] = useState(null);
 
   // State to track whether to display login button
   const [buttonText, setButtonText] = useState('Log in');
@@ -22,6 +24,35 @@ const Navbar = () => {
       setButtonText('Log in');
     }
   }, [location.pathname]);
+
+  const fetchUserInitial = async () => {
+    try {
+      const token = localStorage.getItem('jwtToken');
+  
+      let url = 'http://127.0.0.1:8000/users/';
+      if (token) {
+        url += `?token=${token}`;
+      }
+  
+      const response = await axios.get(url);
+      console.log('API response:', response); // Log the entire response object
+      const user = response.data;
+      console.log('Received users:', user); // Log the users data
+  
+      if (user) { // Check if user data exists
+        const { first_name } = user;
+        const initial = first_name.charAt(0).toUpperCase();
+        setUserInitial(initial);
+        console.log('User initial:', initial);
+      } else {
+        console.error('No user data found in response.');
+      }
+    } catch (error) {
+      console.error('Error fetching user initial:', error);
+    }
+  };
+  
+  fetchUserInitial();
 
   const handleButtonClick = () => {
     // Update the button text dynamically based on the current route
@@ -61,9 +92,10 @@ const Navbar = () => {
       {location.pathname === '/dashboard' && (
         <div className="dashboard-buttons">
           <button className="profileCircle" onClick={() => console.log('Profile button clicked')}>
-            {/* User's initial component */}
-            A
-          </button>
+          {userInitial || (
+            <span>?</span>  // Display "NA" for cases where user data is missing
+          )
+          }</button>
           <button className="notifications" onClick={() => console.log('Notifications button clicked')}>
             {/* Notifications icon or text */}
             <SvgBellIcon/>
