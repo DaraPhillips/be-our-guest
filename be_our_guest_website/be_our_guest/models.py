@@ -152,6 +152,7 @@ class User(AbstractUser):
     username = None  # Remove username field
     user_image = models.ImageField(upload_to="user_images/", blank=True, null=True)
 
+
     USERNAME_FIELD = "email"
 
     REQUIRED_FIELDS = []  # Remove email from required fields

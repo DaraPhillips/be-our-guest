@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,7 +41,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",  # This enables the Django REST Framework
     "rest_framework.authtoken",  # This enables the Django REST Framework authentication token
+      'corsheaders',
+        'drf_yasg',
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -50,9 +54,25 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
+SWAGGER_SETTINGS = {
+   'USE_SESSION_AUTH': False
+}
+
+STATIC_URL = '/static/'
+
 ROOT_URLCONF = "be_our_guest_website.urls"
+
+CORS_ALLOWED_ORIGINS = [
+    "http://192.168.56.1",
+    "http://127.0.0.1:3000",
+    'http://localhost:5175',
+    'http://localhost:5174',
+    'http://localhost:5173',
+]
+
 
 TEMPLATES = [
     {
@@ -102,6 +122,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'beourguest48@gmail.com'
+EMAIL_HOST_PASSWORD = 'dphq ogej ifej rccb'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -131,7 +157,59 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     # Use Django's standard `django.contrib.auth` permissions, or allow read-only access for unauthenticated users.
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+       # "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+        
+        "rest_framework.permissions.AllowAny"
     ],
     "PAGE_SIZE": 10,
 }
+
+
+
+SECRET_KEY = 'f1bd2a4b-eaff-48c7-a492-b32c0ed11766'
+# JWT settings
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=20),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": False,
+
+    "ALGORITHM": "HS256",
+    "VERIFYING_KEY": "",
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "JSON_ENCODER": None,
+    "JWK_URL": None,
+    "LEEWAY": 0,
+
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "id",
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+
+    "JTI_CLAIM": "jti",
+
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+
+    "TOKEN_OBTAIN_SERIALIZER": "my_app.serializers.MyTokenObtainPairSerializer",
+    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
+    "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
+    "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
+    "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
+}
+
+from rest_framework_simplejwt.settings import api_settings
+
+# Set the custom JWT payload handler in the JWT settings
+#api_settings.JWT_PAYLOAD_HANDLER = 'your_module.custom_jwt_payload_handler'
+
+
