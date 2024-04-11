@@ -65,6 +65,8 @@ urlpatterns = [
     path('register/', views.register_user, name='register'),
     path('login_with_validation/', login, name='login_with_validation'),
     path('venues/', get_venues, name='venues'),
+    path('send-password-email/', views.send_password_email, name='send_password_email'),  # Name for reverse URL lookup
+
 
     path('api/token/logout/', LogoutView.as_view(), name='token_logout'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
