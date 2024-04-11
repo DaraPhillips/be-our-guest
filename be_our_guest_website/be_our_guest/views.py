@@ -177,9 +177,12 @@ def create_event(request):
 @api_view(["PUT", "PATCH"])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
-def update_event(request, event_id):
+def update_event(request, user_id):
+    user = request.user  # Assuming user is retrieved from request
+
     try:
-        event = Event.objects.get(pk=event_id)
+    # Access events through the related manager 'events'
+        event = user.events.get(host_user_id=user.id)  # Filter by user's ID via 'host_user_id' field
     except Event.DoesNotExist:
         return Response({"error": "Event not found"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -215,6 +218,26 @@ def update_event(request, event_id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["DELETE"])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
+def delete_event(request, user_id):
+    
+    user = request.user  # Assuming user is retrieved from request
+
+    try:
+        event = user.events.get(pk=user_id)  # Assuming a related manager for events
+    except Event.DoesNotExist:
+        return Response({"error": "Event not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    # Optional: Permission check (e.g., only event owner can delete)
+    # if event.host_user_id != request.user.id:
+    #     return Response({"error": "You are not allowed to delete this event"}, status=status.HTTP_403_FORBIDDEN)
+
+    event.delete()
+    return Response({"message": "Event deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
 def dashboard(request):
     # Retrieve the event from the database (assuming you have a model named Event)
     event = (

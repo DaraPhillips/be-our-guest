@@ -57,7 +57,7 @@ class Event(models.Model):
 
     id = models.AutoField(primary_key=True)
     date = models.DateField()
-    host_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    host_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="events")  # Related manager name
     respond_by_date = models.DateField()
     venue_1 = models.ForeignKey(
         "Venue", related_name="venue_1", on_delete=models.CASCADE
