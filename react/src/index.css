@@ -21,20 +21,20 @@ body {
 }
 
 .navbar-logo {
-    width: 40%;
-    padding: 1.5rem;
+    width: 19%;
+    margin: 3.8em 5.1em 2em 2em;
 }
 
 .nav ul {
-  padding: 0;
-  margin-left: -34em;
-  list-style: none;
-  display: flex;
-  gap: 2rem;
-  font-family: "Roboto", sans-serif;
-  margin-top: 3em;
-  margin-right: -16em;
-}
+    padding: 0;
+    margin-left: -92em;
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    font-family: "Roboto", sans-serif;
+    margin-top: 3em;
+    margin-right: -16em;
+  }
 
 .nav li a {
     color: #02092d;

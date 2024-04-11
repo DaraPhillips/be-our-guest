@@ -11,9 +11,13 @@ from datetime import timedelta
 import os
 from pickle import FALSE
 import posixpath
+from pathlib import Path
+from django.conf import settings
+
 import logging
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -31,11 +35,12 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
-    'drf_yasg',
+        'corsheaders',
+        'drf_yasg',
 ]
 
 # Middleware framework
@@ -48,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+        'corsheaders.middleware.CorsMiddleware',
 ]
 
 SWAGGER_SETTINGS = {
@@ -58,15 +63,13 @@ STATIC_URL = '/static/'
 
 ROOT_URLCONF = 'BeOurGuest.urls'
 
-CORS_ORIGIN_ALLOW_ALL = True  # Set this to True to allow requests from all origins
-
-# CORS_ALLOWED_ORIGINS = [
-#     "http://192.168.56.1",
-#     "http://127.0.0.1:3000",
-#     'http://localhost:5175',
-#     'http://localhost:5174',
-#     'http://localhost:5173',
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "http://192.168.56.1",
+    "http://127.0.0.1:3000",
+    'http://localhost:5175',
+    'http://localhost:5174',
+    'http://localhost:5173',
+]
 
 # Template configuration 
 # https://docs.djangoproject.com/en/2.1/topics/templates/
@@ -88,13 +91,6 @@ TEMPLATES = [
     },
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'beourguest48@gmail.com'
-EMAIL_HOST_PASSWORD = 'dphq ogej ifej rccb'
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -104,7 +100,7 @@ REST_FRAMEWORK = {
 SECRET_KEY = 'f1bd2a4b-eaff-48c7-a492-b32c0ed11766'
 # JWT settings
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -142,26 +138,41 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
+from rest_framework_simplejwt.settings import api_settings
+
 # Set the custom JWT payload handler in the JWT settings
 #api_settings.JWT_PAYLOAD_HANDLER = 'your_module.custom_jwt_payload_handler'
 
 WSGI_APPLICATION = 'BeOurGuest.wsgi.application'
+
+
 # Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+
+""" DATABASES = {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'beourguest2',
+        'NAME': 'beourguest4',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '3306',  # MySQL default port
     }
-}
+} """
+# Set DEFAULT_AUTO_FIELD
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #AUTHENTICATION_BACKENDS = [    'django.contrib.auth.backends.ModelBackend',]
 
 AUTHENTICATION_BACKENDS = ['app.authBackend.EmailBackend']
-AUTH_USER_MODEL = 'app.Users'
+AUTH_USER_MODEL = 'app.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -171,22 +182,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# # Password validation
-# # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
-# AUTH_PASSWORD_VALIDATORS = [
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-#     },
-# ]
+# Password validation
+# https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
@@ -199,7 +210,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+""" STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static'])) """
+STATIC_ROOT = BASE_DIR / 'static'
 
 
 # Logging configuration
