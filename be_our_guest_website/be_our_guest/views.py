@@ -282,13 +282,15 @@ def send_password_email(request):
  
         successful_emails = []  # Track successfully sent emails for the response
 
+
         for recipient in recipient_emails:
             email = recipient.get('email')
-            first_name = recipient.get('first_name')
-            last_name = recipient.get('last_name')
+            first_name = recipient.get('firstName')
+            last_name = recipient.get('lastName')
 
             if not email or not first_name or not last_name:
                 return Response({'error': 'Missing required fields: email, firstName, lastName'}, status=400)
+
 
             # Generate a random password
             password = generate_password()
@@ -304,9 +306,10 @@ def send_password_email(request):
             user_data = {
                 'email': email,
                 'password': hashed_password,  
-                'first_name': first_name,
-                'last_name': last_name,
+                'firstName': first_name,
+                'lastName': last_name,
             }
+ 
            
             # Create a new user account using the serializer
             serializer = UserSerializer(data=user_data)
