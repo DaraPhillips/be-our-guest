@@ -281,15 +281,17 @@ def send_password_email(request):
             return Response({'error': 'Invalid request format: "recipients" list expected'}, status=400)
  
         successful_emails = []  # Track successfully sent emails for the response
- 
+
+
         for recipient in recipient_emails:
             email = recipient.get('email')
             first_name = recipient.get('firstName')
             last_name = recipient.get('lastName')
- 
+
             if not email or not first_name or not last_name:
                 return Response({'error': 'Missing required fields: email, firstName, lastName'}, status=400)
- 
+
+
             # Generate a random password
             password = generate_password()
  
@@ -303,12 +305,12 @@ def send_password_email(request):
             # Prepare user data with the generated password
             user_data = {
                 'email': email,
-                'password': hashed_password,  # Placeholder for hashed password
+                'password': hashed_password,  
                 'firstName': first_name,
                 'lastName': last_name,
             }
-           
  
+           
             # Create a new user account using the serializer
             serializer = UserSerializer(data=user_data)
             if serializer.is_valid():
