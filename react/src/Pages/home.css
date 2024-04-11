@@ -108,7 +108,7 @@ button {
 }
 
 button:hover {
-  background-color: #676B85;
+  background-color: #C4A468;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
   color: #fff;
   transform: translateY(0px);
@@ -120,10 +120,10 @@ button:active {
 
 .home-pageDiv {
   background-color: #D5D9E1;
-  width: 550px;
-  height: 562px;
+  width: 50%;
+  margin-left: 9.5em;
+  height: 566px;
   flex: 1;
-  margin-left: 11em;
   max-width: 616px;
 }
 
@@ -136,8 +136,10 @@ button:active {
   align-items: center; /* Center items vertically */
 }
 
+.carousel {width: ;}
+
 .slick-slider {
-  width: 50%; /* Adjust the width of the carousel */
+  width: 100%; /* Adjust the width of the carousel */
 }
 
 /* Responsive styles */
@@ -173,51 +175,13 @@ button:active {
   font-size: 1rem; /* Adjust the font size of the arrow buttons */
 }
 
-/* RSVP Container styles */
-.RsvpContainer {
-  background-color: #fff;
-  width: 1100px;
-  height: 550px;
-  margin: auto;
-}
+.carousel-1 {margin-top: 1em;}
 
-.rsvpH1 {font-family: "Vidaloka", "Roboto", sans-serif;
-  font-size: 48px;
-  margin-bottom: 0;
-  margin-left: 1em;
-  margin-top: 2em;
-}
-.rsvpImage {
-  width: 33%;
-  max-height: 250px;
-  margin-top: 3em;
-}
 
-.quoteContainer {
-width: 100%; 
-height: auto;  
-display:flex;
-justify-content: center; 
-align-items: center; 
-align-text:center;
-font-family: "Vidaloka" , "Roboto" , sans-serif;
-}
 
-.quoteTextbox {
-width: 1100px; 
-height: 550px; 
-background-color: #02092D; 
-color:#fff; 
-padding: 0em 11em;
-font-family: "Vidaloka" , "Roboto" , sans-serif;
-display:flex;
-justify-content: center; 
-align-items: center; 
-align-text:center;
-}
 
-.quoteH1 {font-family: "Vidaloka", "Roboto", sans-serif;}
-.apost1 {margin: 0em .2em .5em;}
 
-.apost2 {rotate: 180deg;
-  margin: 0em 0em .5em .2em;}
+
+
+
+
