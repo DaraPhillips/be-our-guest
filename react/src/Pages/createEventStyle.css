@@ -180,15 +180,10 @@ input:hover {
   outline: #C4A468;
 }
 
-
-
-
-
-hr {
-  border-top: 1.5px solid #FAFAFA;
-  margin-top: 7.2rem;
-  margin-bottom: 7.2rem;
-  
+  hr {
+    border-top: 1.5px solid #FAFAFA;
+    margin-top: 3.5em;
+    margin-bottom: 3.5em;
 }
 
 

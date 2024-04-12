@@ -7,22 +7,22 @@ import './createEventStyle.css';
 
 import axios from 'axios';
 
-import SvgCreate from '../Icons/SvgCreate';
+// import SvgCreate from '../Icons/SvgCreate';
 
-import SvgTime from '../Icons/SvgTime';
+// import SvgTime from '../Icons/SvgTime';
 
-import SvgBellIcon from '../Icons/SvgBellIcon';
+// import SvgBellIcon from '../Icons/SvgBellIcon';
 
-import SvgReset from '../Icons/SvgReset';
-import { SvgPin } from '../Icons/SvgPin';
-import { SvgCalendar } from '../Icons/SvgCalendar';
-import { SvgChurch } from '../Icons/SvgChurch';
+// import SvgReset from '../Icons/SvgReset';
+// import { SvgPin } from '../Icons/SvgPin';
+// import { SvgCalendar } from '../Icons/SvgCalendar';
+// import { SvgChurch } from '../Icons/SvgChurch';
 
 export default function CreateEvent() {
 
     const [eventData, setEventData] = useState({
 
-        country: '',
+        county: '',
 
         venue: '',
 
@@ -36,7 +36,7 @@ export default function CreateEvent() {
 
         respondByDate: '',
 
-        eventType: '2',
+        eventType: '',
 
         time: '',
 
@@ -46,28 +46,44 @@ export default function CreateEvent() {
 
     const [eventCreated, setEventCreated] = useState(false);
 
-    const [countries, setCountries] = useState([]);
+    const [counties, setCounty] = useState([]);
 
     const [venues, setVenues] = useState([]);
+
+    const [eventType, setEventType] = useState([]);
 
 
 
 
     useEffect(() => {
 
-        // Fetch countries from backend when component mounts
+        axios.get('http://127.0.0.1:8000/event_type/')
 
-        axios.get('http://127.0.0.1:8000/countries/')
+        .then(response => {
+
+            setEventType(response.data);
+
+        })
+
+        .catch(error => {
+
+            console.error('Error fetching event types:', error);
+
+        });
+
+        // Fetch counties from backend when component mounts
+
+        axios.get('http://127.0.0.1:8000/county/')
 
             .then(response => {
 
-                setCountries(response.data);
+                setCounty(response.data);
 
             })
 
             .catch(error => {
 
-                console.error('Error fetching countries:', error);
+                console.error('Error fetching counties:', error);
 
             });
 
@@ -224,24 +240,24 @@ export default function CreateEvent() {
                                         placeholder=" Enter Wedding Title"
                                         onChange={handleChange}
                                     />
-                                <div className="icon">
+                                {/* <div className="icon">
                                         <SvgPin />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 
 
                             <div className='details-group'>
-
-                                <select name="country" id="country-id" value={eventData.country} onChange={handleChange}>
+                                    {/* this is the event type dorpdown */}
+                                <select name="country" id="country-id" value={eventData.eventType} onChange={handleChange}>
 
                                     <option key="" value="">Event type</option>
 
-                                    {/* {countries.map(country => (
+                                     {eventType.map(eventType => (
 
-                                        <option key={country.countriesId} value={country.countriesId}>{country.countryName}</option>
+                                        <option key={eventType.id} value={eventType.id}>{eventType.name}</option>
 
-                                    ))} */}
+                                    ))}
 
                                 </select>
 
@@ -252,6 +268,48 @@ export default function CreateEvent() {
 
                             <label className="church-deets" htmlFor="church-details">Church details</label>
 
+                                                        
+                            {/* COUNTRY DETAILS */}
+                                      {/* county dropdown for church or civil  */}
+                            <label className="country-deets" htmlFor="country-details"></label>
+
+                            <div className='details-group'>
+
+                                <select name="country" id="country-id" value={eventData.county} onChange={handleChange}>
+
+                                    <option key="" value="">Select County</option>
+
+                                    {counties.map(county => (
+
+                                        <option key={county.id} value={county.id}>{county.name}</option>
+
+                                    ))}
+
+                                </select>
+
+                            </div>
+
+                            <div className='details-group'>
+                                      {/* venue dorpdown for church or civil  */}
+                                <select name="venue" id="venue-id" value={eventData.venue} onChange={handleVenueSelect}>
+
+                                    <option key="" value="">Select Venue</option>
+
+                                    {venues.map((venue) => (
+
+                                        <option key={venue.venueDetailsID} value={venue.venueDetailsID}>
+
+                                            {venue.name}
+
+                                        </option>
+
+                                    ))}
+
+                                </select>
+
+                            </div>
+
+
                             <div className='details-group'>
                             <div className="input-container">
                                 <input
@@ -261,9 +319,9 @@ export default function CreateEvent() {
                                     placeholder=" Name of church"
                                     onChange={handleChange}
                                 />
-                            <div className="icon">
+                            {/* <div className="icon">
                                         <SvgChurch />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                             <div className='details-group'>
@@ -276,9 +334,9 @@ export default function CreateEvent() {
                                         onChange={handleChange}
                                         
                                     />
-                                    <div className="icon">
+                                    {/* <div className="icon">
                                         <SvgPin />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 
@@ -291,9 +349,9 @@ export default function CreateEvent() {
                                         placeholder=" Address line 2"
                                         onChange={handleChange}
                                     />
-                                    <div className="icon">
+                                    {/* <div className="icon">
                                         <SvgPin />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                             <div className='details-group'>
@@ -305,9 +363,9 @@ export default function CreateEvent() {
                                         placeholder=" Address line 3"
                                         onChange={handleChange}
                                     />
-                                    <div className="icon">
+                                    {/* <div className="icon">
                                         <SvgPin />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                             <div className='details-group'>
@@ -320,9 +378,9 @@ export default function CreateEvent() {
                                         onChange={handleChange}
 
                                     />
-                                <div className="icon">
+                                {/* <div className="icon">
                                         <SvgPin />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 
@@ -367,13 +425,13 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
 
-                                <select name="country" id="country-id" value={eventData.country} onChange={handleChange}>
+                                <select name="country" id="country-id" value={eventData.county} onChange={handleChange}>
 
                                     <option key="" value="">Select County</option>
 
-                                    {countries.map(country => (
+                                    {counties.map(county => (
 
-                                        <option key={country.countriesId} value={country.countriesId}>{country.countryName}</option>
+                                        <option key={county.id} value={county.id}>{county.name}</option>
 
                                     ))}
 
@@ -422,9 +480,9 @@ export default function CreateEvent() {
                                     readOnly
 
                                 />
-                                <div className="icon">
+                                {/* <div className="icon">
                                         <SvgPin />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 
@@ -449,9 +507,9 @@ export default function CreateEvent() {
                                     readOnly
 
                                 />
-                                <div className="icon">
+                                {/* <div className="icon">
                                         <SvgPin />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 
@@ -476,9 +534,9 @@ export default function CreateEvent() {
                                     readOnly
 
                                 />
-                                <div className="icon">
+                                {/* <div className="icon">
                                         <SvgPin />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 
@@ -503,9 +561,9 @@ export default function CreateEvent() {
                                     readOnly
 
                                 />
-                                <div className="icon">
+                                {/* <div className="icon">
                                         <SvgPin />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 

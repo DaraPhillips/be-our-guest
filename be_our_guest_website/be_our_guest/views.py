@@ -30,8 +30,8 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from rest_framework_jwt.settings import api_settings
 
-from .serializers import EventSerializer, MyTokenObtainPairSerializer, VenueSerializer, UserSerializer, EventUpdateSerializer
-from .models import Event, UserManager, Venue, User
+from .serializers import ChatSerializer, ChatMessageSerializer, ChatMemberSerializer, CountySerializer, EventSerializer, EventUpdateSerializer,GuestRsvpSerializer,MyTokenObtainPairSerializer,TableSerializer,UserSerializer,VenueSerializer,VenueTypeSerializer,WeddingTypeSerializer
+from .models import Chat, ChatMember, ChatMessage, County, Event, EventInvitation,EventTable,User,UserManager,Venue,VenueType,WeddingType
 from jwt import decode, ExpiredSignatureError, InvalidTokenError
 from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
@@ -267,6 +267,17 @@ def get_venues(request):
     serializer = VenueSerializer(venues, many=True)
     return JsonResponse(serializer.data, safe=False)
 
+@api_view(["GET"])
+def get_event_type(request):
+    event_types = WeddingType.objects.all()
+    serializer = WeddingTypeSerializer(event_types, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+@api_view(["GET"])
+def get_county(request):
+    counties = County.objects.all()
+    serializer = CountySerializer(counties, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 
 def generate_password(length=10):
@@ -403,8 +414,8 @@ def validate_password(password):
     return True, None
 
 @api_view(["GET"])
-def get_venues_by_country(request, country_id):
-    venues = Venue.objects.filter(countriesId=country_id)
+def get_venues_by_county(request, id ):
+    venues = Venue.objects.filter(county_id=id)
     serializer = VenueSerializer(venues, many=True)
     return JsonResponse(serializer.data, safe=False)
 
