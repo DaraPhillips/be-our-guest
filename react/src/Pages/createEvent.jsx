@@ -8,16 +8,16 @@ import './createEventStyle.css';
 
 import axios from 'axios';
 
-// import SvgCreate from '../Icons/SvgCreate';
+import SvgCreate from '../Icons/SvgCreate';
 
-// import SvgTime from '../Icons/SvgTime';
+import SvgTime from '../Icons/SvgTime';
 
-// import SvgBellIcon from '../Icons/SvgBellIcon';
+import SvgBellIcon from '../Icons/SvgBellIcon';
 
-// import SvgReset from '../Icons/SvgReset';
-// import { SvgPin } from '../Icons/SvgPin';
-// import { SvgCalendar } from '../Icons/SvgCalendar';
-// import { SvgChurch } from '../Icons/SvgChurch';
+import SvgReset from '../Icons/SvgReset';
+import { SvgPin } from '../Icons/SvgPin';
+import { SvgCalendar } from '../Icons/SvgCalendar';
+import { SvgChurch } from '../Icons/SvgChurch';
 
 export default function CreateEvent() {
 

@@ -10,7 +10,7 @@
 
 .login-form::before {
   content: '';
-  position: absolute;
+  position: fixed; /* or absolute */
   top: 0;
   left: 0;
   width: 100%;
@@ -19,7 +19,6 @@
   opacity: 0.5;
   z-index: -1;
   background-size: cover;
-  padding-bottom: 10rem; 
 }
 
 .form-container {
@@ -79,7 +78,15 @@
   border-color: #C4A468;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
+<<<<<<< Updated upstream
 
+=======
+.signUp-form .input-group,
+.login-form .input-group
+{
+  width: 80%;
+}
+>>>>>>> Stashed changes
 .forgot {
   display: flex;
   justify-content: center;
@@ -105,9 +112,15 @@
 
 .sign {
   display: block;
+<<<<<<< Updated upstream
   width: 100%;
   background-color: #02092D(167, 139, 250, 1);
   padding: 0.75rem;
+=======
+  width: 80%;
+  background-color: #02092D;
+  padding: .2em;
+>>>>>>> Stashed changes
   text-align: center;
   color: rgb(255, 255, 255);
   border: none;
@@ -198,4 +211,269 @@
 }
   }
 
+<<<<<<< Updated upstream
   input:active {outline: #C4A468;}
+=======
+  input:active {outline: #C4A468;}
+
+  .Eye, .ClosedEye {
+    position: absolute;
+    top: 64%;
+    transform: translateY(-50%);
+    left: 21.8em;
+    width: 4em;
+  }
+
+
+  /*Media Queries*/
+  @media screen and (max-width: 1479px) {
+    .ClosedEye, .Eye {
+      margin-left: -1em;
+    }
+  }
+
+  @media screen and (max-width: 1439px) {
+    .ClosedEye, .Eye {
+      margin-left: -3em;
+    }
+    .forgot {width: 28em;}
+    
+  }
+
+  @media screen and (max-width: 1352px) {
+    .ClosedEye, .Eye {
+      margin-left: -6em;
+    }
+  }
+
+  @media screen and (max-width: 1255px) {
+    .ClosedEye, .Eye {
+      position: absolute;
+      top: 64%;
+      transform: translateY(-50%);
+      left: 23.2em;
+      width: 4em;
+    }
+    .forgot {
+      width: 24em;
+    }
+  }
+
+  @media screen and (max-width: 1159px) {
+    
+    .forgot {
+      width: 21em;
+  }
+  .input-group input {
+    font-size: 1em;
+  }
+
+  p.title {font-size: 2em;}
+  
+  .ClosedEye, .Eye {
+    position: absolute;
+    top: 64%;
+    transform: translateY(-50%);
+    left: 19em;
+    width: 4em;
+    height: 1.4em;
+    margin-left: -9.5em;
+  }
+
+  .pwIcon, .ConfirmIcon {
+    position: absolute;
+    top: 64%;
+    transform: translateY(-50%);
+    left: 5px;
+    width: 4em;
+    height: 1em;
+  }
+  #login-password, #login-email {
+    font-size: 1em;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+    
+  .forgot {
+    width: 21em;
+}
+.input-group input {
+  font-size: 1em;
+}
+
+p.title {font-size: 2em;}
+
+.ClosedEye, .Eye {
+  position: absolute;
+  top: 64%;
+  transform: translateY(-50%);
+  left: 19em;
+  width: 4em;
+  height: 1.4em;
+  margin-left: -11.5em;
+}
+
+.pwIcon, .ConfirmIcon {
+  position: absolute;
+  top: 64%;
+  transform: translateY(-50%);
+  left: 5px;
+  width: 4em;
+  height: 1em;
+}
+#login-password, #login-email {
+  font-size: 1em;
+}
+}
+
+@media screen and (max-width: 1046px) {
+    
+  .forgot {
+    width: 16em;
+}
+.input-group input {
+  font-size: 1em;
+}
+
+p.title {font-size: 2em;}
+
+.ClosedEye, .Eye {
+  position: absolute;
+  top: 64%;
+  transform: translateY(-50%);
+  left: 19em;
+  width: 4em;
+  height: 1.4em;
+  margin-left: -12.5em;
+}
+
+.pwIcon, .ConfirmIcon {
+  position: absolute;
+  top: 64%;
+  transform: translateY(-50%);
+  left: 5px;
+  width: 4em;
+  height: 1em;
+}
+#login-password, #login-email {
+  font-size: 1em;
+}
+}
+
+@media screen and (max-width: 860px) {
+    
+  .forgot a {
+    width: 10em;
+    margin-left:-13em ;
+}
+.input-group input {
+  font-size: 1em;
+}
+
+p.title {
+  font-size: 2em;
+    width: 4em;
+    text-align: center;
+    margin-left: -2.05em;
+    margin-top: 0em;
+  }
+
+#login-password, #login-email {
+  font-size: 1em;
+  margin-left: -9em;
+  width: 17em;
+}
+.ClosedEye, .Eye {
+  position: absolute;
+  top: 64%;
+  transform: translateY(-50%);
+  left: 19em;
+  width: 4em;
+  height: 1.4em;
+  margin-left: -18.5em;
+}
+
+p.error-message{
+  
+  font-size: .8em;
+  width: 18em;
+  margin-left: -6em;
+}
+#login-button {
+  width: 6em;
+  margin: 1em 0em 1em -3em;
+  font-size: 1.8em;
+  font-weight: 100;
+}
+
+#form {
+    padding: 2em 12em;
+  }
+
+.signup {
+  width: 22em;
+  margin-left: -11em;
+}
+
+.emailIcon, .pwIcon {margin-left: -9.5em;}
+
+}
+
+@media screen and (max-width: 414px) {
+    
+  .forgot a {
+    width: 10em;
+    margin-left:-13em ;
+}
+.input-group input {
+  font-size: 1em;
+}
+
+p.title {
+  font-size: 2em;
+    width: 4em;
+    text-align: center;
+    margin-left: -2.05em;
+    margin-top: 0em;
+  }
+
+#login-password, #login-email {
+  font-size: 1em;
+  margin-left: -9em;
+  width: 17em;
+}
+
+.Eye, .ClosedEye {
+  position: absolute;
+  top: 64%;
+  transform: translateY(-50%);
+  left: 13.8em;
+  width: 4em;
+}
+p.error-message{
+  
+  font-size: .8em;
+  width: 18em;
+  margin-left: -6em;
+}
+#login-button {
+  width: 6em;
+  margin: 1em 0em 1em -3em;
+  font-size: 1.8em;
+  font-weight: 100;
+}
+
+#form {
+    padding: 2em 12em;
+  }
+
+.signup {
+  width: 22em;
+  margin-left: -11em;
+}
+
+.emailIcon, .pwIcon {margin-left: -9.5em;}
+
+}
+>>>>>>> Stashed changes

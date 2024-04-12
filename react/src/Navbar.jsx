@@ -18,8 +18,8 @@ const Navbar = () => {
       setButtonText('Sign up');
     } else if (location.pathname === '/signUp') {
       setButtonText('Log in');
-    } else if (location.pathname === '/create_event') {
-      setButtonText('Dashboard');
+    } else if (location.pathname === '/createEvent' || location.pathname === '/addGuestList') {
+      setButtonText('Log out');
     } else {
       setButtonText('Log in');
     }
@@ -65,6 +65,10 @@ const Navbar = () => {
     } else if (location.pathname === '/create_event') {
       navigate('/dashboard');  // Navigate to '/dashboard' on 'createEvent' button click
       console.log('Custom dashboard button clicked');
+    } else if (location.pathname === '/my_event' || location.pathname === '/my_guest_list') {
+      localStorage.removeItem('jwtToken'); // Remove token on logout
+      navigate('/login');
+      console.log('Custom logout button clicked');
     } else {
       navigate('/login');
       console.log('Default login button clicked');
