@@ -1,11 +1,7 @@
 /* comment */
-/* comment */
 import React, { useState, useEffect } from 'react';
-
 import { Link, Navigate } from 'react-router-dom';
-
 import './createEventStyle.css';
-
 import axios from 'axios';
 
 // import SvgCreate from '../Icons/SvgCreate';
@@ -20,93 +16,59 @@ import axios from 'axios';
 // import { SvgChurch } from '../Icons/SvgChurch';
 
 export default function CreateEvent() {
-
     const [eventData, setEventData] = useState({
 
-        county: '',
+        country: '',
 
         venue: '',
-
         address1: '',
-
         address2: '',
-
         address3: '',
-
         zip: '',
-
         respondByDate: '',
 
-        eventType: '',
+        eventType: '2',
 
         time: '',
-
         date: ''
-
     });
 
     const [eventCreated, setEventCreated] = useState(false);
 
-    const [counties, setCounty] = useState([]);
+    const [countries, setCountries] = useState([]);
 
     const [venues, setVenues] = useState([]);
-
-    const [eventType, setEventType] = useState([]);
 
 
 
 
     useEffect(() => {
 
-        axios.get('http://127.0.0.1:8000/event_type/')
+        // Fetch countries from backend when component mounts
 
-        .then(response => {
-
-            setEventType(response.data);
-
-        })
-
-        .catch(error => {
-
-            console.error('Error fetching event types:', error);
-
-        });
-
-        // Fetch counties from backend when component mounts
-
-        axios.get('http://127.0.0.1:8000/county/')
+        axios.get('http://127.0.0.1:8000/countries/')
 
             .then(response => {
 
-                setCounty(response.data);
+                setCountries(response.data);
 
             })
-
             .catch(error => {
 
-                console.error('Error fetching counties:', error);
+                console.error('Error fetching countries:', error);
 
             });
-
-        // Fetch venues from backend when component mounts
 
         axios.get('http://127.0.0.1:8000/venues/')
-
             .then(response => {
-
-                console.log(response.data); // Add this line
-
+                console.log(response.data);
                 setVenues(response.data);
-
             })
 
             .catch(error => {
-
                 console.error('Error fetching venues:', error);
-
             });
-
-    }, []); // Empty dependency array to run only once on mount
+    }, []);
 
     useEffect(() => {
         if (eventData.country) {
@@ -120,22 +82,17 @@ export default function CreateEvent() {
         }
     }, [eventData.country]);
 
-   
-
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            // Retrieve authentication token from localStorage or wherever it's stored
             const token = localStorage.getItem('jwtToken');
-
-            // Send POST request to create event with authentication token included in headers
             const response = await axios.post(
                 'http://127.0.0.1:8000/create_event/',
                 { event: eventData },
                 {
                     headers: {
-                        Authorization: `Bearer ${token}` // Include the JWT token in the Authorization header
+                        Authorization: `Bearer ${token}`
                     }
                 }
             );
@@ -147,71 +104,44 @@ export default function CreateEvent() {
         }
     };
 
-
-    // Event handler for input changes
-
     const handleChange = (event) => {
-
         const { name, value } = event.target;
-
         setEventData(prevData => ({
-
             ...prevData,
-
             [name]: value
-
         }));
-
     };
 
     const handleVenueSelect = (event) => {
-
-        console.log("Venues:", venues); // Check if venues array is populated
-
-        console.log("Venue selected:", event.target.value); // Check if venueId is correct
-
-        const venueId = parseInt(event.target.value, 10); // Convert to number
-
+        console.log("Venues:", venues);
+        console.log("Venue selected:", event.target.value);
+        const venueId = parseInt(event.target.value, 10);
         const selectedVenue = venues.find(venue => venue.venueDetailsID === venueId);
-
-        console.log("Selected venue:", selectedVenue); // Check if selectedVenue is correct
+        console.log("Selected venue:", selectedVenue);
 
         if (selectedVenue) {
-
             setEventData(prevEventData => ({
-
                 ...prevEventData,
-
                 venue: selectedVenue.venueDetailsID,
-
                 address1: selectedVenue.address1,
-
                 address2: selectedVenue.address2,
-
                 address3: selectedVenue.address3,
-
                 zip: selectedVenue.zipcode,
-
             }));
-
         }
-
     };
 
     if (eventCreated) {
-
+ 
         return <Navigate to="./Pages/dashboard" />;
-
+ 
     }
 
     return (
-
         <div className='weddingDetails-page'>
-
             <div className='topyoke'>
-
-                <h3 className='home-tab-top-thingy'>Home / </h3> <h3 className='other-tab-at-top'>My Events</h3>
-
+                <Link to="/dashboard" className='home-tab-top-thingy'>Dashboard / </Link>
+                <h3 className='other-tab-at-top'>My Event</h3>
             </div>
 
             <div className='wedding-details-header'>
@@ -241,24 +171,24 @@ export default function CreateEvent() {
                                         placeholder=" Enter Wedding Title"
                                         onChange={handleChange}
                                     />
-                                {/* <div className="icon">
+                                <div className="icon">
                                         <SvgPin />
-                                    </div> */}
+                                    </div>
                                 </div>
                             </div>
 
 
                             <div className='details-group'>
-                                    {/* this is the event type dorpdown */}
-                                <select name="country" id="country-id" value={eventData.eventType} onChange={handleChange}>
+
+                                <select name="country" id="country-id" value={eventData.country} onChange={handleChange}>
 
                                     <option key="" value="">Event type</option>
 
-                                     {eventType.map(eventType => (
+                                    {/* {countries.map(country => (
 
-                                        <option key={eventType.id} value={eventType.id}>{eventType.name}</option>
+                                        <option key={country.countriesId} value={country.countriesId}>{country.countryName}</option>
 
-                                    ))}
+                                    ))} */}
 
                                 </select>
 
@@ -269,48 +199,6 @@ export default function CreateEvent() {
 
                             <label className="church-deets" htmlFor="church-details">Church details</label>
 
-                                                        
-                            {/* COUNTRY DETAILS */}
-                                      {/* county dropdown for church or civil  */}
-                            <label className="country-deets" htmlFor="country-details"></label>
-
-                            <div className='details-group'>
-
-                                <select name="country" id="country-id" value={eventData.county} onChange={handleChange}>
-
-                                    <option key="" value="">Select County</option>
-
-                                    {counties.map(county => (
-
-                                        <option key={county.id} value={county.id}>{county.name}</option>
-
-                                    ))}
-
-                                </select>
-
-                            </div>
-
-                            <div className='details-group'>
-                                      {/* venue dorpdown for church or civil  */}
-                                <select name="venue" id="venue-id" value={eventData.venue} onChange={handleVenueSelect}>
-
-                                    <option key="" value="">Select Venue</option>
-
-                                    {venues.map((venue) => (
-
-                                        <option key={venue.venueDetailsID} value={venue.venueDetailsID}>
-
-                                            {venue.name}
-
-                                        </option>
-
-                                    ))}
-
-                                </select>
-
-                            </div>
-
-
                             <div className='details-group'>
                             <div className="input-container">
                                 <input
@@ -320,9 +208,9 @@ export default function CreateEvent() {
                                     placeholder=" Name of church"
                                     onChange={handleChange}
                                 />
-                            {/* <div className="icon">
+                            <div className="icon">
                                         <SvgChurch />
-                                    </div> */}
+                                    </div>
                                 </div>
                             </div>
                             <div className='details-group'>
@@ -335,9 +223,9 @@ export default function CreateEvent() {
                                         onChange={handleChange}
                                         
                                     />
-                                    {/* <div className="icon">
+                                    <div className="icon">
                                         <SvgPin />
-                                    </div> */}
+                                    </div>
                                 </div>
                             </div>
 
@@ -350,9 +238,9 @@ export default function CreateEvent() {
                                         placeholder=" Address line 2"
                                         onChange={handleChange}
                                     />
-                                    {/* <div className="icon">
+                                    <div className="icon">
                                         <SvgPin />
-                                    </div> */}
+                                    </div>
                                 </div>
                             </div>
                             <div className='details-group'>
@@ -364,9 +252,9 @@ export default function CreateEvent() {
                                         placeholder=" Address line 3"
                                         onChange={handleChange}
                                     />
-                                    {/* <div className="icon">
+                                    <div className="icon">
                                         <SvgPin />
-                                    </div> */}
+                                    </div>
                                 </div>
                             </div>
                             <div className='details-group'>
@@ -379,9 +267,9 @@ export default function CreateEvent() {
                                         onChange={handleChange}
 
                                     />
-                                {/* <div className="icon">
+                                <div className="icon">
                                         <SvgPin />
-                                    </div> */}
+                                    </div>
                                 </div>
                             </div>
 
@@ -426,13 +314,13 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
 
-                                <select name="country" id="country-id" value={eventData.county} onChange={handleChange}>
+                                <select name="country" id="country-id" value={eventData.country} onChange={handleChange}>
 
                                     <option key="" value="">Select County</option>
 
-                                    {counties.map(county => (
+                                    {countries.map(country => (
 
-                                        <option key={county.id} value={county.id}>{county.name}</option>
+                                        <option key={country.countriesId} value={country.countriesId}>{country.countryName}</option>
 
                                     ))}
 
@@ -481,9 +369,9 @@ export default function CreateEvent() {
                                     readOnly
 
                                 />
-                                {/* <div className="icon">
+                                <div className="icon">
                                         <SvgPin />
-                                    </div> */}
+                                    </div>
                                 </div>
                             </div>
 
@@ -508,9 +396,9 @@ export default function CreateEvent() {
                                     readOnly
 
                                 />
-                                {/* <div className="icon">
+                                <div className="icon">
                                         <SvgPin />
-                                    </div> */}
+                                    </div>
                                 </div>
                             </div>
 
@@ -535,9 +423,9 @@ export default function CreateEvent() {
                                     readOnly
 
                                 />
-                                {/* <div className="icon">
+                                <div className="icon">
                                         <SvgPin />
-                                    </div> */}
+                                    </div>
                                 </div>
                             </div>
 
@@ -562,9 +450,9 @@ export default function CreateEvent() {
                                     readOnly
 
                                 />
-                                {/* <div className="icon">
+                                <div className="icon">
                                         <SvgPin />
-                                    </div> */}
+                                    </div>
                                 </div>
                             </div>
 
@@ -607,15 +495,7 @@ export default function CreateEvent() {
                     </div>
 
                 </div>
-
-
-
-
-
-
-
             </div>
         </div>
     );
-
 }
