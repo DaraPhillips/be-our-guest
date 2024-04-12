@@ -223,11 +223,12 @@ def update_event(request, user_id):
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def delete_event(request, user_id):
-    
+
     user = request.user  # Assuming user is retrieved from request
 
     try:
-        event = user.events.get(pk=user_id)  # Assuming a related manager for events
+        # Access events through the related manager 'events'
+        event = user.events.get(host_user_id=user.id)  # Filter by user's ID via 'host_user_id' field
     except Event.DoesNotExist:
         return Response({"error": "Event not found"}, status=status.HTTP_404_NOT_FOUND)
 
