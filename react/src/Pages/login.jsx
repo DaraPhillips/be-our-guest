@@ -61,7 +61,7 @@ export default function Login() {
 
   return (
     <div className="login-form">
-      <div id="form" className="form-container">
+      <div className="form-container">
         <p className="title">Log in</p>
         <form className="form" onSubmit={handleSubmit}>
           <div className="input-group">
@@ -100,7 +100,7 @@ export default function Login() {
           ) : (
             <>
               {loginError && <p className="error-message">{loginError}</p>}
-              <button type="submit" className="login" id="login-button">
+              <button type="submit" className="sign" id="login-button">
                 Log in
               </button>
             </>

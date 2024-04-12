@@ -8,26 +8,110 @@ body {
     margin: 0;
     color:#02092D;
 }
-button {
-  padding: 1.5em 3.5em;
-  font-size: 1.5em;
-  letter-spacing: 0.5px;
+
+.nav {
+    background-color: #ffffff;
+    color: rgb(2, 9, 45);
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    
+    
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+}
+
+.navbar-logo {
+    width: 19%;
+    margin: 3.8em 5.1em 2em 2em;
+}
+
+.nav ul {
+    padding: 0;
+    margin-left: -92em;
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    font-family: "Roboto", sans-serif;
+    margin-top: 3em;
+    margin-right: -16em;
+  }
+
+.nav li a {
+    color: #02092d;
+    text-decoration: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.nav li a:hover {
+    color: #858585;
+}
+
+.nav li {
+    font-size: 1.8em;
+    margin-top: .4em;
+    color: #02092d;
+}
+
+.nav li.active {
+    background-color: #555;
+}
+
+.nav li:hover {
+    color: #858585;
+}
+
+.loginBtn {
+    padding: .4em 2em;
+    font-family: "Roboto", sans-serif;
+    font-size: 1.8em;
+    color: #02092d;
+    border: 3px solid #02092d;
+    border-radius: 50px;
+    background-color: #fff;
+    margin-top: 2em;
+    justify-content: center;
+    align-content: center;
+    margin-bottom: 1em;
+    margin-right: 1em;
+}
+
+.loginBtn:hover {
+    color: #fff;
+    border: 3px solid #02092d;
+    background-color: #C4A468;
+}
+
+.user-initial {
+  margin-left: 10px; /* Adjust the margin as needed */
+  font-size: 18px; /* Adjust the font size as needed */
   font-weight: bold;
-  color: #FFFFFF;
-  background-color: #02092D;
-  border: 3px solid #02092D;
-  border-radius: 100px;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease 0s;
-  cursor: pointer;
-  outline: none;
+  color: #fff; /* Adjust the color as needed */
+  background-color: #3498db; /* Adjust the background color as needed */
+  border-radius: 50%; /* Make it a circle */
+  width: 36px; /* Adjust the width as needed */
+  height: 36px; /* Adjust the height as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-button:hover {
-  background-color: #C4A468;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+.createEventButton {
+  background-color: #02092d; /* background */
+  border: 2px solid #02092d;
+  color: #fff; /* White text color */
 }
 
-button:active {
-  transform: translateY(-1px);
+.createEventButton:hover {
+  background-color: #fff;
+  border: 2px solid #02092d;/* hover */
+  color: #02092d;
+}
+
+.createEventButton:active {
+  background-color: #676B85;
+  border: 2px solid #02092d;
+  color: #fff;
+  /* on active/click state */
 }

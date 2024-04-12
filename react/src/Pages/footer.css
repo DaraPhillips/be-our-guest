@@ -1,5 +1,5 @@
 .main-footer {
-  color: #fff;
+  color: azure;
   background-color: #676B85;
   padding-top: 3em;
   position: relative;
@@ -14,8 +14,8 @@
 
 .container {
   width: 100%;
-  margin: 0em 0em 0em 2em;
-  padding-left: 0rem;
+  margin: 0 auto;
+  padding-left: 1.5rem;
   padding-bottom: 7rem;
 }
 
@@ -59,9 +59,9 @@ p {
 }
 
 .footerLogo {
-  width: 184px;
-  height: 57px;
-  margin-right: 2em;
+  width: 54%;
+  height: auto;
+  max-height: 4em;
 }
 
 .copyRight {

@@ -1,8 +1,26 @@
 import React from 'react';
-import SimpleSlider from '../Pages/simpleSlider'; // Import the SimpleSlider component
+import Slider from 'react-slick';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+import './home.css';
+import image1 from '../images/1.svg';
+import image2 from '../images/2.svg';
+import image3 from '../images/3.svg';
+
 
 const Home = () => {
+  const carouselSettings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+  };
+
   return (
     <div>
       <div className='home-container'>
@@ -13,13 +31,23 @@ const Home = () => {
           </header>
           <div className='button-div'>
             {/* Use Link component instead of anchor tag */}
-            <Link to="/SignUp"><button className='getStarted'>Get started</button></Link>
+            <Link to="/SignUp"><button>Get started</button></Link>
           </div>
         </div>
 
-        {/* Replace the existing carousel with SimpleSlider */}
-        <SimpleSlider />
-
+        {/* Carousel */}
+        <Slider {...carouselSettings}>
+          <div className="carousel">
+            <img src={image1} alt="Wedding couple in a van"  />
+          </div>
+          <div>
+            <img src={image2} alt="Family-hands-touching" />
+          </div>
+          <div>
+            <img src={image3} alt="Wedding guests" />
+          </div>
+          {/* Add more slides as needed */}
+        </Slider>
       </div>
     </div>
   );

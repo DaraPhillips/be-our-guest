@@ -17,8 +17,6 @@ import CreateEvent from './Pages/CreateEvent';
 import ScrollToTop from './Pages/ScrollToTop'; // Import the ScrollToTop component
 import Dashboard from './Pages/Dashboard';
 import AuthService from './Pages/AuthService';
-import AddGuestList from './Pages/AddGuestList';
-
 
 function App() {
     return (
@@ -38,7 +36,6 @@ function App() {
                         <Route path="/create_event" element={<CreateEvent />} />
                         <Route path="/createEvent" element={<CreateEvent />} />
                         <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/addGuestList" element={<AddGuestList />} />
                     </Routes>
                 </div>
                 <Footer />

@@ -52,7 +52,7 @@ export default function Footer() {
             <ul className="list-unstyled">
               <li><Link to="/login" className="footer-link">Log in</Link></li>
               <li><Link to="/signUp" className="footer-link">Sign up</Link></li>
-              
+              <Link to="/homeLoggedIn"><li>HomeDashTemp</li></Link>
             </ul>
           </div>
         </div>
