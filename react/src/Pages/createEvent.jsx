@@ -426,13 +426,13 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
 
-                                <select name="country" id="country-id" value={eventData.county} onChange={handleChange}>
+                                <select name="country" id="country-id" value={eventData.county2} onChange={handleChange}>
 
                                     <option key="" value="">Select County</option>
 
-                                    {counties.map(county => (
+                                    {counties.map(county2 => (
 
-                                        <option key={county.id} value={county.id}>{county.name}</option>
+                                        <option key={county2.id} value={county2.id}>{county2.name}</option>
 
                                     ))}
 
@@ -442,15 +442,15 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
 
-                                <select name="venue" id="venue-id" value={eventData.venue} onChange={handleVenueSelect}>
+                                <select name="venue" id="venue-id" value={eventData.venue2} onChange={handleVenueSelect}>
 
                                     <option key="" value="">Select Venue</option>
 
-                                    {venues.map((venue) => (
+                                    {venues.map((venue2) => (
 
-                                        <option key={venue.venueDetailsID} value={venue.venueDetailsID}>
+                                        <option key={venue2.venueDetailsID} value={venue2.venueDetailsID}>
 
-                                            {venue.name}
+                                            {venue2.name}
 
                                         </option>
 
