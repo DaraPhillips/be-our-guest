@@ -1,3 +1,4 @@
+/* comment */
 import React, { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import './createEventStyle.css';
@@ -43,11 +44,13 @@ export default function CreateEvent() {
         axios.get('http://127.0.0.1:8000/venues/')
             .then(response => {
                 console.log(response.data);
+                console.log(response.data);
                 setVenues(response.data);
             })
             .catch(error => {
                 console.error('Error fetching venues:', error);
             });
+    }, []);
     }, []);
 
     useEffect(() => {
@@ -73,6 +76,7 @@ export default function CreateEvent() {
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`
                     }
                 }
             );
@@ -93,6 +97,9 @@ export default function CreateEvent() {
     };
 
     const handleVenueSelect = (event) => {
+        console.log("Venues:", venues);
+        console.log("Venue selected:", event.target.value);
+        const venueId = parseInt(event.target.value, 10);
         console.log("Venues:", venues);
         console.log("Venue selected:", event.target.value);
         const venueId = parseInt(event.target.value, 10);

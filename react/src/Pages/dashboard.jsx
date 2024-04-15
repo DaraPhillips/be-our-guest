@@ -98,7 +98,7 @@ export default function Dashboard() {
             <img className='dashSprite-imageslist' src='/src/images/editMyEvent.svg' />
             My Event
           </li>
-          <li className="sideBarItems" onClick={() => navigate('/createEvent')}>
+          <li className="sideBarItems" onClick={() => navigate('/addGuestList')}>
             <img className='dashSprite-imageslist' src='/src/images/guestList.svg' />
             My Guest List
           </li>

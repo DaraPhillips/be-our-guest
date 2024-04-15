@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UserInitial from './Pages/UserInitialCircle';
 import SvgBellIcon from './Icons/SvgBellIcon';
+import './Pages/navbar.css';
 import axios from 'axios'; // Import axios here
 
 const Navbar = () => {
@@ -84,12 +85,29 @@ const Navbar = () => {
 
       {/* Navigation Links */}
       {location.pathname !== '/dashboard' && (
-        <ul>
-          <li><Link to="/home">Home</Link></li>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/features">Features</Link></li>
-          <li><Link to="/gallery">Gallery</Link></li>
-        </ul>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+          <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <Link to="/home" class="nav-link" aria-current="page">Home</Link>
+                </li>
+                <li class="nav-item">
+                  <Link to="/about" class="nav-link">About</Link>
+                </li>
+                <li class="nav-item">
+                  <Link to="/features" class="nav-link">Features</Link>
+                </li>
+                <li class="nav-item">
+                  <Link to="/gallery" class="nav-link">Pricing</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
       )}
 
       {/* Additional buttons for the dashboard navbar */}
@@ -114,7 +132,7 @@ const Navbar = () => {
             {buttonText}
           </button>
         ) : location.pathname !== '/dashboard' && (
-          <button className="loginBtn" onClick={handleButtonClick}>
+          <button className="btn btn-primary" onClick={handleButtonClick}>
             {buttonText}
           </button>
         )}
