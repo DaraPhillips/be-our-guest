@@ -261,10 +261,10 @@ export default function CreateEvent() {
                                     placeholder=" Name of church"
                                     onChange={handleChange}
                                 />
-                            <div className="icon">
+                            {/* <div className="icon">
                                         <SvgChurch />
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                             <div className='details-group'>
                                 <div className="input-container">
@@ -558,5 +558,4 @@ export default function CreateEvent() {
             </div>
         </div>
     );
-
-}
+</div>)}
