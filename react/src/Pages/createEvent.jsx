@@ -51,7 +51,7 @@ export default function CreateEvent() {
                 console.error('Error fetching venues:', error);
             });
     }, []);
-    }, []);
+    
 
     useEffect(() => {
         if (eventData.country) {
@@ -76,7 +76,7 @@ export default function CreateEvent() {
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
-                        Authorization: `Bearer ${token}`
+                        
                     }
                 }
             );
@@ -97,9 +97,6 @@ export default function CreateEvent() {
     };
 
     const handleVenueSelect = (event) => {
-        console.log("Venues:", venues);
-        console.log("Venue selected:", event.target.value);
-        const venueId = parseInt(event.target.value, 10);
         console.log("Venues:", venues);
         console.log("Venue selected:", event.target.value);
         const venueId = parseInt(event.target.value, 10);
