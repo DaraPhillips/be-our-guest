@@ -31,7 +31,7 @@ from drf_yasg import openapi
 from rest_framework_jwt.settings import api_settings
 
 from .serializers import EventSerializer, MyTokenObtainPairSerializer, VenueSerializer, UserSerializer, EventUpdateSerializer
-from .models import Event, UserManager, Venue, User
+from .models import Event, EventInvitation, UserManager, Venue, User
 from jwt import decode, ExpiredSignatureError, InvalidTokenError
 from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
@@ -355,11 +355,11 @@ def send_password_email(request):
     if request.method == 'POST':
         # Extract recipient data from the request data
         recipient_emails = request.data.get('recipients', [])  # Expect a list of dictionaries
- 
+
         # Validate data structure
         if not isinstance(recipient_emails, list):
             return Response({'error': 'Invalid request format: "recipients" list expected'}, status=400)
- 
+
         successful_emails = []  # Track successfully sent emails for the response
 
         for recipient in recipient_emails:
@@ -368,35 +368,48 @@ def send_password_email(request):
             last_name = recipient.get('last_name')
 
             if not email or not first_name or not last_name:
-                return Response({'error': 'Missing required fields: email, firstName, lastName'}, status=400)
+                return Response({
+                    'error': 'Missing required fields: email, first_name, last_name, {email}, {first_name}, {last_name}'
+                }, status=400)
 
-            # Generate a random password
+            # Generate and validate password (same logic as before)
             password = generate_password()
- 
-            # Validate the generated password before using it
             is_valid_password, password_error = validate_password(password)
             if not is_valid_password:
                 return Response({'error': f'Generated password failed validation: {password_error}'}, status=400)
- 
+
             hashed_password = make_password(password)
-           
+
             # Prepare user data with the generated password
             user_data = {
                 'email': email,
-                'password': hashed_password,  
+                'password': hashed_password,
                 'first_name': first_name,
                 'last_name': last_name,
             }
-           
+
             # Create a new user account using the serializer
             serializer = UserSerializer(data=user_data)
             if serializer.is_valid():
                 serializer.save()  # This will hash the password before saving the user
                 successful_emails.append(email)
+
+                # Add user to EventInvitation table
+                try:
+                    event_id = request.data.get('event_id')  # Get event ID from request data (assuming it's provided)
+                    if event_id:
+                        user = User.objects.get(email=email)  # Retrieve the created user
+                        event = Event.objects.get(pk=event_id)  # Retrieve the event
+                        invitation = EventInvitation.objects.create(guest=user, event=event)
+                        invitation.is_emailed = True  # Mark the invitation as emailed
+                        invitation.save()
+                except (User.DoesNotExist, Event.DoesNotExist) as e:
+                    print(f"Error creating invitation for {email}: {e}")  # Log the error
+
             else:
                 # Handle potential serializer errors (optional)
                 return Response(serializer.errors, status=400)
- 
+
             try:
                 # Send the email regardless of user creation (informational)
                 send_mail(
@@ -409,11 +422,11 @@ def send_password_email(request):
             except Exception as e:
                 # Handle potential errors (e.g., sending failure)
                 return Response({'error': f'Failed to send email to {email}: {e}'}, status=500)
- 
+
         # Return a success message with details on sent emails
         message = f'Password email(s) sent successfully to: {", ".join(successful_emails)}'
         return Response({'message': message}, status=200)
- 
+    
 # Custom password validation function
 def validate_password(password):
     if len(password) < 8:
