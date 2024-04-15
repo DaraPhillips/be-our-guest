@@ -78,15 +78,11 @@
   border-color: #C4A468;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
-<<<<<<< Updated upstream
-
-=======
 .signUp-form .input-group,
 .login-form .input-group
 {
   width: 80%;
 }
->>>>>>> Stashed changes
 .forgot {
   display: flex;
   justify-content: center;
@@ -112,15 +108,9 @@
 
 .sign {
   display: block;
-<<<<<<< Updated upstream
-  width: 100%;
-  background-color: #02092D(167, 139, 250, 1);
-  padding: 0.75rem;
-=======
   width: 80%;
   background-color: #02092D;
   padding: .2em;
->>>>>>> Stashed changes
   text-align: center;
   color: rgb(255, 255, 255);
   border: none;
@@ -211,9 +201,6 @@
 }
   }
 
-<<<<<<< Updated upstream
-  input:active {outline: #C4A468;}
-=======
   input:active {outline: #C4A468;}
 
   .Eye, .ClosedEye {
@@ -473,7 +460,8 @@ p.error-message{
   margin-left: -11em;
 }
 
-.emailIcon, .pwIcon {margin-left: -9.5em;}
+.emailIcon, .pwIcon {
+  
+  margin-left: -9.5em;}
 
 }
->>>>>>> Stashed changes
