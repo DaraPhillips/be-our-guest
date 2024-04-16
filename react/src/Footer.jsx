@@ -57,6 +57,7 @@ export default function Footer() {
               <li><Link to="/invitations" className="footer-link">Inv</Link></li>
 
 
+              
             </ul>
           </div>
         </div>

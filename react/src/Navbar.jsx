@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UserInitial from './Pages/UserInitialCircle';
 import SvgBellIcon from './Icons/SvgBellIcon';
+import './Pages/navbar.css';
+import axios from 'axios'; // Import axios here
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [userInitial, setUserInitial] = useState(null);
 
   // State to track whether to display login button
   const [buttonText, setButtonText] = useState('Log in');
@@ -22,6 +25,35 @@ const Navbar = () => {
       setButtonText('Log in');
     }
   }, [location.pathname]);
+
+  const fetchUserInitial = async () => {
+    try {
+      const token = localStorage.getItem('jwtToken');
+  
+      let url = 'http://127.0.0.1:8000/users/';
+      if (token) {
+        url += `?token=${token}`;
+      }
+  
+      const response = await axios.get(url);
+      console.log('API response:', response); // Log the entire response object
+      const user = response.data;
+      console.log('Received users:', user); // Log the users data
+  
+      if (user) { // Check if user data exists
+        const { first_name } = user;
+        const initial = first_name.charAt(0).toUpperCase();
+        setUserInitial(initial);
+        console.log('User initial:', initial);
+      } else {
+        console.error('No user data found in response.');
+      }
+    } catch (error) {
+      console.error('Error fetching user initial:', error);
+    }
+  };
+  
+  fetchUserInitial();
 
   const handleButtonClick = () => {
     // Update the button text dynamically based on the current route
@@ -49,21 +81,39 @@ const Navbar = () => {
 
       {/* Navigation Links */}
       {location.pathname !== '/dashboard' && (
-        <ul>
-          <li><Link to="/home">Home</Link></li>
-          <li><Link to="/about">About</Link></li>
-          <li><Link to="/features">Features</Link></li>
-          <li><Link to="/gallery">Gallery</Link></li>
-        </ul>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+          <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <Link to="/home" class="nav-link" aria-current="page">Home</Link>
+                </li>
+                <li class="nav-item">
+                  <Link to="/about" class="nav-link">About</Link>
+                </li>
+                <li class="nav-item">
+                  <Link to="/features" class="nav-link">Features</Link>
+                </li>
+                <li class="nav-item">
+                  <Link to="/gallery" class="nav-link">Pricing</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
       )}
 
       {/* Additional buttons for the dashboard navbar */}
       {location.pathname === '/dashboard' && (
         <div className="dashboard-buttons">
           <button className="profileCircle" onClick={() => console.log('Profile button clicked')}>
-            {/* User's initial component */}
-            A
-          </button>
+          {userInitial || (
+            <span>?</span>  // Display "NA" for cases where user data is missing
+          )
+          }</button>
           <button className="notifications" onClick={() => console.log('Notifications button clicked')}>
             {/* Notifications icon or text */}
             <SvgBellIcon/>
@@ -78,7 +128,7 @@ const Navbar = () => {
             {buttonText}
           </button>
         ) : location.pathname !== '/dashboard' && (
-          <button className="loginBtn" onClick={handleButtonClick}>
+          <button className="btn btn-primary" onClick={handleButtonClick}>
             {buttonText}
           </button>
         )}

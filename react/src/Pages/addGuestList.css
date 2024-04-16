@@ -1,26 +1,4 @@
-.wedding-details-header,
-h1 {
-  font-family: "Roboto", sans-serif;
-  font-weight: 350;
-  padding-left: 1.5rem;
-}
-.input-container input {
-  width: 100%;
-  border-radius: 0.375rem;
-  border: 1px solid rgba(55, 65, 81, 1);
-  outline: 0;
-  background-color: rgb(255, 255, 255);
-  color: #02092D; 
-  
-}
-
-.event-page-wrap {
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  display: flex;
-  gap: 75px;
+section #form-left{width: 50%;}
 
 .wedding-details-header, h1{
     font-family: "Roboto", sans-serif;
@@ -29,20 +7,20 @@ h1 {
 }
 
 .event-details-container {
-  width: 54em;
-  height: 90em;
-  grid-gap: 20px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background-color: #D5D9E1;
-  border-radius: 30px;
-  padding: 1em;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-  margin-top: 3em;
-}
+    width: 54em;
+    height: 55em;
+    grid-gap: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: #D5D9E1;
+    border-radius: 30px;
+    padding: 1em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    margin-top: 3em;
+  }
 
 .event-details-container form {
     margin-bottom: 20px;
@@ -62,9 +40,6 @@ h1 {
 
 .event-col1,
 .event-col2{
-  padding-bottom: 9rem;
-  font-family: "Roboto", sans-serif;
-  
     
     /* display: grid; */
     
@@ -135,20 +110,21 @@ color:#02092D;
   font-size: 1.8em;
   width: 17em;
   margin-top: 1em;
+  font-weight: 500;
 }
 
 .weddingDetails-page::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 150%;
-    background-image: url(/src/images/createEventBackgroundImg.png);
-    opacity: 0.5; /* Adjust the opacity value as needed */
-    z-index: -1; /* Ensure this pseudo-element is behind other content */
-    background-size: cover;
-  }
+  content: '';
+  position: fixed; /* or absolute */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(/src/images/addGuestList.svg);
+  opacity: 0.5;
+  z-index: -1;
+  background-size: cover;
+}
 
 .event-details-buttoncontainer{
     
@@ -161,13 +137,13 @@ color:#02092D;
 }
 
 .Venue-deets {
-  font-size: 1.8em; 
-  margin-bottom: 3em;
+    font-size: 1.8em;
+  margin-bottom: 0em;
   width: 100%;
   font-weight: 500;
   font-size: 1.8em;
   text-align: start;
- }
+}
 
  #venue-id, #address1-id, #address2-id, 
  #address3-id,#Zip-id,#respondByDate,#time, #date {font-size: 1.5em;}
@@ -185,30 +161,7 @@ color:#02092D;
   border: 2px solid #C4A468;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);}
 
-.resetBtn{padding: .2em;
-  padding: .2em;
-  font-size: 1.8em;
-  width: 17em;
-  margin-top: 1em;
-  border: 3px solid #02092d;
-  color: #02092d;
-  background: #fff;
-}
 
-.createBtn {font-size: 1.8em; 
-            color: red;}
-
-.venueIcon {position: absolute;
-  top: 56%;
-  transform: translateY(-50%);
-  left: 5px;
-  width: 4em;}
-
-  .timeIcon {position: absolute;
-  top: 56%;
-  transform: translateY(-50%);
-  left: 5px;
-  width: 4em;}
 
   input:hover {outline: #C4A468;}
 
@@ -233,71 +186,103 @@ color:#02092D;
   background-color: #02092d; /* background */
   border: 2px solid #02092d;
   color: #fff; /* White text color */
+  font-weight: 500;
 }
 
 .createEventButton:hover {
   background-color: #fff;
   border: 2px solid #02092d;/* hover */
   color: #02092d;
-}
-
-
-.icon {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.icon svg {
-  width: 20px; /* Adjust the size of the SVG */
-  height: 20px;
-  margin-right: 5px; /* Adjust spacing between SVG and input */
-  opacity: 50%;
-}
-
-
-
-
-.input-container .icon {
-  position: absolute;
-  left: 10px; /* Adjust the distance from the input box */
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-
-#churchAddress3-id,#churchName, #churchAddress2-id, #churchAddress1-id, #venue-id, 
-#address1-id, #address3-id, #address2-id, #zip-code, #Zip-id, #weddingTitle, #country-id,
-#respondByDate, #date, #time, #church-time {
-  /* font-size: 1.2em;
-  color: #fcfcfd;
-  font-family: "Roboto", sans-serif; */
-
-}
-
-#churchAddress3-id:focus,
-#churchName:focus,
-#churchAddress2-id:focus,
-#churchAddress1-id:focus,
-#venue-id:focus,
-#address1-id:focus,
-#address3-id:focus,
-#address2-id:focus,
-#zip-code:focus,
-#Zip-id:focus,
-#weddingTitle:focus,
-#country-id:focus,
-#respondByDate:focus,
-#date:focus,
-#time:focus,
-#church-time:focus {
-  border-color: #C4A468;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
 }
 
 .createEventButton:active {
   background-color: #676B85;
   border: 2px solid #02092d;
   color: #fff;
+  font-weight: 500;
   /* on active/click state */
 }
+
+.home-tab-top-thingy {
+    color: #02092D80;
+    text-decoration: none;
+  }
+
+  .form-column {
+    width: 50%;
+    float: left;
+    padding: 2em 2em;
+  }
+  
+  .details-group {
+    margin-bottom: 20px;
+  }
+  
+  .guests-container {
+    display: flex;
+  }
+
+  .guests-container {
+    width: 54em;
+    height: 55em;
+    grid-gap: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: #D5D9E1;
+    border-radius: 30px;
+    padding: 1em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    margin-top: 3em;
+  }
+  
+  .event-col1 {
+    width: 100%;
+  }
+
+  #guest-list {
+    width: 100%;
+    border-radius: 0.375rem;
+    border: 1px solid rgb(55, 65, 81);
+    padding: 1em 4rem;
+    padding-left: 4rem;
+    color: #02092D;
+    font-weight: 500;
+    font-size: 1em;
+    text-align: start;
+    margin-top: 1.35em;
+    background: #fff;
+  }
+
+  .SendLinks-button {
+    padding: .2em;
+    font-size: 1.8em;
+    width: 17em;
+    margin-top: 19.6em;
+    font-weight: 500;
+  }
+  
+  .input-group input {
+    width: 100%;
+    border-radius: 0.375rem;
+    border: 1px solid rgba(55, 65, 81, 1);
+      border-top-color: rgb(55, 65, 81);
+      border-right-color: rgb(55, 65, 81);
+      border-bottom-color: rgb(55, 65, 81);
+      border-left-color: rgb(55, 65, 81);
+    border-top-color: rgb(55, 65, 81);
+    border-right-color: rgb(55, 65, 81);
+    border-bottom-color: rgb(55, 65, 81);
+    border-left-color: rgb(55, 65, 81);
+    outline: 0;
+    background-color: rgb(255, 255, 255);
+    padding: 0.75rem 4rem;
+    color: #02092D;
+    font-weight: 500;
+    font-size: 1.8em;
+    text-align: start;
+    margin-top: 0.8em;
+  }
