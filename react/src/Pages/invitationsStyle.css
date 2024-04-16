@@ -1,0 +1,126 @@
+
+.top-boxes, .second-row {
+    display: flex;
+    justify-content: center; /* Adjust as needed */
+    gap: 75px;
+    
+}
+
+
+
+.second-row {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+
+h4,
+h5{
+  color: #393b49;
+
+}
+
+
+a{
+    text-decoration: none;
+}
+
+.inv-button{
+   text-align: center;
+   
+    width: 400px;
+    height: 400px;
+    border-radius: 40px;
+    background: #ffffff;
+    /* box-shadow:  6px 6px 11px #c3c3c3,
+             -6px -6px 11px #fdfdfd; */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-color:#a8a8a8;
+
+    
+    }
+
+.inv-button:hover{
+    background-color: #FAFAFA;
+    box-shadow: 0px 15px 20px #393b49;
+    color: #676B85;
+    transform: translateY(0);
+    border-color: #C4A468;
+}
+
+
+  
+  .inv-icon svg {
+    width: 60px; /* Adjust the size of the SVG */
+    height: 60px;
+    opacity: 100%;
+    padding-bottom: 1rem;
+    
+  }
+
+  .my-invBox {
+    display: flex;
+    justify-content: center; /* Center the button horizontally */
+    align-items: flex-end; /* Align the icons to the bottom of the button */
+  }
+  
+ 
+  
+  .inv-icons {
+    display: flex;
+    justify-content: center; /* Center the icons horizontally */
+    align-items: flex-end; /* Align the icons to the bottom of the button */
+    margin-top: auto; /* Push icons to the bottom */
+  }
+  
+
+  
+  .inv-icon:first-child {
+    margin-right: 40px; /* Increase margin for the first icon */
+  }
+  
+  .inv-icon:last-child {
+    margin-left: 40px; /* Increase margin for the last icon */
+  }
+  .inv-button {
+    position: relative; /* To position the list relative to the button */
+}
+
+
+
+.inv-button ul {
+    position: absolute;
+    left: 0;
+    top: 50%; /* Adjust as needed */
+    transform: translateY(-50%);
+    width: 100%; /* Ensure the list takes the full width of the button */
+    padding: 0;
+    list-style: none;
+    text-align: left; /* Align list items to the left */
+    padding-left: 5rem;
+    padding-bottom: 5rem;
+}
+
+.inv-button ul li {
+    margin-bottom: 25px; /* Adjust spacing between list items */
+}
+
+.inv-button ul li h2,
+.inv-button ul li h4,
+.inv-button ul li h5 {
+    margin: 0;
+}
+ 
+  
+
+ 
+
+
+  
+
+
+

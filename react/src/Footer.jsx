@@ -52,6 +52,11 @@ export default function Footer() {
             <ul className="list-unstyled">
               <li><Link to="/login" className="footer-link">Log in</Link></li>
               <li><Link to="/signUp" className="footer-link">Sign up</Link></li>
+              <Link to="/createEvent"><li>CreateEvent Page</li></Link>
+              <Link to="/rsvpPage"><li>rsvp Page</li></Link>
+              <li><Link to="/invitations" className="footer-link">Inv</Link></li>
+
+
               
             </ul>
           </div>
