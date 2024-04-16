@@ -419,6 +419,11 @@ def get_venues_by_county(request, id ):
     serializer = VenueSerializer(venues, many=True)
     return JsonResponse(serializer.data, safe=False)
 
+@api_view(["GET"])
+def get_venues_by_county_and_event_type(request, county_id, venue_type_id):
+    venues = Venue.objects.filter(county_id=county_id, venue_type_id=venue_type_id)
+    serializer = VenueSerializer(venues, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 @authentication_classes([JWTAuthentication])
 @permission_classes([AllowAny])

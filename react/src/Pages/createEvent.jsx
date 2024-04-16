@@ -20,30 +20,28 @@ import axios from 'axios';
 // import { SvgChurch } from '../Icons/SvgChurch';
 
 export default function CreateEvent() {
-
+ 
     const [eventData, setEventData] = useState({
-
-        county: '',
-
-        venue: '',
-
-        address1: '',
-
-        address2: '',
-
-        address3: '',
-
-        zip: '',
-
-        respondByDate: '',
-
+        weddingTitle: '',
         eventType: '',
-
+        county1: '',
+        venue1: '',
+        venue1_address1: '',
+        venue1_address2: '',
+        venue1_address3: '',
+        venue1_zip: '',
+        venue1_time: '',
+        venue2: '',
+        venue2_address1: '',
+        venue2_address2: '',
+        venue2_address3: '',
+        venue2_zip: '',
+        respondByDate: '',
         time: '',
-
         date: ''
 
     });
+    
 
     const [eventCreated, setEventCreated] = useState(false);
 
@@ -164,7 +162,7 @@ export default function CreateEvent() {
 
     };
 
-    const handleVenueSelect = (event) => {
+    const handleVenueSelect1 = (event) => {
 
         console.log("Venues:", venues); // Check if venues array is populated
 
@@ -179,24 +177,49 @@ export default function CreateEvent() {
         if (selectedVenue) {
 
             setEventData(prevEventData => ({
-
                 ...prevEventData,
-
                 venue: selectedVenue.venueDetailsID,
-
-                address1: selectedVenue.address1,
-
-                address2: selectedVenue.address2,
-
-                address3: selectedVenue.address3,
-
-                zip: selectedVenue.zipcode,
-
+                churchAddress1: selectedVenue.address1,
+                churchAddress2: selectedVenue.address2,
+                churchAddress3: selectedVenue.address3,
+                zip_code1: selectedVenue.zipcode, // Ensure this property matches the property in the venue object
+                
             }));
+            
 
         }
 
     };
+
+    const handleVenueSelect2 = (event) => {
+
+        console.log("Venues:", venues); // Check if venues array is populated
+
+        console.log("Venue selected:", event.target.value); // Check if venueId is correct
+
+        const venueId = parseInt(event.target.value, 10); // Convert to number
+
+        const selectedVenue = venues.find(venue => venue.venueDetailsID === venueId);
+
+        console.log("Selected venue:", selectedVenue); // Check if selectedVenue is correct
+
+        if (selectedVenue) {
+
+            setEventData(prevEventData => ({
+                ...prevEventData,
+                venue: selectedVenue.venueDetailsID,
+                address1: selectedVenue.address1,
+                address2: selectedVenue.address2,
+                address3: selectedVenue.address3,
+                zip: selectedVenue.zipcode, // Ensure this property matches the property in the venue object
+            }));
+            
+
+        }
+
+    };
+
+    
 
     if (eventCreated) {
 
@@ -250,13 +273,13 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
                                     {/* this is the event type dorpdown */}
-                                <select name="country" id="country-id" value={eventData.eventType} onChange={handleChange}>
+                                <select name="event" id="event-id" value={eventData.eventType1} onChange={handleChange}>
 
                                     <option key="" value="">Event type</option>
 
-                                     {eventType.map(eventType => (
+                                     {eventType.map(eventType1 => (
 
-                                        <option key={eventType.id} value={eventType.id}>{eventType.name}</option>
+                                        <option key={eventType1.id} value={eventType1.id}>{eventType1.name}</option>
 
                                     ))}
 
@@ -276,13 +299,13 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
 
-                                <select name="country" id="country-id" value={eventData.county} onChange={handleChange}>
+                                <select name="county1" id="county1-id" value={eventData.county1} onChange={handleChange}>
 
                                     <option key="" value="">Select County</option>
 
-                                    {counties.map(county => (
+                                    {counties.map(county1 => (
 
-                                        <option key={county.id} value={county.id}>{county.name}</option>
+                                        <option key={county1.id} value={county1.id}>{county1.name}</option>
 
                                     ))}
 
@@ -292,15 +315,15 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
                                       {/* venue dorpdown for church or civil  */}
-                                <select name="venue" id="venue-id" value={eventData.venue} onChange={handleVenueSelect}>
+                                <select name="venue1" id="venue1-id" value={eventData.venue1} onChange={handleVenueSelect1}>
 
                                     <option key="" value="">Select Venue</option>
 
-                                    {venues.map((venue) => (
+                                    {venues.map((venue1) => (
 
-                                        <option key={venue.venueDetailsID} value={venue.venueDetailsID}>
+                                        <option key={venue1.venueDetailsID} value={venue1.venueDetailsID}>
 
-                                            {venue.name}
+                                            {venue1.name}
 
                                         </option>
 
@@ -373,8 +396,8 @@ export default function CreateEvent() {
                             <div className="input-container">
                                     <input
                                         type="text"
-                                        name="zip-code"
-                                        id="zip-code"
+                                        name="zip_code1"
+                                        id="zip_code1"
                                         placeholder=" Zip code"
                                         onChange={handleChange}
 
@@ -426,7 +449,7 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
 
-                                <select name="country" id="country-id" value={eventData.county2} onChange={handleChange}>
+                                <select name="county2" id="county2-id" value={eventData.county2} onChange={handleChange}>
 
                                     <option key="" value="">Select County</option>
 
@@ -442,7 +465,7 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
 
-                                <select name="venue" id="venue-id" value={eventData.venue2} onChange={handleVenueSelect}>
+                                <select name="venue2" id="venue2-id" value={eventData.venue2} onChange={handleVenueSelect2}>
 
                                     <option key="" value="">Select Venue</option>
 

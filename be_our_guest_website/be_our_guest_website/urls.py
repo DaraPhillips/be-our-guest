@@ -22,7 +22,7 @@ from be_our_guest.viewsets import EventViewSet, UsersViewSet
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
-from be_our_guest.views import create_event, events, login, get_venues, update_event, get_event_type, get_county
+from be_our_guest.views import create_event, events, login, get_venues, update_event, get_event_type, get_county,get_venues_by_county_and_event_type
 from be_our_guest import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.contrib.auth.views import LogoutView
@@ -60,6 +60,8 @@ urlpatterns = [
     path('users/', views.get_users, name='users'),
 
     path('venues/<int:id>/', views.get_venues_by_county, name='get_venues_by_country'),
+     path('venues/<int:county_id>/<int:venue_type_id>/', get_venues_by_county_and_event_type, name='get_venues_by_county_and_event_type'),
+ 
 
     path('users/', views.get_users, name='users'),
     path('register/', views.register_user, name='register'),
@@ -69,6 +71,7 @@ urlpatterns = [
     
     path('event_type/', get_event_type, name='event_type'),
     path('county/', get_county, name='county'),
+
 
 
     path('api/token/logout/', LogoutView.as_view(), name='token_logout'),
