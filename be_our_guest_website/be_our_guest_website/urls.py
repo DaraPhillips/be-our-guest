@@ -73,7 +73,8 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     #path('', views.home, name='home'),
-
+  # Define a URL pattern for the login view
+    path('login/', views.login_view, name='login'),
    
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),    path("", include("be_our_guest.urls")),
     path("admin/", admin.site.urls),

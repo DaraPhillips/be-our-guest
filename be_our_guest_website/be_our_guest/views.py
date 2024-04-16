@@ -39,6 +39,11 @@ from django.core.mail import send_mail
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
 
+from django.shortcuts import render
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 
 
 
@@ -463,3 +468,24 @@ def login(request):
         )
 
 
+def login_view(request):
+    # Check if the form has been submitted
+    if request.method == 'POST':
+        # Get the username and password from the form
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Authenticate the user
+        user = authenticate(request, username=username, password=password)
+
+        # If the user is authenticated, log them in and redirect to a success page
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse('success'))
+        else:
+            # If authentication fails, return an error message
+            return render(request, 'login.html', {'error': 'Invalid username or password'})
+
+    # If the form has not been submitted, render the login page
+    else:
+        return render(request, 'login.html')

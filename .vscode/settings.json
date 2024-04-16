@@ -4,5 +4,10 @@
         "Ciaran",
         "simplejwt",
         "viewsets"
-    ]
+    ],
+    "python.testing.pytestArgs": [
+        "be_our_guest_website"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }
