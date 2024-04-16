@@ -17,6 +17,8 @@ import CreateEvent from './Pages/createEvent';
 import ScrollToTop from './Pages/ScrollToTop'; 
 import Dashboard from './Pages/dashboard';
 import AuthService from './Pages/AuthService';
+import AddGuestList from './Pages/AddGuestList';
+
 
 function App() {
     return (
@@ -36,6 +38,7 @@ function App() {
                         <Route path="/create_event" element={<CreateEvent />} />
                         <Route path="/createEvent" element={<CreateEvent />} />
                         <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/addGuestList" element={<AddGuestList />} />
                     </Routes>
                 </div>
                 <Footer />

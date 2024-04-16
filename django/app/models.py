@@ -1,8 +1,11 @@
+"""
+Be Our Guest - Models
+"""
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.utils import timezone
- 
- 
+from django.conf import settings
+
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -12,113 +15,144 @@ class CustomUserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
- 
+
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
- 
+
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
- 
+
         return self.create_user(email, password, **extra_fields)
- 
- 
-class Users(AbstractBaseUser):
-    userId = models.AutoField(primary_key=True, db_column='userId')
+
+
+class User(AbstractBaseUser):
+    """Model for users"""
     email = models.EmailField(unique=True)
-    firstName = models.CharField(max_length=100)
-    lastName = models.CharField(max_length=100)
-    userImage = models.ImageField(upload_to='user_images/', blank=True, null=True)
-    loginEnabled = models.IntegerField(choices=[(0, 'Disabled'), (1, 'Enabled')], default=1)
-    last_login = models.DateTimeField(null=True, blank=True)
- 
-    # Define the custom UserManager
-    objects = CustomUserManager()
- 
+    user_image = models.ImageField(upload_to="user_images/", blank=True, null=True)
+    
     USERNAME_FIELD = 'email'
-    EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
- 
+
+    objects = CustomUserManager()
+
     def __str__(self):
-        return self.email
- 
-    class Meta:
-        db_table = 'users'
- 
- 
-class Countries(models.Model):
-    # Assuming this model defines the countries table
-    countriesId = models.AutoField(primary_key=True)
-    countryName = models.CharField(max_length=255)
- 
-    def __str__(self):
-        return self.countryName
- 
-    class Meta:
-        db_table = 'countries'
+        return str(self.email)  # Fix: Return a string representation of the email
 
 
- 
-class VenueDetails(models.Model):
-    venueDetailsID = models.AutoField(primary_key=True)
-    countriesId = models.ForeignKey(Countries, on_delete=models.CASCADE, db_column='countriesID')  
+
+class County(models.Model):
+    """Model for counties"""
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class VenueType(models.Model):
+    """Model for venue types"""
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class WeddingType(models.Model):
+    """Model for wedding types"""
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class Venue(models.Model):
+    """Model for venues"""
+    id = models.AutoField(primary_key=True)
+    county = models.ForeignKey(County, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     address1 = models.CharField(max_length=255)
     address2 = models.CharField(max_length=255)
     address3 = models.CharField(max_length=255)
     zipcode = models.CharField(max_length=20)
- 
+    venue_type = models.ForeignKey(VenueType, on_delete=models.CASCADE)
+
     def __str__(self):
-        return f"Venue ID: {self.venueDetailsID}, Name: {self.name}, Country: {self.countriesId}"
-    #def __str__(self):
-    #    return self.name  # Adjusted to return only the name of the venue
- 
- 
-    class Meta:
-        db_table = 'VenueDetails'
- 
- 
-#class Event(models.Model):
-#    idevent = models.AutoField(primary_key=True)
-#    hostID = models.IntegerField(null=True)
-#    eventType = models.CharField(max_length=255)
-#    venueDetailsID = models.ForeignKey(VenueDetails, on_delete=models.CASCADE, null=True)
-#    time = models.TimeField()
-#    date = models.DateField()
-#    respondByDate = models.DateField(default=timezone.now() + timezone.timedelta(days=30))
- 
-#    def __str__(self):
-#        return f"Event ID: {self.idevent}, Host ID: {self.hostID}, Event Type: {self.eventType}, Venue Details ID: {self.venueDetailsID}, Time: {self.time}, Date: {self.date}"
- 
-#    class Meta:
-#        db_table = 'event'
- 
+        return f"Venue ID: {self.id}, Name: {self.name}, County: {self.county}"
+
+
+class Table(models.Model):
+    """Model for tables at venues"""
+    id = models.AutoField(primary_key=True)
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
+    capacity = models.IntegerField()
+
+    def __str__(self):
+        return f"Table ID: {self.id}, Venue ID: {self.venue}, Capacity: {self.capacity}"
+
+
 class Event(models.Model):
-    idevent = models.AutoField(primary_key=True)
-    hostID = models.IntegerField(null=True)
-    eventType = models.CharField(max_length=255)
-    venueDetailsID = models.ForeignKey(VenueDetails, on_delete=models.CASCADE, null=True, db_column='venueDetailsID', related_name='events')
-    time = models.TimeField()
+    """Model for events"""
+    """     host_user = models.ForeignKey(User, on_delete=models.CASCADE) """
+    id = models.AutoField(primary_key=True)
+    host_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    venue_1 = models.ForeignKey(Venue, related_name='venue_1', on_delete=models.CASCADE)
+    venue_2 = models.ForeignKey(Venue, related_name='venue_2', on_delete=models.CASCADE , null=True)
+    venue_3 = models.ForeignKey(Venue, related_name='venue_3', on_delete=models.CASCADE , null=True) 
+    event_type = models.CharField(max_length=255)
+    venue_time_1 = models.TimeField()
+    venue_time_2 = models.TimeField(null=True)
+    venue_time_3 = models.TimeField(null=True)
     date = models.DateField()
-    respondByDate = models.DateField(default=timezone.now() + timezone.timedelta(days=30))
- 
+    respond_by_date = models.DateField()
+    wedding_type = models.ForeignKey(WeddingType, on_delete=models.CASCADE)
+    venue_details_id = models.ForeignKey(Venue, related_name='venue_details_id', on_delete=models.CASCADE)
+
+
+class GuestRsvp(models.Model):
+    """Model for guest RSVPs to events"""
+    id = models.AutoField(primary_key=True)
+    guest = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    is_attending = models.BooleanField(default=False)
+    is_emailed = models.BooleanField(default=False)
+    table = models.ForeignKey(Table, on_delete=models.CASCADE, null=True)
+
     def __str__(self):
-        return f"Event ID: {self.idevent}, Host ID: {self.hostID}, Event Type: {self.eventType}, Venue Details ID: {self.venue_details}, Time: {self.time}, Date: {self.date}"
- 
-    class Meta:
-        db_table = 'event'
- 
- 
-class Guest(models.Model):
-    guestId = models.AutoField(primary_key=True)
-    eventId = models.IntegerField(null=True)
-    description = models.CharField(max_length=255)
-    tableId = models.IntegerField(null=True)
- 
+        return f"Guest: {self.guest}, Event: {self.event}, Is Attending: {self.is_attending}, Table: {self.table}"
+
+
+class Chat(models.Model):
+    """Model for chats"""
+    id = models.AutoField(primary_key=True)
+    created_by = models.IntegerField()
+
     def __str__(self):
-        return f"Guest: {self.guestId}, Event: {self.eventId}, Description: {self.description}, Table: {self.tableId}"
- 
-    class Meta:
-        db_table = 'guest'
+        return f"Chat ID: {self.id}"
+
+
+class ChatMessage(models.Model):
+    """Model for chat messages"""
+    id = models.AutoField(primary_key=True)
+    chat_id = models.IntegerField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.IntegerField()
+    reply = models.IntegerField()
+
+    def __str__(self):
+        return f"Chat Message ID: {self.id}, Chat ID: {self.chat_id}, Created By: {self.created_by}"
+    
+
+class Member(models.Model):
+    """Model for chat members"""
+    chat_id = models.IntegerField()
+    user_id = models.IntegerField()
+    is_admin = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Chat Member: Chat ID: {self.chat_id}, User ID: {self.user_id}, Is Admin: {self.is_admin}"

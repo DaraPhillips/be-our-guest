@@ -4,19 +4,20 @@
     padding-left: 1.5rem;
 }
 
-.event-details-container{
-  width: 480;
-  height: 69em;
+.event-details-container {
+  width: 54em;
+  height: 90em;
   grid-gap: 20px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   position: relative;
-  background-color: #fff;
+  background-color: #D5D9E1;
   border-radius: 30px;
-  padding: 7em;
+  padding: 1em;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  margin-top: 3em;
 }
 
 .event-details-container form {
@@ -34,7 +35,6 @@
     padding-bottom: 1rem;
 }
 
-    
 
 .event-col1,
 .event-col2{
@@ -200,4 +200,23 @@ color:#02092D;
     font-size: 1.8em;
     text-align: start;
     margin-top: 0.2em;
+}
+
+.createEventButton {
+  background-color: #02092d; /* background */
+  border: 2px solid #02092d;
+  color: #fff; /* White text color */
+}
+
+.createEventButton:hover {
+  background-color: #fff;
+  border: 2px solid #02092d;/* hover */
+  color: #02092d;
+}
+
+.createEventButton:active {
+  background-color: #676B85;
+  border: 2px solid #02092d;
+  color: #fff;
+  /* on active/click state */
 }

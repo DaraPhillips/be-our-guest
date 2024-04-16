@@ -28,7 +28,7 @@
 
 .sign {
   display: block;
-  width: 80%;
+  width: 76%;
   background-color: #02092D;
   padding: .2em;
   text-align: center;
@@ -140,3 +140,5 @@
   left: 21.8em;
   width: 4em;
 }
+
+.password-rule {font-size: 14px; color: red; padding-top: .5em;}

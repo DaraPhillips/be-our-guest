@@ -10,25 +10,32 @@ import SvgClosedEye from '../Icons/SvgClosedEye';
 import SvgEye from '../Icons/SvgEye';
 
 const inputFields = [
-  { name: 'firstName', placeholder: 'First Name', icon: <SvgName /> },
-  { name: 'lastName', placeholder: 'Last Name', icon: <SvgName /> },
+  { name: 'first_name', placeholder: 'First Name', icon: <SvgName /> },
+  { name: 'last_name', placeholder: 'Last Name', icon: <SvgName /> },
   { name: 'email', placeholder: 'Email', icon: <EmailIcon /> },
   { name: 'password', placeholder: 'Password', icon: <SvgPassword />, isPassword: true },
   { name: 'confirmPassword', placeholder: 'Confirm Password', icon: <SvgConfirmPassword />, isPassword: true },
 ];
 
+const passwordRules = [
+  'Password must be at least 8 characters long',
+  'Password must contain at least one uppercase letter',
+  'Password must contain at least one lowercase letter',
+  'Password must contain at least one number',
+];
+
 export default function SignUp() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
     confirmPassword: '',
   });
   const [errors, setErrors] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -36,7 +43,7 @@ export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -46,16 +53,16 @@ export default function SignUp() {
     let fieldErrors = {};
 
     // Validate each field and update errors state
-    if (!formData.firstName) {
-      fieldErrors.firstName = 'First name is required';
-    } else if (!/^[A-Za-z]+$/.test(formData.firstName)) {
-      fieldErrors.firstName = 'Name should only contain letters';
+    if (!formData.first_name) {
+      fieldErrors.first_name = 'First name is required';
+    } else if (!/^[A-Za-z]+$/.test(formData.first_name)) {
+      fieldErrors.first_name = 'Name should only contain letters';
     }
 
-    if (!formData.lastName) {
-      fieldErrors.lastName = 'Last name is required';
-    } else if (!/^[A-Za-z]+$/.test(formData.lastName)) {
-      fieldErrors.lastName = 'Name should only contain letters';
+    if (!formData.last_name) {
+      fieldErrors.last_name = 'Last name is required';
+    } else if (!/^[A-Za-z]+$/.test(formData.last_name)) {
+      fieldErrors.last_name = 'Name should only contain letters';
     }
 
     if (!formData.email || !emailRegex.test(formData.email.toLowerCase())) {
@@ -64,6 +71,14 @@ export default function SignUp() {
 
     if (!formData.password) {
       fieldErrors.password = 'Password is required';
+    } else if (
+      !/(?=.*[a-z])/.test(formData.password) ||
+      !/(?=.*[A-Z])/.test(formData.password) ||
+      !/(?=.*[0-9])/.test(formData.password) ||
+      formData.password.length < 8
+    ) {
+      fieldErrors.password =
+        'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number (e.g. Aaa1234!)';
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -76,7 +91,8 @@ export default function SignUp() {
       setLoading(false);
       return;
     }
-
+    console.log('User entered first name:', formData.first_name);
+  console.log('User entered last name:', formData.last_name);
     try {
       const response = await axios.post('http://127.0.0.1:8000/register/', formData);
       console.log('Signup successful:', response.data);
@@ -129,6 +145,14 @@ export default function SignUp() {
               {errors[field.name] && <p className="error-message">{errors[field.name]}</p>}
             </div>
           ))}
+          {/* Display password rules */}
+          {errors.password && (
+            <div className="password-rules">
+              {passwordRules.map((rule, index) => (
+                <p key={index} className="password-rule"></p>
+              ))}
+            </div>
+          )}
           <button className="sign" id="signup-button" type="submit" disabled={loading}>
             {loading ? 'Signing Up...' : 'Sign Up'}
           </button>

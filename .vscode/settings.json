@@ -1,8 +1,8 @@
 {
     "cSpell.words": [
-        "beourguest",
+        "authtoken",
         "Ciaran",
-        "corsheaders",
-        "yasg"
+        "simplejwt",
+        "viewsets"
     ]
 }
