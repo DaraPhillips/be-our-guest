@@ -1,3 +1,27 @@
+.wedding-details-header,
+h1 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 350;
+  padding-left: 1.5rem;
+}
+.input-container input {
+  width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(55, 65, 81, 1);
+  outline: 0;
+  background-color: rgb(255, 255, 255);
+  color: #02092D; 
+  
+}
+
+.event-page-wrap {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  display: flex;
+  gap: 75px;
+
 .wedding-details-header, h1{
     font-family: "Roboto", sans-serif;
     font-weight: 350;
@@ -38,6 +62,9 @@
 
 .event-col1,
 .event-col2{
+  padding-bottom: 9rem;
+  font-family: "Roboto", sans-serif;
+  
     
     /* display: grid; */
     
@@ -212,6 +239,60 @@ color:#02092D;
   background-color: #fff;
   border: 2px solid #02092d;/* hover */
   color: #02092d;
+}
+
+
+.icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon svg {
+  width: 20px; /* Adjust the size of the SVG */
+  height: 20px;
+  margin-right: 5px; /* Adjust spacing between SVG and input */
+  opacity: 50%;
+}
+
+
+
+
+.input-container .icon {
+  position: absolute;
+  left: 10px; /* Adjust the distance from the input box */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+
+#churchAddress3-id,#churchName, #churchAddress2-id, #churchAddress1-id, #venue-id, 
+#address1-id, #address3-id, #address2-id, #zip-code, #Zip-id, #weddingTitle, #country-id,
+#respondByDate, #date, #time, #church-time {
+  /* font-size: 1.2em;
+  color: #fcfcfd;
+  font-family: "Roboto", sans-serif; */
+
+}
+
+#churchAddress3-id:focus,
+#churchName:focus,
+#churchAddress2-id:focus,
+#churchAddress1-id:focus,
+#venue-id:focus,
+#address1-id:focus,
+#address3-id:focus,
+#address2-id:focus,
+#zip-code:focus,
+#Zip-id:focus,
+#weddingTitle:focus,
+#country-id:focus,
+#respondByDate:focus,
+#date:focus,
+#time:focus,
+#church-time:focus {
+  border-color: #C4A468;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .createEventButton:active {
