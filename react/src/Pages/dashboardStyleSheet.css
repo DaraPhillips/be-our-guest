@@ -113,8 +113,6 @@ background-color: #fff;}
 .dash-createEvent {
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
-    /* text-align: center; */
     padding-left: 5rem;
 }
 
@@ -145,16 +143,16 @@ background-color: #fff;}
 
 }
 
-.commentbox-dash {
+/* .commentbox-dash {
   background-color: #ffffff;
   border-radius: 10px;
   height: 12rem;
   width: 67em;
   margin-top: 1rem;
   margin-bottom: -1em;
-}
+} */
 
-.commentBox {
+/* .commentBox {
   margin-top: 7rem;
   margin-left: 7rem;
   width: 300px;
@@ -164,22 +162,16 @@ background-color: #fff;}
   background-image: url(/src/images/comment-2.png);
   background-repeat: no-repeat;
   background-position: .5rem;
-}
+} */
 
-.commentBox:active {
+/* .commentBox:active {
   border:2px solid #C4A468;
-}
+} */
 
-.commentBox:hover {
+/* .commentBox:hover {
    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-}
+} */
 
-.commentBox:focus {
- border:2px solid #C4A468;
- box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
- outline:none;/* Remove the default outline */
-  /* Add any other custom styling for the focused state */
-}
 input, #country-id {
   width: 100%;
   border-radius: 0.375rem;
@@ -283,7 +275,6 @@ h3.createEvent {
  
 .profileCircle {
   font-size: 1em;
-  color: #fff;
   padding: 1em 1.4em;
   margin-top: 4em;
   margin-left: 67em;

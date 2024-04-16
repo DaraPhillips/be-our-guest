@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import './dashboardStyleSheet.css';
 import AuthService from './AuthService';
 import axios from 'axios';
+import WedNames from '../components/dashboard-wName.jsx'; // Import the wedNames component
 
 export default function Dashboard() {
   const [likeImages, setLikeImages] = useState(['/src/images/likeBefore.png']);
   const [pinImages, setPinImages] = useState(['/src/images/pin.png']);
-    const navigate = useNavigate();
-    const [eventDate, setEventDate] = useState(null);
-    const [timeRemaining, setTimeRemaining] = useState(null);
+  const navigate = useNavigate();
+  const [eventDate, setEventDate] = useState(null);
+  const [timeRemaining, setTimeRemaining] = useState(null);
+  const [weddingName, setWeddingName] = useState('');
 
   const toggleLikeImage = (index) => {
     const newImages = [...likeImages];
@@ -28,62 +30,66 @@ export default function Dashboard() {
         : '/src/images/pin.png';
     setPinImages(newImages);
   };
-    useEffect(() => {
-        // Fetch event date from the backend
-        axios.get('http://127.0.0.1:8000/event-date')
-            .then(response => {
-                const eventData = response.data;
-                setEventDate(new Date(eventData.date)); // Convert string date to Date object
-            })
-            .catch(error => {
-                console.error('Error fetching event date:', error);
-            });
-    }, []);
 
-    useEffect(() => {
-        // Calculate time remaining until the event
-        if (eventDate) {
-            const intervalId = setInterval(() => {
-                const now = new Date();
-                const difference = eventDate - now;
-                if (difference <= 0) {
-                    clearInterval(intervalId);
-                    setTimeRemaining('Event has started!');
-                } else {
-                    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-                    setTimeRemaining(`${days}d ${hours}h ${minutes}m ${seconds}s`);
-                }
-            }, 1000);
-            // Cleanup function to clear interval
-            return () => clearInterval(intervalId);
+  useEffect(() => {
+    // Fetch event date from the backend
+    axios.get('http://127.0.0.1:8000/event-date')
+      .then(response => {
+        const eventData = response.data;
+        setEventDate(new Date(eventData.date)); // Convert string date to Date object
+      })
+      .catch(error => {
+        console.error('Error fetching event date:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    // Calculate time remaining until the event
+    if (eventDate) {
+      const intervalId = setInterval(() => {
+        const now = new Date();
+        const difference = eventDate - now;
+        if (difference <= 0) {
+          clearInterval(intervalId);
+          setTimeRemaining('Event has started!');
+        } else {
+          const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+          setTimeRemaining(`${days}d ${hours}h ${minutes}m ${seconds}s`);
         }
-    }, [eventDate]);
+      }, 1000);
+      // Cleanup function to clear interval
+      return () => clearInterval(intervalId);
+    }
+  }, [eventDate]);
 
+  useEffect(() => {
+    // Fetch wedding name from the backend or any other source
+    // For now, I'm setting it as a static value
+    setWeddingName('John & Jane Wedding'); // Replace this with your logic to fetch wedding name
+  }, []);
 
-  
   const handleLogout = () => {
-  // Call your authentication service logout method
-  AuthService.logout();
+    // Call your authentication service logout method
+    AuthService.logout();
 
-  // Verify that the token is cleared from local storage
-  console.log("Token after logout:", localStorage.getItem('jwtToken'));
+    // Verify that the token is cleared from local storage
+    console.log("Token after logout:", localStorage.getItem('jwtToken'));
 
-  // Redirect to the login page or perform any other actions
-  navigate('/login');
-};
+    // Redirect to the login page or perform any other actions
+    navigate('/login');
+  };
 
   return (
     <div className='dashboard-page-body'>
       <div className='header-wrap-dash'>
         <h3 className="dashboard">Dashboard</h3>
-        <h1 className="weddingNames">Name and Name's Wedding</h1>
-              <div>
-                  <h1>Event Countdown</h1>
-                  {timeRemaining && <p>{timeRemaining}</p>}
-              </div>
+        <div>
+          <h2>Event Countdown</h2>
+          {timeRemaining && <p>{timeRemaining}</p>}
+        </div>
       </div>
 
       <div className='dash-sidebar'>
@@ -115,10 +121,10 @@ export default function Dashboard() {
           <li className="sideBarItems"><img className='dashSprite-imageslist' src='/src/images/help.svg' />Help</li>
         </ul>
         <ul >
-           <li className='dashlogout' onClick={handleLogout}>
-          <img className='dashSprite-imageslist' src='/src/images/logout.svg' />
-          Log out
-        </li>
+          <li className='dashlogout' onClick={handleLogout}>
+            <img className='dashSprite-imageslist' src='/src/images/logout.svg' />
+            Log out
+          </li>
         </ul>
       </div>
 
@@ -127,12 +133,15 @@ export default function Dashboard() {
           <h3 className="createEvent">Create an Event</h3>
           <div className='createEvent-box-wrapper'>
             <div className='createEventBox1' onClick={() => navigate('/createEvent')}>
-  <button className='createEvent-Button1'>
-    <img src='/src/images/addEvent.svg' />
-  </button>
-</div>
-</div>
-</div>
+              <button className='createEvent-Button1'>
+                <img src='/src/images/addEvent.svg' />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Integrate the wedNames component here */}
+        <WedNames weddingName={weddingName} />
 
         <div className='dash-recentPosts'>
           <h3 className="posts">Recent Posts</h3>

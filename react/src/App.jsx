@@ -1,6 +1,3 @@
-
-//This one works!!!!!
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -13,12 +10,10 @@ import Gallery from './Pages/Gallery';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
-import CreateEvent from './Pages/CreateEvent';
+import CreateEvent from './Pages/AddEvent';
 import ScrollToTop from './Pages/ScrollToTop'; // Import the ScrollToTop component
 import Dashboard from './Pages/Dashboard';
-import AuthService from './Pages/AuthService';
 import AddGuestList from './Pages/AddGuestList';
-
 
 function App() {
     return (

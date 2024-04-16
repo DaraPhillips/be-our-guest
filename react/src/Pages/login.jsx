@@ -83,8 +83,8 @@ export default function Login() {
                 onChange={handleChange}
               />
               {/* Eye icon for password visibility toggle */}
-              <div className="icon" onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? <SvgEye /> : <SvgClosedEye />}
+              <div className="eye" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? <SvgEye left="21.5em" /> : <SvgClosedEye left="21.5em" />}
               </div>
             </div>
             <div className="forgot">

@@ -18,10 +18,6 @@ h3 {
 }
 
 /* Form Styles */
-.addGuestDetails-container form {
-  margin-bottom: 20px;
-  padding: 20px;
-}
 
 .addGuestDetails-container {
   background-color: #d5d9e1;
@@ -53,16 +49,17 @@ h3 {
 }
 
 /* Typography and Styling */
- label {
+label {
   color: rgba(2, 9, 45, 0.46);
-    font-size: 1.8em;
-    margin-bottom: 0;
-    width: 100%;
-    font-weight: 500;
-    text-align: start;
+  font-size: 1.8em;
+  margin-bottom: 0;
+  width: 100%;
+  font-weight: 500;
+  text-align: start;
 }
 
-input, select {
+input,
+select {
   width: 100%;
   border-radius: 4px;
   border: 1px solid rgb(55, 65, 81);
@@ -72,9 +69,11 @@ input, select {
   font-size: 1.8em;
   text-align: start;
   margin-top: 0.8em;
+  background-color: #fff;
 }
 
-input, select:hover {
+input,
+select:hover {
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -98,7 +97,9 @@ input, select:hover {
 
 /* Buttons */
 .addGuest-button,
-.SendLinks-button {
+.SendLinks-button,
+.createEvent-button,
+.addNearlyWed-button {
   padding: 0.2em;
   font-size: 1.8em;
   width: 100%;
@@ -107,7 +108,7 @@ input, select:hover {
 }
 
 .addGuest-button {
-  margin-top: 3.7em;
+  margin-top: 3.3em;
 }
 
 .SendLinks-button {
@@ -118,20 +119,12 @@ input, select:hover {
   font-weight: 500;
 }
 
-.addNearlyWed-button{
+.addNearlyWed-button {
   padding: 0.2em;
   font-size: 1.8em;
   width: 100%;
   margin-top: 0.5em;
   font-weight: 500;
-}
-
-.Eye, .ClosedEye {
-  position: absolute;
-  top: 64%;
-  transform: translateY(-50%);
-  left: 18.5em;
-  width: 4em;
 }
 
 .deleteGuestIcon {
@@ -144,7 +137,16 @@ input, select:hover {
   padding: 0;
   border: none;
   box-shadow: none;
-  background: #02092D;
+  background-color: #02092D;
+}
+
+.Eye,
+.ClosedEye {
+  position: absolute;
+  top: 64%;
+  transform: translateY(-50%);
+  left: 18.5em;
+  width: 4em;
 }
 
 /* Background Image */
@@ -161,49 +163,9 @@ input, select:hover {
   background-size: cover;
 }
 
-/* Form Inputs */
-#venue-id,
-#address1-id,
-#address2-id,
-#address3-id,
-#Zip-id,
-#respondByDate,
-#time,
-#date {
-  font-size: 1.5em;
+#password-id {
+  border-radius: 4px;
 }
-
-#venue-id:focus,
-#address1-id:focus,
-#address2-id:focus,
-#address3-id:focus,
-#Zip-id:focus,
-#respondByDate:focus,
-#time:focus,
-#date:focus {
-  font-size: 1.5em;
-  outline: none;
-  border: 2px solid #c4a468;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Form Input Hover */
-#venue-id:hover,
-#address1-id:hover,
-#address2-id:hover,
-#address3-id:hover,
-#Zip-id:hover,
-#respondByDate:hover,
-#time:hover,
-#date:hover,
-input:hover {
-  font-size: 1.5em;
-  outline: none;
-  border: 2px solid #c4a468;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-#password-id {border-radius: 4px;}
 
 /* Form Inputs in Input Group */
 .input-group input {
@@ -227,14 +189,13 @@ input:hover {
 /* Form Input Group Styling */
 .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
   margin-left: calc(var(--bs-border-width) * -1);
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
+  border-radius: 4px;
 }
 
 /* Form Added Guests Icon */
 .guestListIcon {
   position: absolute;
-  top: 8em;
+  top: 7.75em;
   transform: translateY(-50%);
   left: 2em;
   width: 4em;
@@ -244,7 +205,7 @@ input:hover {
 .form-column {
   width: 33.33%; /* Adjust the width to 33.33% for each column */
   float: left;
-  padding: 2em;
+  padding: 0em 2em;
   position: relative; /* Add position relative */
 }
 
@@ -293,3 +254,133 @@ option {
 .error:not(:empty) {
   display: block;
 }
+
+/* Wedding Details Header */
+.wedding-details-header,
+.event-header h1 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 350;
+  padding-left: 1.5rem;
+}
+
+/* Event Page Wrap */
+.event-page-wrap {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 3.5em;
+}
+
+/* Event Details Container */
+.event-details-container {
+  max-width: 43em;
+  max-height: 69em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #d5d9e1;
+  border-radius: 30px;
+  padding: 7em;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  margin: 3em 0em;
+}
+
+/* Event Column 2 */
+.event-details-container .event-col2 {
+  padding-bottom: 9rem;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Add Guest Button */
+.event-details-container .add-guest-button {
+  font-size: 7px;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+
+/* Home Tab Top Thingy, Other Tab at Top */
+.event-details-container .home-tab-top-thingy,
+.event-details-container .other-tab-at-top {
+  text-align: left;
+  display: inline;
+}
+
+/* Top Yoke */
+.event-details-container .topyoke {
+  margin-top: 3rem;
+  padding-left: 3rem;
+}
+
+/* Create Event Button */
+.event-details-container .createEvent-button {
+  padding: .2em;
+  font-size: 1.8em;
+  width: 100%;
+  margin-top: 1em;
+}
+
+/* Wedding Details Page Background */
+.wedding-details-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 170%;
+  background-image: url(/src/images/createEventBackgroundImg.png);
+  opacity: 0.5;
+  z-index: -1;
+  background-size: cover;
+}
+
+/* Event Details Button Container */
+.event-details-container .event-details-buttoncontainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Venue Details, Church Details */
+.event-details-container .Venue-deets,
+.event-details-container .church-deets {
+  font-size: 1.8em;
+  margin-bottom: 0em;
+  width: 100%;
+  font-weight: 500;
+  text-align: start;
+}
+
+/* Venue Icon */
+.event-details-container .venueIcon {
+  position: absolute;
+  top: 56%;
+  transform: translateY(-50%);
+  left: 5px;
+  width: 4em;
+}
+
+/* Input Focus */
+#churchAddress3-id:focus,
+#churchName:focus,
+#churchAddress2-id:focus,
+#churchAddress1-id:focus,
+#venue-id:focus,
+#address1-id:focus,
+#address3-id:focus,
+#address2-id:focus,
+#zip-code:focus,
+#Zip-id:focus,
+#weddingTitle:focus,
+#country-id:focus,
+#respondByDate:focus,
+#date:focus,
+#time:focus,
+#church-time:focus,
+.custom-input:focus {
+  border-color: #c4a468;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+}
+

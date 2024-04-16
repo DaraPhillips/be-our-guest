@@ -186,7 +186,7 @@ export default function AddGuestList() {
                   {/* Eye icon for password visibility toggle */}
                   {field.isPassword && (
                     <div className="icon" onClick={handleTogglePassword}>
-                      {showPassword ? <SvgEye /> : <SvgClosedEye />}
+                      {showPassword ? <SvgEye margin-left="18.5em" /> : <SvgClosedEye margin-left="18.5em" />}
                     </div>
                   )}
                 </div>

@@ -28,7 +28,7 @@
 
 .sign {
   display: block;
-  width: 76%;
+  width: 80%;
   background-color: #02092D;
   padding: .2em;
   text-align: center;
@@ -48,6 +48,10 @@
   padding: 9rem;
   color: #02092D;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  display: flex; /* Add this line */
+  flex-direction: column; /* Add this line */
+  justify-content: center; /* Add this line */
+  align-items: center; /* Add this line */
 }
 
 .title {
@@ -65,7 +69,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 0 10%;
+  margin-left: 29%;
 }
 
 .signup {
