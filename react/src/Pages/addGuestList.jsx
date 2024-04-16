@@ -18,6 +18,7 @@ const inputFields = [
 ];
 
 export default function AddGuestList() {
+  
   const [showPassword, setShowPassword] = useState(false);
   const [nearlyWedInfo, setNearlyWedInfo] = useState({
     first_name: '',
@@ -130,11 +131,18 @@ export default function AddGuestList() {
   };
 
   const handleAddGuest = () => {
-    const { first_name, last_name, email } = guestInfo;
-    const fullName = `${first_name} ${last_name}`;
+  const { first_name, last_name, email } = guestInfo;
+  const fullName = `${first_name} ${last_name}`;
 
-    // Add guest to guest list
-    setGuestList((prevGuestList) => [...prevGuestList, fullName]);
+  // Create a guest object with individual properties
+  const newGuest = {
+    firstName: first_name,
+    lastName: last_name,
+    email: email, // Use the email from guestInfo
+  };
+
+  // Add the guest object to the guestList
+  setGuestList((prevGuestList) => [...prevGuestList, newGuest]);
     // setGuestInfo({
     //   first_name: '',
     //   last_name: '',
@@ -143,19 +151,16 @@ export default function AddGuestList() {
   };
 
   const handleSendInvitations = async (e) => {
-    e.preventDefault();
-    console.log('guests:', guestInfo);
-    // Prepare guest data for API request
-    const guestData = guestList.map((guest) => {
-      const [first_name, last_name] = guest.split(' '); // Split full name into first name and last name
-      return {
-        email: guestInfo.email, // Use guestInfo.email (from guestInfo state) for all guests (?)
-        first_name: first_name || '', // Extracted first name
-        last_name: last_name || '', // Extracted last name
-      };
-    });
-  
-    console.log('guests:', guestData);
+   e.preventDefault();
+
+  // No need to split guest objects
+  const guestData = guestList.map((guest) => ({
+    email: guest.email,
+    first_name: guest.firstName,
+    last_name: guest.lastName,
+  }));
+
+  console.log('guests:', guestData);
   
     // Send API request to send password email (or invitations)
     const response = await fetch('http://127.0.0.1:8000/send-password-email/', {
@@ -274,20 +279,18 @@ export default function AddGuestList() {
           </div>
 
           <div className="form-column">
-            <label className="addG-heading">Guest List</label>
-            <div className='details-group'>
-              <select id="guest-list" name="guest-list" value={selectedGuest} onChange={(e) => setSelectedGuest(e.target.value)}>
-                {/* Render guest list options */}
+            <label className="addG-heading"> Guest List</label>
+              <div className='details-group'>
+                {/* Render guest list items */}
                 {guestList.map((guest, index) => (
-                  <option key={index} value={guest}>{guest}</option>
+                  <div key={index} className='guest-item'>
+                    <span>{guest.firstName} {guest.lastName}</span>
+                    {<span>{guest.email}</span>}
+                    <button className='deleteGuestIcon' key={index} onClick={() => handleDeleteGuest(index)}>
+                      <SvgDelete />
+                    </button>
+                  </div>
                 ))}
-              </select>
-              {/* Render delete button for each guest */}
-              {guestList.map((guest, index) => (
-                <button className='deleteGuestIcon' key={index} onClick={() => handleDeleteGuest(index)}>
-                  <SvgDelete />
-                </button>
-              ))}
             </div>
             <SvgGuests color="#9093A3" />
             <div className='invitation-button-container'>
