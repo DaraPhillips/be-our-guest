@@ -152,6 +152,7 @@ input, select:hover {
   content: '';
   position: fixed;
 section #form-left{width: 50%;}
+}
 
 .wedding-details-header, h1{
     font-family: "Roboto", sans-serif;

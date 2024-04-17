@@ -22,7 +22,7 @@ h1 {
  
   display: flex;
   gap: 75px;
-
+}
 
 .wedding-details-header, h1{
     font-family: "Roboto", sans-serif;

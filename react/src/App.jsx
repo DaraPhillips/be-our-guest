@@ -21,9 +21,6 @@ import AuthService from './Pages/AuthService';
 import Invitations from './Pages/invitations';
 import RsvpPage from './Pages/rsvpPage';
 
-import AddGuestList from './Pages/AddGuestList';
-
-
 function App() {
     return (
         <Router>

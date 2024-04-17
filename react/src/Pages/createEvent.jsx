@@ -627,17 +627,14 @@ export default function CreateEvent() {
 
                         </form>
 
-                    </div>
+
+
+
 
                 </div>
 
-
-
-
-
-
-
             </div>
         </div>
-    );
-</div>)}
+    
+    </div>
+    )};
