@@ -299,7 +299,7 @@ def generate_password(length=10):
     uppercase_letters = string.ascii_uppercase
     digits = string.digits
     special_characters = string.punctuation
- 
+
     # Ensure at least one character from each category
     guaranteed_characters = [
         random.choice(lowercase_letters),
@@ -307,18 +307,18 @@ def generate_password(length=10):
         random.choice(digits),
         random.choice(special_characters),
     ]
- 
-    # Calculate the remaining length for lowercase letters
+
+    # Calculate the remaining length for all character categories
     remaining_length = length - len(guaranteed_characters)
- 
+
     # Generate the remaining characters with a preference for lowercase letters
-    password_characters = guaranteed_characters + random.choices(
-        lowercase_letters, k=remaining_length, weights=[1] * len(lowercase_letters)  # Use a weight of 1 for each lowercase letter
-    )
- 
+    character_categories = lowercase_letters + uppercase_letters + digits + special_characters
+    weights = [1] * len(lowercase_letters) + [1] * len(uppercase_letters) + [1] * len(digits) + [2] * len(special_characters)
+    password_characters = guaranteed_characters + random.choices(character_categories, k=remaining_length, weights=weights)
+
     # Shuffle the characters to ensure randomness
     random.shuffle(password_characters)
- 
+
     # Concatenate the characters to form the password
     password = ''.join(password_characters)
     return password
