@@ -18,6 +18,11 @@ import ScrollToTop from './Pages/ScrollToTop';
 import Dashboard from './Pages/dashboard';
 import AddGuestList from './Pages/addGuestList';
 import AuthService from './Pages/AuthService';
+import Invitations from './Pages/invitations';
+import RsvpPage from './Pages/rsvpPage';
+
+import AddGuestList from './Pages/AddGuestList';
+
 
 function App() {
     return (
@@ -37,7 +42,12 @@ function App() {
                         <Route path="/create_event" element={<CreateEvent />} />
                         <Route path="/createEvent" element={<CreateEvent />} />
                         <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/addGuestList" element={<AddGuestList />} />                    </Routes>
+                        <Route path="/rsvpPage" element={<RsvpPage />} />
+                        <Route path="/invitations" element={<Invitations/>} />
+
+
+                        <Route path="/addGuestList" element={<AddGuestList />} />
+                    </Routes>
                 </div>
                 <Footer />
             </div>

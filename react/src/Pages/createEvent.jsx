@@ -1,4 +1,5 @@
 /* comment */
+/* comment */
 import React, { useState, useEffect } from 'react';
 
 import { Link, Navigate } from 'react-router-dom';
@@ -19,55 +20,69 @@ import axios from 'axios';
 // import { SvgChurch } from '../Icons/SvgChurch';
 
 export default function CreateEvent() {
-
+ 
     const [eventData, setEventData] = useState({
-
-        country: '',
-
-        venue: '',
-
-        address1: '',
-
-        address2: '',
-
-        address3: '',
-
-        zip: '',
-
+        weddingTitle: '',
+        eventType: '',
+        county1: '',
+        venue1: '',
+        venue1_address1: '',
+        venue1_address2: '',
+        venue1_address3: '',
+        venue1_zip: '',
+        venue1_time: '',
+        venue2: '',
+        venue2_address1: '',
+        venue2_address2: '',
+        venue2_address3: '',
+        venue2_zip: '',
         respondByDate: '',
-
-        eventType: '2',
-
         time: '',
-
         date: ''
 
     });
+    
 
     const [eventCreated, setEventCreated] = useState(false);
 
-    const [countries, setCountries] = useState([]);
+    const [counties, setCounty] = useState([]);
 
     const [venues, setVenues] = useState([]);
+
+    const [eventType, setEventType] = useState([]);
 
 
 
 
     useEffect(() => {
 
-        // Fetch countries from backend when component mounts
+        axios.get('http://127.0.0.1:8000/event_type/')
 
-        axios.get('http://127.0.0.1:8000/countries/')
+        .then(response => {
+
+            setEventType(response.data);
+
+        })
+
+        .catch(error => {
+
+            console.error('Error fetching event types:', error);
+
+        });
+
+        // Fetch counties from backend when component mounts
+
+        axios.get('http://127.0.0.1:8000/county/')
 
             .then(response => {
 
-                setCountries(response.data);
+                setCounty(response.data);
 
             })
 
             .catch(error => {
 
-                console.error('Error fetching countries:', error);
+                console.error('Error fetching counties:', error);
 
             });
 
@@ -147,7 +162,7 @@ export default function CreateEvent() {
 
     };
 
-    const handleVenueSelect = (event) => {
+    const handleVenueSelect1 = (event) => {
 
         console.log("Venues:", venues); // Check if venues array is populated
 
@@ -162,24 +177,49 @@ export default function CreateEvent() {
         if (selectedVenue) {
 
             setEventData(prevEventData => ({
-
                 ...prevEventData,
-
                 venue: selectedVenue.venueDetailsID,
-
-                address1: selectedVenue.address1,
-
-                address2: selectedVenue.address2,
-
-                address3: selectedVenue.address3,
-
-                zip: selectedVenue.zipcode,
-
+                churchAddress1: selectedVenue.address1,
+                churchAddress2: selectedVenue.address2,
+                churchAddress3: selectedVenue.address3,
+                zip_code1: selectedVenue.zipcode, // Ensure this property matches the property in the venue object
+                
             }));
+            
 
         }
 
     };
+
+    const handleVenueSelect2 = (event) => {
+
+        console.log("Venues:", venues); // Check if venues array is populated
+
+        console.log("Venue selected:", event.target.value); // Check if venueId is correct
+
+        const venueId = parseInt(event.target.value, 10); // Convert to number
+
+        const selectedVenue = venues.find(venue => venue.venueDetailsID === venueId);
+
+        console.log("Selected venue:", selectedVenue); // Check if selectedVenue is correct
+
+        if (selectedVenue) {
+
+            setEventData(prevEventData => ({
+                ...prevEventData,
+                venue: selectedVenue.venueDetailsID,
+                address1: selectedVenue.address1,
+                address2: selectedVenue.address2,
+                address3: selectedVenue.address3,
+                zip: selectedVenue.zipcode, // Ensure this property matches the property in the venue object
+            }));
+            
+
+        }
+
+    };
+
+    
 
     if (eventCreated) {
 
@@ -232,16 +272,16 @@ export default function CreateEvent() {
 
 
                             <div className='details-group'>
-
-                                <select name="country" id="country-id" value={eventData.country} onChange={handleChange}>
+                                    {/* this is the event type dorpdown */}
+                                <select name="event" id="event-id" value={eventData.eventType1} onChange={handleChange}>
 
                                     <option key="" value="">Event type</option>
 
-                                    {/* {countries.map(country => (
+                                     {eventType.map(eventType1 => (
 
-                                        <option key={country.countriesId} value={country.countriesId}>{country.countryName}</option>
+                                        <option key={eventType1.id} value={eventType1.id}>{eventType1.name}</option>
 
-                                    ))} */}
+                                    ))}
 
                                 </select>
 
@@ -251,6 +291,48 @@ export default function CreateEvent() {
                             <hr />
 
                             <label className="church-deets" htmlFor="church-details">Church details</label>
+
+                                                        
+                            {/* COUNTRY DETAILS */}
+                                      {/* county dropdown for church or civil  */}
+                            <label className="country-deets" htmlFor="country-details"></label>
+
+                            <div className='details-group'>
+
+                                <select name="county1" id="county1-id" value={eventData.county1} onChange={handleChange}>
+
+                                    <option key="" value="">Select County</option>
+
+                                    {counties.map(county1 => (
+
+                                        <option key={county1.id} value={county1.id}>{county1.name}</option>
+
+                                    ))}
+
+                                </select>
+
+                            </div>
+
+                            <div className='details-group'>
+                                      {/* venue dorpdown for church or civil  */}
+                                <select name="venue1" id="venue1-id" value={eventData.venue1} onChange={handleVenueSelect1}>
+
+                                    <option key="" value="">Select Venue</option>
+
+                                    {venues.map((venue1) => (
+
+                                        <option key={venue1.venueDetailsID} value={venue1.venueDetailsID}>
+
+                                            {venue1.name}
+
+                                        </option>
+
+                                    ))}
+
+                                </select>
+
+                            </div>
+
 
                             <div className='details-group'>
                             <div className="input-container">
@@ -263,8 +345,8 @@ export default function CreateEvent() {
                                 />
                             {/* <div className="icon">
                                         <SvgChurch />
-                                    </div>
-                                </div> */}
+                                    </div> */}
+                                </div>
                             </div>
                             <div className='details-group'>
                                 <div className="input-container">
@@ -314,8 +396,8 @@ export default function CreateEvent() {
                             <div className="input-container">
                                     <input
                                         type="text"
-                                        name="zip-code"
-                                        id="zip-code"
+                                        name="zip_code1"
+                                        id="zip_code1"
                                         placeholder=" Zip code"
                                         onChange={handleChange}
 
@@ -367,13 +449,13 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
 
-                                <select name="country" id="country-id" value={eventData.country} onChange={handleChange}>
+                                <select name="county2" id="county2-id" value={eventData.county2} onChange={handleChange}>
 
                                     <option key="" value="">Select County</option>
 
-                                    {countries.map(country => (
+                                    {counties.map(county2 => (
 
-                                        <option key={country.countriesId} value={country.countriesId}>{country.countryName}</option>
+                                        <option key={county2.id} value={county2.id}>{county2.name}</option>
 
                                     ))}
 
@@ -383,15 +465,15 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
 
-                                <select name="venue" id="venue-id" value={eventData.venue} onChange={handleVenueSelect}>
+                                <select name="venue2" id="venue2-id" value={eventData.venue2} onChange={handleVenueSelect2}>
 
                                     <option key="" value="">Select Venue</option>
 
-                                    {venues.map((venue) => (
+                                    {venues.map((venue2) => (
 
-                                        <option key={venue.venueDetailsID} value={venue.venueDetailsID}>
+                                        <option key={venue2.venueDetailsID} value={venue2.venueDetailsID}>
 
-                                            {venue.name}
+                                            {venue2.name}
 
                                         </option>
 
