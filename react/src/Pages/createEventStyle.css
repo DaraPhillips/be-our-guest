@@ -4,6 +4,7 @@ h1 {
   font-weight: 350;
   padding-left: 1.5rem;
 }
+
 .input-container input {
   width: 100%;
   border-radius: 0.375rem;
@@ -18,16 +19,17 @@ h1 {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-
+ 
   display: flex;
   gap: 75px;
+
 
 .wedding-details-header, h1{
     font-family: "Roboto", sans-serif;
     font-weight: 350;
     padding-left: 1.5rem;
 }
-
+ 
 .event-details-container {
   width: 54em;
   height: 90em;
@@ -43,7 +45,7 @@ h1 {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   margin-top: 3em;
 }
-
+ 
 .event-details-container form {
     margin-bottom: 20px;
     padding: 20px;
@@ -136,7 +138,7 @@ color:#02092D;
   width: 17em;
   margin-top: 1em;
 }
-
+ 
 .weddingDetails-page::before {
     content: '';
     position: absolute;
@@ -247,17 +249,17 @@ color:#02092D;
   display: flex;
   align-items: center;
 }
-
+ 
 .icon svg {
   width: 20px; /* Adjust the size of the SVG */
   height: 20px;
   margin-right: 5px; /* Adjust spacing between SVG and input */
   opacity: 50%;
 }
-
-
-
-
+ 
+ 
+ 
+ 
 .input-container .icon {
   position: absolute;
   left: 10px; /* Adjust the distance from the input box */

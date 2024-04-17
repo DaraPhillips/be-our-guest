@@ -11,11 +11,12 @@ import About from './Pages/About';
 import Features from './Pages/Features';
 import Gallery from './Pages/Gallery';
 import Home from './Pages/Home';
-import Login from './Pages/Login';
+import Login from './Pages/login';
 import SignUp from './Pages/SignUp';
-import CreateEvent from './Pages/CreateEvent';
-import ScrollToTop from './Pages/ScrollToTop'; // Import the ScrollToTop component
-import Dashboard from './Pages/Dashboard';
+import CreateEvent from './Pages/createEvent';
+import ScrollToTop from './Pages/ScrollToTop'; 
+import Dashboard from './Pages/dashboard';
+import AddGuestList from './Pages/addGuestList';
 import AuthService from './Pages/AuthService';
 import Invitations from './Pages/invitations';
 import RsvpPage from './Pages/rsvpPage';

@@ -57,7 +57,7 @@ class Event(models.Model):
 
     id = models.AutoField(primary_key=True)
     date = models.DateField()
-    host_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    host_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="events")  # Related manager name
     respond_by_date = models.DateField()
     venue_1 = models.ForeignKey(
         "Venue", related_name="venue_1", on_delete=models.CASCADE
@@ -73,6 +73,8 @@ class Event(models.Model):
     venue_3_time = models.TimeField(null=True)
     wedding_type = models.ForeignKey("WeddingType", on_delete=models.CASCADE)
 
+    objects = models.Manager()  # Explicitly define the manager
+
 
 class EventInvitation(models.Model):
     """Model for guest RSVPs to events"""
@@ -83,6 +85,8 @@ class EventInvitation(models.Model):
     is_attending = models.BooleanField(default=False)
     is_emailed = models.BooleanField(default=False)
     at_table = models.ForeignKey("EventTable", on_delete=models.CASCADE, null=True)
+
+    objects = models.Manager()  # Explicitly define the manager
 
     def __str__(self):
         return f"Guest: {self.guest}, Event: {self.event}, Is Attending: {self.is_attending}, Table: {self.at_table}"
