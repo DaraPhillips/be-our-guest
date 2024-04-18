@@ -67,12 +67,19 @@ def create_event(request):
     if request.method == "POST":
         logger.debug("Extracting data from request...")
         # Extract data from request
-        event_data = request.data.get("event")
+        event_data = request.data.get("event", [])
         # Check if 'time' and 'date' fields are present
-        if "time" not in event_data or "date" not in event_data:
-            logger.error("Time and date fields are required")
+        if "time" not in event_data: 
+            logger.error("time is required")
             return Response(
-                {"error": "Time and date fields are required"},
+                {"error": "time is required", "event_data": event_data},
+                status=status.HTTP_400_BAD_REQUEST,
+             )
+           
+        if "date" not in event_data:
+            logger.error("date fields is required")
+            return Response(
+                {"error": "date fields is required"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         # Validate time and date formats
