@@ -67,19 +67,12 @@ def create_event(request):
     if request.method == "POST":
         logger.debug("Extracting data from request...")
         # Extract data from request
-        event_data = request.data.get("event", [])
+        event_data = request.data.get("event")
         # Check if 'time' and 'date' fields are present
-        if "time" not in event_data: 
-            logger.error("time is required")
+        if "time" not in event_data or "date" not in event_data:
+            logger.error("Time and date fields are required")
             return Response(
-                {"error": "time is required", "event_data": event_data},
-                status=status.HTTP_400_BAD_REQUEST,
-             )
-           
-        if "date" not in event_data:
-            logger.error("date fields is required")
-            return Response(
-                {"error": "date fields is required"},
+                {"error": "Time and date fields are required"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         # Validate time and date formats
@@ -133,19 +126,19 @@ def create_event(request):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
                 event_data.setdefault("respondByDate", None)  # Set default for optional field
-
+ 
         wedding_type_id = event_data.pop("weddingTypeID", None)
-        venue_1_id = event_data.pop("venue1ID", None)
+        venue_1_id = event_data.pop("venue_1", None)
         venue_2_id = event_data.pop("venue2ID", None)
         venue_3_id = event_data.pop("venue3ID", None)
-        venue_1_time = event_data.pop("venue1Time", None)
+        venue_1_time = event_data.pop("venue_1_time", None)
         venue_2_time = event_data.pop("venue2Time", None)
         venue_3_time = event_data.pop("venue3Time", None)
     # at_table_id = event_data.pop("atTableID", None)
-
+ 
         # Retrieve host ID from authenticated user (unchanged)
         host_id = request.user.id
-
+ 
         # Add all data to event_data dictionary
         event_data["weddingType"] = wedding_type_id
         event_data["venue_1"] = venue_1_id
@@ -155,8 +148,8 @@ def create_event(request):
         event_data["venue_2_time"] = venue_2_time
         event_data["venue_3_time"] = venue_3_time
     # event_data["at_table"] = at_table_id
-        event_data["hostUser"] = host_id
-        
+        event_data["host_user"] = host_id
+       
         logger.debug("Creating event instance...")
         # Create event instance
         event_serializer = EventSerializer(data=event_data)
@@ -182,7 +175,7 @@ def create_event(request):
         return Response(
             {"error": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED
         )
-
+        
 @api_view(["PUT", "PATCH"])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])

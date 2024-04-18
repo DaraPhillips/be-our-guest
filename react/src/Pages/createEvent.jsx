@@ -1,146 +1,261 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Navigate } from 'react-router-dom';
-import './createEventStyle.css';
-import axios from 'axios';
-
-export default function CreateEvent() {
-  const [eventData, setEventData] = useState({
-   // weddingTitle: '',
-    wedding_type: '',
-    county1: '',
-    venue1: '',
-    venue1_address1: '',
-    venue1_address2: '',
-    venue1_address3: '',
-    venue1_zip: '',
-    //venue1_time: '',
-    respondByDate: '',
-    time: '',
-    date: '',
-  });
-
-  const [eventCreated, setEventCreated] = useState(false);
-  const [counties, setCounty] = useState([]);
-  const [venues, setVenues] = useState([]);
-  const [eventType, setEventType] = useState([]);
-
-  useEffect(() => {
-    axios.get('http://127.0.0.1:8000/event_type/')
-      .then((response) => {
-        setEventType(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching event types:', error);
-      });
-
-    // Fetch counties from backend when component mounts
-    axios.get('http://127.0.0.1:8000/county/')
-      .then((response) => {
-        setCounty(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching counties:', error);
-      });
-
-    // Fetch venues from backend when component mounts
-    axios.get('http://127.0.0.1:8000/venues/')
-      .then((response) => {
-        console.log(response.data); // Add this line
-        setVenues(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching venues:', error);
-      });
-  }, []);
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setEventData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-const handleVenueSelect1 = (event) => {
-  const venueId = parseInt(event.target.value, 10); // Convert to number
-  console.log('Selected venue ID:', venueId);
-  // Check if venues array is empty before searching
-  if (!venues.length) {
-    console.error('Venue data not yet fetched or empty.');
-    return;
-  }
-
-  const selectedVenue = venues.find(
-    (venue) => venue.id === venueId
-  );
-  console.log('Selected venue ID:', selectedVenue);
-
-  if (selectedVenue) {
-    setEventData((prevEventData) => ({
-      ...prevEventData,
-      venue1: selectedVenue.id,
-      venue1_address1: selectedVenue.address1,
-      venue1_address2: selectedVenue.address2,
-      venue1_address3: selectedVenue.address3,
-      venue1_zip: selectedVenue.zipcode, // Ensure property names match
-    }));
-  } else {
-    console.error('Selected venue not found:', venueId);
-    // Add user-friendly error message to UI (e.g., toast notification)
-  }
-};
-
-  if (eventCreated) {
-    return <Navigate to="./Pages/dashboard" />;
-  }
  
-  const fetchUserDetails = async () => {
-    try {
-      const token = localStorage.getItem('jwtToken');
-  
-      let url = 'http://127.0.0.1:8000/users/';
-      if (token) {
-        url += `?token=${token}`; // Assuming your API endpoint retrieves user details by token
-      }
-  
-      const response = await axios.get(url);
-      console.log('API response:', response); // Log the entire response object
-  
-      if (response.data && response.data.id) { // Check for data & user ID
-        const userId = response.data.id;
-        console.log('Received user ID:', userId);
-        // Use the userId here (e.g., return it or store it in state)
-        return userId; // You can return the userId for further use
-      } else {
-        console.error('No user ID found in response.');
-      }
-    } catch (error) {
-      console.error('Error fetching user ID:', error);
-    }
-  };
-
-  const handleSubmit = async (event, form) => {
-    event.preventDefault(); // Prevent default form submission behavior
-    
-    const user = await fetchUserDetails();
-    const userToken = localStorage.getItem('jwtToken'); // Assuming local storage
-  
- try {
-    const response = await fetch('http://127.0.0.1:8000/create_event/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${userToken}`,
-      },
-      body: JSON.stringify(eventData), // Only send the necessary event data
+import { Link, Navigate } from 'react-router-dom';
+ 
+import './createEventStyle.css';
+ 
+import axios from 'axios';
+ 
+// import SvgCreate from '../Icons/SvgCreate';
+ 
+// import SvgTime from '../Icons/SvgTime';
+ 
+// import SvgBellIcon from '../Icons/SvgBellIcon';
+ 
+// import SvgReset from '../Icons/SvgReset';
+// import { SvgPin } from '../Icons/SvgPin';
+// import { SvgCalendar } from '../Icons/SvgCalendar';
+// import { SvgChurch } from '../Icons/SvgChurch';
+ 
+export default function CreateEvent() {
+ 
+    const [eventData, setEventData] = useState({
+        weddingTitle: '',
+        wedding_type: '',
+        county1: '',
+        venue2: '',
+        venue1_address1: '',
+        venue1_address2: '',
+        venue1_address3: '',
+        venue1_zip: '',
+        venue_1_time: '',
+        venue_1: '',
+        venue2_address1: '',
+        venue2_address2: '',
+        venue2_address3: '',
+        venue2_zip: '',
+        respond_by_date: '',
+        time: '',
+        date: ''
+       
+ 
     });
-
-    // ... handle response
-  } catch (error) {
-    console.error('Error submitting form:', error);
-  }
-};
-  
+   
+ 
+    const [eventCreated, setEventCreated] = useState(false);
+ 
+    const [counties, setCounty] = useState([]);
+ 
+    const [venues, setVenues] = useState([]);
+ 
+    const [wedding_type, setEventType] = useState([]);
+ 
+    const fetchUserDetails = async () => {
+        try {
+          const token = localStorage.getItem('jwtToken');
+     
+          let url = 'http://127.0.0.1:8000/users/';
+          if (token) {
+            url += `?token=${token}`; // Assuming your API endpoint retrieves user details by token
+          }
+     
+          const response = await axios.get(url);
+          console.log('API response:', response); // Log the entire response object
+     
+          if (response.data && response.data.id) { // Check for data & user ID
+            const userId = response.data.id;
+            console.log('Received user ID:', userId);
+            // Use the userId here (e.g., return it or store it in state)
+            return userId; // You can return the userId for further use
+          } else {
+            console.error('No user ID found in response.');
+          }
+        } catch (error) {
+          console.error('Error fetching user ID:', error);
+        }
+      };
+ 
+ 
+ 
+ 
+    useEffect(() => {
+ 
+        axios.get('http://127.0.0.1:8000/event_type/')
+ 
+        .then(response => {
+ 
+            setEventType(response.data);
+ 
+        })
+ 
+        .catch(error => {
+ 
+            console.error('Error fetching event types:', error);
+ 
+        });
+ 
+        // Fetch counties from backend when component mounts
+ 
+        axios.get('http://127.0.0.1:8000/county/')
+ 
+            .then(response => {
+ 
+                setCounty(response.data);
+ 
+            })
+ 
+            .catch(error => {
+ 
+                console.error('Error fetching counties:', error);
+ 
+            });
+ 
+        // Fetch venues from backend when component mounts
+ 
+        axios.get('http://127.0.0.1:8000/venues/')
+ 
+            .then(response => {
+ 
+                console.log(response.data); // Add this line
+ 
+                setVenues(response.data);
+ 
+            })
+ 
+            .catch(error => {
+ 
+                console.error('Error fetching venues:', error);
+ 
+            });
+ 
+    }, []); // Empty dependency array to run only once on mount
+ 
+    useEffect(() => {
+        if (eventData.county1) {
+          const countyId = parseInt(eventData.county1, 10); // Convert county1 to number
+          axios.get(`http://127.0.0.1:8000/venues/${countyId}/`)
+            .then((response) => {
+              setVenues(response.data);
+            })
+            .catch((error) => {
+              console.error('Error fetching venues:', error);
+            });
+        }
+      }, [eventData.county1]);
+ 
+ 
+      useEffect(() => {
+        if (eventData.county2) {
+          const countyId = parseInt(eventData.county2, 10); // Convert county1 to number
+          axios.get(`http://127.0.0.1:8000/venues/${countyId}/`)
+            .then((response) => {
+              setVenues(response.data);
+            })
+            .catch((error) => {
+              console.error('Error fetching venues:', error);
+            });
+        }
+      }, [eventData.county2]);
+ 
+   
+ 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+ 
+        try {
+            // Retrieve authentication token from localStorage or wherever it's stored
+            const token = localStorage.getItem('jwtToken');
+            const host_user = await fetchUserDetails();
+ 
+            // Send POST request to create event with authentication token included in headers
+            const response = await axios.post(
+                'http://127.0.0.1:8000/create_event/',
+                { event: eventData,host_user},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Include the JWT token in the Authorization header
+                    }
+                }
+            );
+ 
+            console.log('Event created successfully:', response.data);
+            setEventCreated(true);
+        } catch (error) {
+            console.error('Error creating event:', error);
+        }
+    };
+ 
+ 
+    // Event handler for input changes
+ 
+    const handleChange = (event) => {
+ 
+        const { name, value } = event.target;
+ 
+        setEventData(prevData => ({
+ 
+            ...prevData,
+ 
+            [name]: value
+ 
+        }));
+ 
+    };
+    const handleVenueSelect1 = (event) => {
+        const venueId = parseInt(event.target.value, 10); // Convert to number
+     
+        // Find the selected venue from the venues array
+        const selectedVenue = venues.find((venue) => venue.id === venueId);
+     
+        if (selectedVenue) {
+          setEventData((prevEventData) => ({
+            ...prevEventData,
+            venue2: selectedVenue.id,
+            venue1_address1: selectedVenue.address1,
+            venue1_address2: selectedVenue.address2,
+            venue1_address3: selectedVenue.address3,
+            venue1_zip: selectedVenue.zipcode, // Ensure property names match
+          }));
+        } else {
+          console.error('Selected venue not found:', venueId);
+        }
+      };
+ 
+ 
+    const handleVenueSelect2 = (event) => {
+ 
+ 
+ 
+        const venueId = parseInt(event.target.value, 10); // Convert to number
+ 
+        const selectedVenue = venues.find(venue=> venue.id === venueId);
+ 
+        console.log("Selected venue:", selectedVenue); // Check if selectedVenue is correct
+ 
+        if (selectedVenue) {
+ 
+            setEventData(prevEventData => ({
+                ...prevEventData,
+                venue_1: selectedVenue.id,
+                venue2_address1: selectedVenue.address1,
+                venue2_address2: selectedVenue.address2,
+                venue2_address3: selectedVenue.address3,
+                venue2_zip: selectedVenue.zipcode, // Ensure this property matches the property in the venue object
+            }));
+           
+ 
+        }
+ 
+    };
+ 
+   
+ 
+    if (eventCreated) {
+ 
+        return <Navigate to="./Pages/dashboard" />;
+ 
+    }
+ 
     return (
  
         <div className='weddingDetails-page'>
@@ -159,7 +274,17 @@ const handleVenueSelect1 = (event) => {
             <div className='event-page-wrap'>
  
                 {/* !!!!!! CHURCH DETAILS ON LEFT SIDE OF PAGE !!!!!! */}
-                             <div className='details-group'>
+ 
+ 
+ 
+ 
+                <div className='event-col2'>
+ 
+                    <div className='event-details-container'>
+                       
+                        <div className='church-details'>
+ 
+                            <div className='details-group'>
                             <div className="input-container">
                                     <input
                                         type="text"
@@ -175,31 +300,19 @@ const handleVenueSelect1 = (event) => {
                             </div>
  
  
-            <form onSubmit={handleSubmit}>
-
-                <div className='event-col2'>
- 
-                    <div className='event-details-container'>
-                       
-                        <div className='church-details'>
- 
-
- 
- 
                             <div className='details-group'>
                                     {/* this is the event type dorpdown */}
-                                    <select name="event" id="event-id" value={eventData.eventType1} onChange={handleChange}>
-      <option key="" value="">Event type</option>
-      {eventType.length > 0 ? (
-        eventType.map((eventType) => (
-          <option key={eventType.id} value={eventType.id}>
-            {eventType.name}
-          </option>
-        ))
-      ) : (
-        <option disabled>Loading event types...</option>
-      )}
-    </select>
+                                <select name="wedding_type" id="event-id" value={eventData.wedding_type} onChange={handleChange}>
+ 
+                                    <option key="" value="">Event type</option>
+ 
+                                     {wedding_type.map(wedding_type => (
+ 
+                                        <option key={wedding_type.id} value={wedding_type.id}>{wedding_type.name}</option>
+ 
+                                    ))}
+ 
+                                </select>
  
                             </div>
                            
@@ -207,21 +320,178 @@ const handleVenueSelect1 = (event) => {
                             <hr />
  
                             <label className="church-deets" htmlFor="church-details">Church details</label>
- 
                                                        
                             {/* COUNTRY DETAILS */}
                                       {/* county dropdown for church or civil  */}
+                                      <label className="country-deets" htmlFor="country-details"></label>
+ 
+<div className='details-group'>
+ 
+    <select name="county1" id="county1" value={eventData.county1} onChange={handleChange}>
+ 
+        <option key="" value="">Select County</option>
+ 
+        {counties.map(county1 => (
+ 
+            <option key={county1.id} value={county1.id}>{county1.name}</option>
+ 
+        ))}
+ 
+    </select>
+ 
+</div>
+<div className='details-group'>
+                                      {/* venue dorpdown for church or civil  */}
+                                <select name="venue2" id="venue2" value={eventData.venue2} onChange={handleVenueSelect1}>
+ 
+                                    <option key="" value="">Select Venue</option>
+ 
+                                    {venues.map((venue2) => (
+ 
+                                        <option key={venue2.id} value={venue2.id}>
+ 
+                                            {venue2.name}
+ 
+                                        </option>
+ 
+                                    ))}
+ 
+                                </select>
+ 
+                            </div>
+ 
+ 
+                            <div className='details-group'>
+                            <div className="input-container">
+                                <input
+                                    type="text"
+                                    name="churchName"
+                                    id="churchName"
+                                    placeholder=" Name of church"
+                                    onChange={handleChange}
+                                />
+                            {/* <div className="icon">
+                                        <SvgChurch />
+                                    </div> */}
+                                </div>
+                            </div>
+                            <div className='details-group'>
+                                <div className="input-container">
+                                    <input
+                                        type="text"
+                                        name="venue1_address1"
+                                        id="churchAddress1-id"
+                                        placeholder=" Address line 1"
+                                         onChange={handleChange}
+                                        value={eventData.venue1_address1 || ''} // Ensure value is not null
+                                        readOnly
+                                       
+                                    />
+                                    {/* <div className="icon">
+                                        <SvgPin />
+                                    </div> */}
+                                </div>
+                            </div>
+ 
+                            <div className='details-group'>
+                                <div className="input-container">
+                                    <input
+                                        type="text"
+                                        name="venue1_address2"
+                                        id="churchAddress2-id"
+                                        placeholder=" Address line 2"
+                                        onChange={handleChange}
+                                        value={eventData.venue1_address2 || ''} // Ensure value is not null
+                                        readOnly
+                                    />
+                                    {/* <div className="icon">
+                                        <SvgPin />
+                                    </div> */}
+                                </div>
+                            </div>
+                            <div className='details-group'>
+                                <div className="input-container">
+                                    <input
+                                        type="text"
+                                        name="venue1_address3"
+                                        id="churchAddress3-id"
+                                        placeholder=" Address line 3"
+                                        onChange={handleChange}
+                                        value={eventData.venue1_address3 || ''} // Ensure value is not null
+                                        readOnly
+                                    />
+                                    {/* <div className="icon">
+                                        <SvgPin />
+                                    </div> */}
+                                </div>
+                            </div>
+                            <div className='details-group'>
+                            <div className="input-container">
+                                    <input
+                                        type="text"
+                                        name="venue1_zip"
+                                        id="venue1_zip"
+                                        placeholder=" Zip code"
+                                        onChange={handleChange}
+                                        value={eventData.venue1_zip || ''} // Ensure value is not null
+                                        readOnly
+                                       
+ 
+                                    />
+                                {/* <div className="icon">
+                                        <SvgPin />
+                                    </div> */}
+                                </div>
+                            </div>
+ 
+                           
+ 
+                            <label htmlFor="username">Enter time</label>
+ 
+                            <div className='details-group'>
+                                <input type="time" id="venue_1_time" name="venue_1_time" onChange={handleChange} required />
+                            </div>
+ 
+                        </div>
+ 
+                    </div>
+ 
+                </div>
+ 
+ 
+ 
+                {/* !!!!!! CHURCH DETAILS END !!!!!! */}
+ 
+ 
+                {/* !!!!!! VENUE DETAILS ON RIGHT SIDE OF PAGE !!!!!! */}
+ 
+ 
+ 
+                <div className='event-col2'>
+ 
+                    <div className='event-details-container'>
+ 
+                        <form className='host-form' onSubmit={handleSubmit}>
+ 
+ 
+                            {/* VENUE DETAILS */}
+ 
+                            <label className="Venue-deets" htmlFor="venue-details">Venue details</label>
+ 
+                           
+                            {/* COUNTRY DETAILS */}
+ 
                             <label className="country-deets" htmlFor="country-details"></label>
  
                             <div className='details-group'>
  
-                                <select name="county1" id="county1" value={eventData.county1} onChange={handleChange}>
+                                <select name="county2" id="county2-id" value={eventData.county2} onChange={handleChange}>
  
                                     <option key="" value="">Select County</option>
  
-                                    {counties.map(county1 => (
+                                    {counties.map(county2 => (
  
-                                        <option key={county1.id} value={county1.id}>{county1.name}</option>
+                                        <option key={county2.id} value={county2.id}>{county2.name}</option>
  
                                     ))}
  
@@ -230,104 +500,181 @@ const handleVenueSelect1 = (event) => {
                             </div>
  
                             <div className='details-group'>
-  <div className="input-container">
-        <select
-        name="venue1"
-        id="venue1"
-        value={eventData.venue1}
-        onChange={handleVenueSelect1}
-        >
-        <option key="" value="">Select Venue</option>
-        {venues.map((venue1) => (
-            <option key={venue1.id} value={venue1.id}>
-            {venue1.name}
-            </option>
-        ))}
-        </select>
-  </div>
-</div>
-
-<div className='details-group'>
-  <div className="input-container">
-    <input
-      type="text"
-      name="churchAddress1"
-      id="churchAddress1-id"
-      placeholder=" Address line 1"
-      onChange={handleChange}
-      value={eventData.venue1_address1 || ''} // Autofill with venue address
-    />
-  </div>
-</div>
-
-<div className='details-group'>
-  <div className="input-container">
-    <input
-      type="text"
-      name="churchAddress2"
-      id="churchAddress2-id"
-      placeholder=" Address line 2"
-      onChange={handleChange}
-      value={eventData.venue1_address2 || ''} // Autofill with venue address
-    />
-  </div>
-</div>
-
-<div className='details-group'>
-  <div className="input-container">
-    <input
-      type="text"
-      name="churchAddress3"
-      id="churchAddress3-id"
-      placeholder=" Address line 3"
-      onChange={handleChange}
-      value={eventData.venue1_address3 || ''} // Autofill with venue address
-    />
-  </div>
-</div>
-
-<div className='details-group'>
-  <div className="input-container">
-    <input
-      type="text"
-      name="zip_code1"
-      id="zip_code1"
-      placeholder=" Zip code"
-      onChange={handleChange}
-      value={eventData.venue1_zip || ''} // Autofill with venue zip code
-    />
-  </div>
-</div>
-            <label htmlFor="username">Enter date</label>
-            <div className='details-group'>
-              <input type="date" id="event-date" name="date" onChange={handleChange} required /> {/* Added date input */}
-            </div>
-
-            <label htmlFor="username">Respond by date</label>
-            <div className='details-group'>
-              <input type="date" id="event-respondByDate" name="respondByDate" onChange={handleChange} required /> {/* Added date input */}
-            </div>
  
-                            <label htmlFor="username">Enter time</label>
+                                <select name="venue_1" id="venue_1-id" value={eventData.venue_1} onChange={handleVenueSelect2}>
+ 
+                                    <option key="" value="">Select Venue</option>
+ 
+                                    {venues.map((venue_1) => (
+ 
+                                        <option key={venue_1.id} value={venue_1.id}>
+ 
+                                            {venue_1.name}
+ 
+                                        </option>
+ 
+                                    ))}
+ 
+                                </select>
+ 
+                            </div>
+ 
+                            {/* Address fields */}
  
                             <div className='details-group'>
-                                <input type="time" id="church-time" name="time" onChange={handleChange} required />
+                            <div className="input-container">
+                                <input
+ 
+                                    type="text"
+ 
+                                    name="venue2_address1"
+ 
+                                    id="venue2_address1-id"
+ 
+                                    placeholder=" Address line 1"
+ 
+                                    onChange={handleChange}
+ 
+                                    value={eventData.venue2_address1 || ''} // Ensure value is not null
+ 
+                                    readOnly
+ 
+                                />
+                                {/* <div className="icon">
+                                        <SvgPin />
+                                    </div> */}
+                                </div>
                             </div>
-                            <button type="submit" onClick={handleSubmit}>Submit Event</button>
-
+ 
+                         
+ 
+                            <div className='details-group'>
+                            <div className="input-container">
+                                <input
+ 
+                                    type="text"
+ 
+                                    name="venue2_address2"
+ 
+                                    id="venue2_address2"
+ 
+                                    placeholder=" Address line 2"
+ 
+                                    onChange={handleChange}
+ 
+                                    value={eventData.venue2_address2 || ''} // Ensure value is not null
+ 
+                                    readOnly
+ 
+                                />
+                                {/* <div className="icon">
+                                        <SvgPin />
+                                    </div> */}
+                                </div>
                             </div>
-                        </div>
+ 
+                         
+ 
+                            <div className='details-group'>
+                            <div className="input-container">
+                                <input
+ 
+                                    type="text"
+ 
+                                    name="venue2_address3"
+ 
+                                    id="venue2_address3"
+ 
+                                    placeholder=" Address line 3"
+ 
+                                    onChange={handleChange}
+ 
+                                    value={eventData.venue2_address3 || ''} // Ensure value is not null
+ 
+                                    readOnly
+ 
+                                />
+                                {/* <div className="icon">
+                                        <SvgPin />
+                                    </div> */}
+                                </div>
+                            </div>
+ 
+                           
+ 
+                            <div className='details-group'>
+                            <div className="input-container">
+                                <input
+ 
+                                    type="text"
+ 
+                                    name="venue2_zip"
+ 
+                                    id="venue2_zip"
+ 
+                                    placeholder=" Zip code"
+ 
+                                    onChange={handleChange}
+ 
+                                    value={eventData.venue2_zip || ''} // Ensure value is not null
+ 
+                                    readOnly
+ 
+                                />
+                                {/* <div className="icon">
+                                        <SvgPin />
+                                    </div> */}
+                                </div>
+                            </div>
+ 
+                           
+ 
+                            <label htmlFor="username">Respond by date </label>
+ 
+                            <div className='details-group'>
+ 
+                                <input type="date" id="respond_by_date" name="respond_by_date" onChange={handleChange} />
+ 
+                            </div>
+ 
+                            <label htmlFor="username">Enter wedding time</label>
+ 
+                            <div className='details-group'>
+ 
+                                <input type="time" id="time" name="time" onChange={handleChange} required />
+ 
+                            </div>
+ 
+                            <label htmlFor="username">Enter wedding date  </label>
+ 
+                            <div className='details-group'>
+ 
+                                <input type="date" id="date" name="date" onChange={handleChange} />
+ 
+                            </div>
+ 
+                           
+ 
+                            <div className='event-details-buttoncontainer'>
+ 
+                                <button className='createEvent-button' type="submit">Add event  </button>
+ 
+                            </div>
+ 
+                        </form>
+ 
                     </div>
-                </form>
-                    
  
- 
- 
-                {/* !!!!!! CHURCH DETAILS END !!!!!! */}
- 
-
                 </div>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+            </div>
         </div>
-       
     );
+ 
 }
