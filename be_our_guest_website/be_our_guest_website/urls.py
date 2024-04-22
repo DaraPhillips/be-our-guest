@@ -54,7 +54,7 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    path('events/', events, name='events'),
+    path('events/<int:host_user_id>/', events, name='events'),
     path('create_event/', create_event, name='create_event'),
     path('update_event/<int:user_id>/', update_event, name='update_event'),
     path('delete_event/<int:user_id>/', delete_event, name='delete_event'),

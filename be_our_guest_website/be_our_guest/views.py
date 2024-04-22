@@ -1,14 +1,17 @@
 """
 The views for the be_our_guest app.
 """
+import json
 import random
 import string
+from typing import Optional
 from django.http import HttpResponse
 
 from datetime import datetime, date
 import re
 import logging
 import jwt
+import requests
 
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -40,7 +43,6 @@ from django.core.mail import send_mail
 
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
-
 
 
 
@@ -258,13 +260,6 @@ def dashboard(request):
         # Handle case where there are no events
         return render(request, "app/dashboard.html", {"time_remaining": None})
 
-def events(request):
-    events = Event.objects.all()
-    # Serialize all objects
-    serializer = EventSerializer(events, many=True)
-    # Return serialized data as JSON response
-    return JsonResponse(serializer.data, safe=False)
-
 @api_view(['GET'])
 def get_users(request):
     token = request.GET.get('token')
@@ -362,84 +357,88 @@ def register_user(request):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def events(request, host_user_id):
+    events = Event.objects.filter(host_user=host_user_id)  # Filter by user ID in URL path
+    serializer = EventSerializer(events, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 @api_view(['POST'])
 def send_password_email(request):
-    if request.method == 'POST':
-        # Extract recipient data from the request data
-        recipient_emails = request.data.get('recipients', [])  # Expect a list of dictionaries
+  eventData = request.data.get("eventData")
+  if isinstance(eventData, list):
+    # Access the first dictionary in the list (if applicable)
+    eventData = eventData[0]
 
-        # Validate data structure
-        if not isinstance(recipient_emails, list):
-            return Response({'error': 'Invalid request format: "recipients" list expected'}, status=400)
+  if request.method == 'POST':
+    recipient_emails = request.data.get('recipients', [])  # Expect a list of dictionaries
 
-        successful_emails = []  # Track successfully sent emails for the response
+    # Validate data structure
+    if not isinstance(recipient_emails, list):
+      return Response({'error': 'Invalid request format: "recipients" list expected'}, status=400)
 
-        for recipient in recipient_emails:
-            email = recipient.get('email')
-            first_name = recipient.get('first_name')
-            last_name = recipient.get('last_name')
+    successful_emails = []  # Track successfully sent emails for the response
 
-            if not email or not first_name or not last_name:
-                return Response({
-                    'error': 'Missing required fields: email, first_name, last_name, {email}, {first_name}, {last_name}'
-                }, status=400)
+    for recipient in recipient_emails:
+      email = recipient.get('email')
+      first_name = recipient.get('first_name')
+      last_name = recipient.get('last_name')
 
-            # Generate and validate password (same logic as before)
-            password = generate_password()
-            is_valid_password, password_error = validate_password(password)
-            if not is_valid_password:
-                return Response({'error': f'Generated password failed validation: {password_error}'}, status=400)
+      if not email or not first_name or not last_name:
+        return Response({
+          'error': 'Missing required fields: email, first_name, last_name, {email}, {first_name}, {last_name}'
+        }, status=400)
 
-            hashed_password = make_password(password)
+      # Generate and validate password (existing logic)
+      password = generate_password()
+      is_valid_password, password_error = validate_password(password)
+      if not is_valid_password:
+        return Response({'error': f'Generated password failed validation: {password_error}'}, status=400)
 
-            # Prepare user data with the generated password
-            user_data = {
-                'email': email,
-                'password': hashed_password,
-                'first_name': first_name,
-                'last_name': last_name,
-            }
+      hashed_password = make_password(password)
 
-            # Create a new user account using the serializer
-            serializer = UserSerializer(data=user_data)
-            if serializer.is_valid():
-                serializer.save()  # This will hash the password before saving the user
-                successful_emails.append(email)
+      # Prepare user data with the generated password
+      user_data = {
+        'email': email,
+        'password': hashed_password,
+        'first_name': first_name,
+        'last_name': last_name,
+      }
 
-                # Add user to EventInvitation table
-                try:
-                    event_id = request.data.get('event_id')  # Get event ID from request data (assuming it's provided)
-                    if event_id:
-                        user = User.objects.get(email=email)  # Retrieve the created user
-                        event = Event.objects.get(pk=event_id)  # Retrieve the event
-                        invitation = EventInvitation.objects.create(guest=user, event=event)
-                        invitation.is_emailed = True  # Mark the invitation as emailed
-                        invitation.save()
-                except (User.DoesNotExist, Event.DoesNotExist) as e:
-                    print(f"Error creating invitation for {email}: {e}")  # Log the error
+      user, created = User.objects.get_or_create(email=email, defaults=user_data)
 
-            else:
-                # Handle potential serializer errors (optional)
-                return Response(serializer.errors, status=400)
+      # **Create Event Invitation for each recipient:**
+      event_id = eventData["id"]
+      if event_id:
+        try:
+          event = Event.objects.get(pk=event_id)
+          invitation = EventInvitation.objects.create(guest=user, event=event, is_emailed=True)
+        except (User.DoesNotExist, Event.DoesNotExist) as e:
+          print(f"Error creating invitation for {email}: {e}")
+          # Consider returning a specific error response here
 
-            try:
-                # Send the email regardless of user creation (informational)
-                send_mail(
-                    'Your New Password',
-                    f'Your new password is: "{password}"',
-                    'sender@example.com',
-                    [email],  # Use the individual email address
-                    fail_silently=False,
-                )
-            except Exception as e:
-                # Handle potential errors (e.g., sending failure)
-                return Response({'error': f'Failed to send email to {email}: {e}'}, status=500)
+      # Construct email content with event details
+      try:
+        if request.data.get('eventData') is None:
+          raise ValueError("Missing event data in request", request.data.get('eventData'))
+        email_body = f'Hello {first_name} {last_name},\n\n'
+        email_body = f'This password grants you access to a wedding on the {eventData["date"]}.\n\nThe respond by date for this wedding is: {eventData["respond_by_date"]}. For further details on venue times please see the website using the password below\n\n'
+        email_body += f'Your password is: "{password}"\n\n'
+        send_mail(
+          'Your New Password',
+          email_body,
+          'sender@example.com',
+          [email],
+          fail_silently=False,
+        )
+        successful_emails.append(email)
+      except Exception as e:
+        return Response({'error': f'Failed to send email to {email}: {e}'}, status=500)
 
-        # Return a success message with details on sent emails
-        message = f'Password email(s) sent successfully to: {", ".join(successful_emails)}'
-        return Response({'message': message}, status=200)
-    
+    # Return a success message with details on sent emails
+    message = f'Password email(s) sent successfully to: {", ".join(successful_emails)}'
+    return Response({'message': message}, status=200)
+
 # Custom password validation function
 def validate_password(password):
     if len(password) < 8:
@@ -516,5 +515,3 @@ def login(request):
         return Response(
             {"error": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED
         )
-
-

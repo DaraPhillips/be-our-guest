@@ -166,7 +166,7 @@ export default function CreateEvent() {
             // Retrieve authentication token from localStorage or wherever it's stored
             const token = localStorage.getItem('jwtToken');
             const host_user = await fetchUserDetails();
- 
+
             // Send POST request to create event with authentication token included in headers
             const response = await axios.post(
                 'http://127.0.0.1:8000/create_event/',
