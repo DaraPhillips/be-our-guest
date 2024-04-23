@@ -145,7 +145,7 @@ export default function AddGuestList() {
   const closeSendInvitationsModal = async () => {
     setIsSendInvitationsModalOpen(false); // Close the send invitations confirmation modal
     setIsSendingInvitations(true); // Set sending invitations state to true
- 
+
     try {
       // Extracting guest data from guestList
       const guestData = guestList.map(({ fullName, email }) => ({
@@ -236,7 +236,7 @@ export default function AddGuestList() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ recipients: guestData, eventData}),
       });
- 
+       
       const data = await response.json();
  
       if (response.ok) {

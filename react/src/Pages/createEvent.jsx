@@ -657,7 +657,7 @@ export default function CreateEvent() {
  
                             <div className='event-details-buttoncontainer'>
  
-                                <button className='createEvent-button' type="submit">Add event  </button>
+                            <Link to="/dashboard"><button className='createEvent-button' type="submit">Add event  </button></Link>
  
                             </div>
  

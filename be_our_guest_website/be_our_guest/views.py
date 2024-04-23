@@ -358,6 +358,39 @@ def register_user(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+def get_invitations(request):
+  event_id = request.query_params.get('event_id')  # Get event_id from query parameters
+
+  if request.method == 'GET':
+    invitations = EventInvitation.objects.filter(event__pk=event_id) \
+      .select_related('guest', 'event')  # Optimize query
+
+    invitation_data = []
+    for invitation in invitations:
+      guest_data = {
+        'id': invitation.guest.id,
+        'email': invitation.guest.email,
+        'first_name': invitation.guest.first_name,
+        'last_name': invitation.guest.last_name,
+      }
+      event_data = {
+        'id': invitation.event.id,
+        # Add other relevant event details here (e.g., name, date)
+      }
+      invitation_data.append({
+        'guest': guest_data,
+        'event': event_data,
+        'is_attending': invitation.is_attending,
+        'is_emailed': invitation.is_emailed,
+      })
+
+    if not invitations:
+      return Response({'message': 'No invitations found for the specified event ID.'}, status=404)
+
+    return Response(invitation_data, status=200)
+
+
+@api_view(['GET'])
 def events(request, host_user_id):
     events = Event.objects.filter(host_user=host_user_id)  # Filter by user ID in URL path
     serializer = EventSerializer(events, many=True)
