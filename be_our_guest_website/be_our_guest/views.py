@@ -363,7 +363,7 @@ def get_invitations(request):
 
   if request.method == 'GET':
     invitations = EventInvitation.objects.filter(event__pk=event_id) \
-      .select_related('guest', 'event')  # Optimize query
+      .select_related('guest', 'event')  
 
     invitation_data = []
     for invitation in invitations:
@@ -375,7 +375,6 @@ def get_invitations(request):
       }
       event_data = {
         'id': invitation.event.id,
-        # Add other relevant event details here (e.g., name, date)
       }
       invitation_data.append({
         'guest': guest_data,

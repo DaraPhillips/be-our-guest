@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './addGuestList.css';
 import SvgName from '../Icons/Name';
@@ -225,10 +225,9 @@ export default function AddGuestList() {
       const eventData = await eventResponse.json();
     
       const event_Id = eventData[0].id;
-    
-      console.log("Event ID: ", event_Id,": ", eventData);
+      fetchSentGuests(event_Id);
 
-      
+      console.log("Event ID: ", event_Id,": ", eventData);
 
       // Send API request to send invitations
       const response = await fetch('http://127.0.0.1:8000/send-password-email/', {
@@ -243,8 +242,8 @@ export default function AddGuestList() {
         // Handle successful email sending
         console.log('Invitations sent successfully:', data.message);
         setInvitationsSent(true); // Update state to indicate invitations sent
-        setSentGuests([...sentGuests, ...guestList]); // Add sent guests to the sentGuests state variable
-        setGuestList([]); // Clear guest list after successful sending
+        // setSentGuests([...sentGuests, ...guestList]); // Add sent guests to the sentGuests state variable
+        // setGuestList([]); // Clear guest list after successful sending
  
         // Reset invitationsSent state after 3 seconds
         setTimeout(() => {
@@ -260,8 +259,26 @@ export default function AddGuestList() {
       // Reset sending state
       setIsSendingInvitations(false);
     }
+
   };
- 
+
+  const fetchSentGuests = async (eventId) => {
+    try {
+      const accessToken = localStorage.getItem('jwtToken');
+      if (accessToken && eventId) {
+        const response = await axios.get(`http://127.0.0.1:8000/get_invitations/?event_id=${eventId}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        const sentGuestData = response.data;
+        setSentGuests(sentGuestData);
+        console.log('Invitees:', sentGuestData); 
+      } else {
+        console.error('No access token or event ID found for fetching sent guests.');
+      }
+    } catch (error) {
+      console.error('Error fetching sent guests:', error);
+    }
+  };
   // Function to delete a guest
   const handleDeleteGuest = (index) => {
     // Set the selected guest index to prompt for confirmation
@@ -426,17 +443,17 @@ export default function AddGuestList() {
           {/* <button className='cancel-button' type="submit">Cancel</button> */}
         </div>
       </div>
- 
-      {/* Display the guest list */}
       <div className='sent-guests'>
-            <h2 className='sentEmails'>Your wedding guest list ({sentGuests.length})</h2>
-            <ol className='sentEmailsContainer'>
-              {/* Map through the sentGuests array and display each guest */}
-              {sentGuests.map((guest, index) => (
-                <li key={index}>{guest.fullName} - {guest.email}</li>
-              ))}
-            </ol>
-          </div>
+        <h2>Your wedding guest list ({sentGuests.length})</h2>
+        <ol className='sentEmailsContainer'>
+        {sentGuests.map((invitee, index) => (
+          <li key={index}>
+            {/* Assuming event details aren't needed for display */}
+            {invitee.guest.fullName} - {invitee.guest.email}
+          </li>
+        ))}
+        </ol>
+      </div>  
  
       {/* Confirmation modal for deleting a guest */}
       {selectedGuestIndex !== null && (
