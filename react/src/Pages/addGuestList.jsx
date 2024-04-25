@@ -225,7 +225,7 @@ export default function AddGuestList() {
       const eventData = await eventResponse.json();
     
       const event_Id = eventData[0].id;
-      fetchSentGuests(event_Id);
+      
 
       console.log("Event ID: ", event_Id,": ", eventData);
 
@@ -237,7 +237,7 @@ export default function AddGuestList() {
       });
        
       const data = await response.json();
- 
+      fetchSentGuests(event_Id);
       if (response.ok) {
         // Handle successful email sending
         console.log('Invitations sent successfully:', data.message);
