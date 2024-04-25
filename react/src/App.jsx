@@ -10,13 +10,14 @@ import Gallery from './Pages/Gallery';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
-import CreateEvent from './Pages/AddEvent';
+import CreateEvent from './Pages/addEvent';
 import ScrollToTop from './Pages/ScrollToTop'; // Import the ScrollToTop component
 import Dashboard from './Pages/Dashboard';
 import Invitations from './Pages/invitations';
 import RsvpPage from './Pages/rsvpPage';
 
 import AddGuestList from './Pages/AddGuestList';
+import CrudEvent from './Pages/crudEvent';
 
 function App() {
     return (
@@ -38,7 +39,7 @@ function App() {
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/rsvpPage" element={<RsvpPage />} />
                         <Route path="/invitations" element={<Invitations/>} />
-
+                        <Route path="/crudEvent" element={<CrudEvent/>} />
 
                         <Route path="/addGuestList" element={<AddGuestList />} />
                     </Routes>

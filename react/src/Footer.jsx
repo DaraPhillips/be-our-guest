@@ -19,14 +19,13 @@ export default function Footer() {
             <ul>
               <li className="copyRight"><SvgCPRIGHT />{/* Add your SvgCPRIGHT component here */} 2024 BeOurGuest, Inc.</li>
               <li className="copyRight">All rights reserved</li>
-              <li className="copyRight">Do not Share My Personal Information</li>
-              
+              <li className="copyRight">Do not Share My Personal Information</li> 
             </ul>
           </div>
 
           {/* Column 2 */}
           <div className="col">
-            <h4>Menu</h4>
+            <h4 className='head4'>Menu</h4>
             <ul className="list-unstyled">
               <li><Link to="/home">Home</Link></li>
               <li><Link to="/about">About</Link></li>
@@ -37,7 +36,7 @@ export default function Footer() {
 
           {/* Column 3 */}
           <div className="col">
-            <h4>Follow</h4>
+            <h4 className='head4'>Follow</h4>
             <ul className="list-unstyled">
               <li><a href="https://twitter.com/?lang=en" className="footer-link" target="_blank" rel="noopener noreferrer">X</a></li>
               <li><a href="https://www.reddit.com/?rdt=38743" className="footer-link" target="_blank" rel="noopener noreferrer">Reddit</a></li>
@@ -48,16 +47,12 @@ export default function Footer() {
 
           {/* Column 4 */}
           <div className="col">
-            <h4>Get Started</h4>
+            <h4 className='head4'>Get Started</h4>
             <ul className="list-unstyled">
               <li><Link to="/login" className="footer-link">Log in</Link></li>
               <li><Link to="/signUp" className="footer-link">Sign up</Link></li>
-              <Link to="/createEvent"><li>CreateEvent Page</li></Link>
               <Link to="/rsvpPage"><li>rsvp Page</li></Link>
               <li><Link to="/invitations" className="footer-link">Inv</Link></li>
-
-
-              
             </ul>
           </div>
         </div>

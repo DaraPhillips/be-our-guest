@@ -22,7 +22,7 @@ from be_our_guest.viewsets import EventViewSet, UsersViewSet
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
-from be_our_guest.views import create_event, events, login, get_venues, update_event, get_event_type, get_county
+from be_our_guest.views import create_event, events, login, get_venues, update_event, get_event_type, update_event, delete_event, get_county,get_venues_by_county_and_event_type, get_event_date, get_event_title, get_invitations
 from be_our_guest import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.contrib.auth.views import LogoutView
@@ -53,13 +53,15 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    path('events/', events, name='events'),
+    path('events/<int:host_user_id>/', events, name='events'),
     path('create_event/', create_event, name='create_event'),
     path('update_event/<int:event_id>/', update_event, name='update_event'),
- 
-    path('users/', views.get_users, name='users'),
+    path ('get_event_date/<int:user_id>/', get_event_date, name='get_event_date'),
+    path ('get_event_title/<int:user_id>/', get_event_title, name='get_event_title'),
+
 
     path('venues/<int:id>/', views.get_venues_by_county, name='get_venues_by_country'),
+    path('get_invitations/', views.get_invitations, name='get_invitations'),
 
     path('users/', views.get_users, name='users'),
     path('register/', views.register_user, name='register'),

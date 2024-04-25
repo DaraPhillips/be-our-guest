@@ -141,3 +141,11 @@
 }
 
 .password-rule {font-size: 14px; color: red; padding-top: .5em;}
+
+.toggle {
+  position: absolute;
+  top: 3em;
+  transform: translateY(-50%);
+  left: 0em;
+  width: 4em;
+}

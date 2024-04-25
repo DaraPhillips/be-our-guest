@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import './addEvent.css';
+
 import axios from 'axios';
 
-export default function CreateEvent() {
+export default function CrudEvent() {
     const [eventData, setEventData] = useState({
         weddingTitle: '',
         wedding_type: '',

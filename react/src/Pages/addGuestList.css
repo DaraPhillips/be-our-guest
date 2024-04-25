@@ -24,23 +24,46 @@ h3 {
   border-radius: 30px;
   padding: 1em;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-  margin: 3.5em 10%;
-  min-height: 34em; /* Change height to min-height */
+  margin: 3.5em 5%; /* Adjusted margin for smaller screens */
+  min-height: 29em;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 }
 
-/* Layout */
-.event-col1,
-.event-col2,
-.event-col3 {
-  display: flex;
-  justify-content: center;
-  gap: 75px;
-  padding-bottom: 7rem;
+/* Media Queries for Responsiveness */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .addGuestDetails-container {
+    margin: 3.5em 5%;
+    padding: 1.5em;
+  }
 }
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .addGuestDetails-container {
+    margin: 3.5em 10%;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .addGuestDetails-container {
+    margin: 3.5em 15%;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .addGuestDetails-container {
+    margin: 3.5em 17%;
+  }
+}
+
+/* Layout */
 
 .breadcrumb-container {
   margin-top: 3rem;
@@ -63,18 +86,13 @@ select {
   width: 100%;
   border-radius: 4px;
   border: 1px solid rgb(55, 65, 81);
-  padding: .3em 2.5em;
+  padding: .3em 2em;
   color: #02092d;
   font-weight: 500;
   font-size: 1.8em;
   text-align: start;
   margin-top: 0.8em;
   background-color: #fff;
-}
-
-input,
-select:hover {
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Breadcrumb Navigation */
@@ -108,46 +126,117 @@ select:hover {
 }
 
 .addGuest-button {
-  margin-top: 3.3em;
+  margin-top: 1.5em;
 }
+
+/* Separator line */
+
+.line1 {
+  width: 100%;
+  max-width: 39em;
+  height: 3px;
+  background-color: white;
+  margin: 3em 0;
+}
+
+.line-container {background-color: none;}
+
+/*Send links/ Cancel Button Container */
 
 .SendLinks-button {
   padding: 0.2em;
   font-size: 1.8em;
-  width: 100%;
-  margin-top: 9em;
+  width: 75%;
   font-weight: 500;
+  background: #02092d;
+  color: white;
+  text-align: center;
+  border-radius: 50px;
+  border: 3px solid #02092d;
 }
+
+.SendLinks-button:hover {
+  padding: 0.2em;
+  font-size: 1.8em;
+  width: 75%;
+  font-weight: 500;
+  background:#c4a468;
+  color: white;
+  text-align: center;
+  border-radius: 50px;
+  border: 3px solid #02092d;
+}
+
+.cancel-button {padding: 0.2em;
+  font-size: 1.8em;
+  width: 25%;
+  font-weight: 500;
+  background-color: #fff;
+  border: 3px solid #02092d;
+  color: #02092d;}
+
+  .cancel-button:hover {padding: 0.2em;
+    font-size: 1.8em;
+    width: 25%;
+    font-weight: 500;
+    border: 3px solid #02092d;
+    color: #ffffff;
+    background-color: #c4a468;}
+
+    .invitation-button-container {
+      margin-top: 0.5em;
+      margin-bottom: 1.5em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2em;
+      width: 30em;
+      background: #fff;
+      padding: 2em 0em;
+      border-radius: 20em;
+    }
 
 .addNearlyWed-button {
   padding: 0.2em;
   font-size: 1.8em;
   width: 100%;
-  margin-top: 0.5em;
+  margin: 1.5em 0em;
   font-weight: 500;
 }
 
 .deleteGuestIcon {
-  position: absolute;
-  top: 12%;
-  transform: translateY(-50%);
-  left: 10.75em;
-  width: 4em;
-  background: none;
-  padding: 0;
-  border: none;
-  box-shadow: none;
-  background-color: #02092D;
-}
 
-.Eye,
-.ClosedEye {
-  position: absolute;
-  top: 64%;
-  transform: translateY(-50%);
-  left: 18.5em;
-  width: 4em;
-}
+  padding: 0em 0em;
+  font-size: 0em;
+  letter-spacing: 0px;
+  font-size: 0em;
+  letter-spacing: 0px;
+  color: #ffffff;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  vertical-align: text-top;
+  }
+
+  .deleteGuestIcon:hover {
+
+    padding: 0em 0em;
+    font-size: 0em;
+    letter-spacing: 0px;
+    font-size: 0em;
+    color: #ffffff;
+    cursor: pointer;
+    background-color: transparent;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
+    vertical-align: text-top;
+    }
+
+  .secondName{
+    margin-left: 1em;
+    margin-right: 4em;
+    }
+
+
 
 /* Background Image */
 .weddingDetails-page::before {
@@ -181,7 +270,7 @@ select:hover {
   padding: 0.75rem 4rem;
   color: #02092d;
   font-weight: 500;
-  font-size: 1.8em;
+  font-size: 1.5em;
   text-align: start;
   margin-top: 0.8em;
 }
@@ -203,22 +292,17 @@ select:hover {
 
 /* Form Column */
 .form-column {
-  width: 33.33%; /* Adjust the width to 33.33% for each column */
+  width: 50%;
   float: left;
-  padding: 0em 2em;
-  position: relative; /* Add position relative */
+  padding: 0em 1em;
+  position: relative;
 }
 
-/* Vertical Separator Line */
-.form-column:not(:last-child):after {
-  content: "";
-  position: absolute;
-  top: 2em;
-  right: 0;
-  bottom: 5em;
-  width: 2px; /* Width of the separator line */
-  background-color: #fff; /* Color of the separator line */
-  border-radius: 4px;
+.form-nearly-column {
+  width: 100%;
+  float: left;
+  padding: 0em 2em;
+  position: relative;
 }
 
 .addGuest-headings {
@@ -384,3 +468,283 @@ option {
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
 
+.form-Nearlywed-column {
+  width: 50%;
+  float: left;
+  padding: 0em 2em;
+  position: relative;
+}
+
+/* Style for blurred background */
+body.-active {
+  filter: blur(5px);
+}
+
+/* Style for blurred background */
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  backdrop-filter: blur(5px); /* Apply the blur effect */
+  z-index: 9998; /* Ensure the background appears behind the modal */
+}
+
+/* Style for modal */
+.confirmation-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 4em;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.cancelBtn, .confirm-button {
+  margin: 0 10px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #02092d;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 1em;
+  border-radius: 50px;
+  padding: .5em 1em;
+}
+
+.cancelBtn:hover, .confirm-button:hover {
+  background-color: #c4a468;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  border-radius: 50px;
+  border: 3px solid #02092d;
+  box-shadow: 0px 8px 15px rgba(184, 178, 13, 0.1);
+}
+
+.guest-item-guest-header {
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  margin-top: 1.25em;
+  border: 1px solid #02092d;
+  border-radius: 4px;
+}
+
+.guest-item {
+  color: #02092d;
+  text-align: right;
+  border-bottom: 1px solid #02092d;
+  padding: .75em .75em;
+}
+
+.guest-emails {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #02092d;
+  padding: 0.5em 0.5em;
+  margin-top: 1.5em;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.host-form1 {
+  width: 100%;
+  max-width: 55em;
+  margin-top: auto;
+}
+
+/* Guest List - with invites sent! */
+
+.sent-guests {
+  background-color: #d5d9e1;
+  border-radius: 30px 30px 0px 0px;
+  padding: 1em;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  min-height: 17em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 79em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sentEmails {
+  margin-top: 1.5em;
+  color: #74798f;
+  margin-bottom: 1em;
+}
+
+.sentEmailsContainer {
+  background-color: #fff;
+  padding: 1em 2em;
+  width: 60%;
+  border: 1px solid #02092d;
+  border-radius: 4px;
+}
+
+/* CSV UPLOAD */
+
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.file-upload-input {
+  display: none; /* Hide the default file input */
+}
+
+.custom-file-upload-button {
+  padding: 0.2em;
+  font-size: 1.8em;
+  width: 100%;
+  font-weight: 500;
+  background: #ffffff;
+  color: #02092d;
+  text-align: center;
+  border-radius: 50px;
+  border: 3px solid #02092d;
+}
+
+.custom-file-upload-button:hover {
+  background-color: #676b85;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.custom-file-upload-label {
+  padding: 0.5em;
+  font-size: 1.5em;
+  width: 100%;
+  text-align: center;
+  border-radius: 50px;
+  border: 3px solid #02092d;
+  background-color: #02092d;
+  color: white;
+}
+
+.custom-file-upload-label:hover {
+  background-color: #676b85;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.uploaded-file-details {
+  font-size: 1.2em;
+  margin-top: 1em;
+}
+
+.uploaded-file-name {
+  margin-top: 0.5em;
+  font-weight: bold;
+}
+
+.uploaded-file-count {
+  margin-top: 0.5em;
+}
+
+.uploaded-file-error {
+  margin-top: 0.5em;
+  color: red;
+}
+
+/* Wedding Host Page */
+
+.wedding-host-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(/src/images/hostPageImg.svg);
+  opacity: 0.5;
+  z-index: -1;
+  background-size: cover;
+}
+
+.weddingHost-headings {
+  font-size: 2.8em;
+  margin-bottom: 0;
+  width: 100%;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Contact Info Container */
+.contact-info-container {
+  max-width: 43em;
+  max-height: 39em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #d5d9e1;
+  border-radius: 30px;
+  padding: 7em;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  margin: 3em auto;
+}
+
+/* Send Links Button */
+.send-links-button {
+  padding: 0.2em;
+  font-size: 1.8em;
+  width: 100%;
+  margin-top: 1em;
+  font-weight: 500;
+}
+
+/* Event Details Button Container */
+.contact-info-container .event-details-buttoncontainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* View Links Button */
+.contact-info-container .view-links-button {
+  margin-top: 1em;
+}
+
+/* Hide 'Create Event' and 'Go to Dashboard' Buttons on Small Screens */
+@media (max-width: 576px) {
+  .event-details-container .createEvent-button,
+  .contact-info-container .event-details-buttoncontainer {
+    display: none;
+  }
+
+  .form-column {
+    width: 100%;
+    float: left;
+    padding: 0em 1em;
+    position: relative;
+  }
+
+  .invitation-button-container {
+    margin-top: 0em;
+    margin-bottom: 1.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0em;
+    width: 30em;
+    background: none;
+    padding: .5em .2em;
+    border-radius: 25em;
+  }
+
+  .SendLinks-button {width: 75%;
+                     padding: .25em .2em;}
+}

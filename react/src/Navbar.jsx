@@ -126,7 +126,7 @@ const Navbar = () => {
       )}
 
       {/* Conditional rendering for different routes */}
-      <div>
+      <div className='logInContainer'>
         {location.pathname === '/create_event' ? (
           <button className="createEventButton" onClick={handleButtonClick}>
             {buttonText}

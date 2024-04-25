@@ -196,11 +196,27 @@
 
   .Eye, .ClosedEye {
     position: absolute;
-    top: 64%;
+    top: 57%;
     transform: translateY(-50%);
-    left: 21.8em;
+    left: 21.5em;
     width: 4em;
   }
+
+.iconB
+ {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4em;
+}
+
+.eye{
+  position: absolute;
+  top: 2em;
+  transform: translateY(-50%);
+  left: 0em;
+  width: 4em;
+}
 
 
   /*Media Queries*/
@@ -456,3 +472,5 @@ p.error-message{
   margin-left: -9.5em;}
 
 }
+
+#login-password {margin: 0em;}
