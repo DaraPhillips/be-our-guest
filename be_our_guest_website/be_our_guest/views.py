@@ -61,8 +61,8 @@ def index(_) -> HttpResponse:
 
 
 @api_view(["POST"])
-@authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
 def create_event(request):
     logger = logging.getLogger(__name__)
     logger.info("Received request to create event")
@@ -261,6 +261,7 @@ def dashboard(request):
         return render(request, "app/dashboard.html", {"time_remaining": None})
 
 @api_view(['GET'])
+@permission_classes([AllowAny])  # Override parent permissions
 def get_users(request):
     token = request.GET.get('token')
     if token:
@@ -283,18 +284,21 @@ def get_users(request):
         return Response(data)
  
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def get_venues(request):
     venues = Venue.objects.all()
     serializer = VenueSerializer(venues, many=True)
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(["GET"])
+@permission_classes([AllowAny]) 
 def get_event_type(request):
     event_types = WeddingType.objects.all()
     serializer = WeddingTypeSerializer(event_types, many=True)
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(["GET"])
+@permission_classes([AllowAny]) 
 def get_county(request):
     counties = County.objects.all()
     serializer = CountySerializer(counties, many=True)
@@ -358,6 +362,7 @@ def register_user(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@permission_classes([AllowAny]) 
 def get_invitations(request):
   event_id = request.query_params.get('event_id')  # Get event_id from query parameters
 
@@ -390,12 +395,14 @@ def get_invitations(request):
 
 
 @api_view(['GET'])
+@permission_classes([AllowAny]) 
 def events(request, host_user_id):
     events = Event.objects.filter(host_user=host_user_id)  # Filter by user ID in URL path
     serializer = EventSerializer(events, many=True)
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(['POST'])
+@permission_classes([AllowAny]) 
 def send_password_email(request):
   eventData = request.data.get("eventData")
   if isinstance(eventData, list):
@@ -438,13 +445,13 @@ def send_password_email(request):
       }
 
       user, created = User.objects.get_or_create(email=email, defaults=user_data)
-
+      user_id = user.id
       # **Create Event Invitation for each recipient:**
       event_id = eventData["id"]
       if event_id:
         try:
           event = Event.objects.get(pk=event_id)
-          invitation = EventInvitation.objects.create(guest=user, event=event, is_emailed=True)
+          invitation = EventInvitation.objects.get_or_create(guest=user, event=event, is_emailed=True)
         except (User.DoesNotExist, Event.DoesNotExist) as e:
           print(f"Error creating invitation for {email}: {e}")
           # Consider returning a specific error response here
@@ -454,8 +461,10 @@ def send_password_email(request):
         if request.data.get('eventData') is None:
           raise ValueError("Missing event data in request", request.data.get('eventData'))
         email_body = f'Hello {first_name} {last_name},\n\n'
-        email_body = f'This password grants you access to a wedding on the {eventData["date"]}.\n\nThe respond by date for this wedding is: {eventData["respond_by_date"]}. For further details on venue times please see the website using the password below\n\n'
-        email_body += f'Your password is: "{password}"\n\n'
+        email_body = f'This password grants you access to a wedding on the {eventData["date"]}.\n\nThe respond by date for this wedding is: {eventData["respond_by_date"]}. For further details on venue times please see the website(http://localhost:5173/login) using the password below\n\n'
+        if User.DoesNotExist:
+            email_body += f'Your password is: "{password}"\n\n'
+            
         send_mail(
           'Your New Password',
           email_body,
@@ -484,6 +493,7 @@ def validate_password(password):
     return True, None
 
 @api_view(["GET"])
+@permission_classes([AllowAny])  # Override parent permissions
 def get_venues_by_county(request, id ):
     venues = Venue.objects.filter(county_id=id)
     serializer = VenueSerializer(venues, many=True)
@@ -496,8 +506,8 @@ def get_venues_by_county_and_event_type(request, county_id, venue_type_id):
     return JsonResponse(serializer.data, safe=False)
 
 @authentication_classes([JWTAuthentication])
-@permission_classes([AllowAny])
 @api_view(["POST"])
+@permission_classes([AllowAny])  # Override parent permissions
 def login(request):
     if request.method == "POST":
         # Extract email and password from the request data

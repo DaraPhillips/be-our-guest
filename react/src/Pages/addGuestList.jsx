@@ -449,7 +449,7 @@ export default function AddGuestList() {
         {sentGuests.map((invitee, index) => (
           <li key={index}>
             {/* Assuming event details aren't needed for display */}
-            {invitee.guest.fullName} - {invitee.guest.email}
+            {invitee.guest.first_name} - {invitee.guest.email}- {invitee.is_attending ? 'Attending' : 'Not attending'}
           </li>
         ))}
         </ol>
