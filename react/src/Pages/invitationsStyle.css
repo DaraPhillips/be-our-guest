@@ -1,126 +1,222 @@
-
 .top-boxes, .second-row {
-    display: flex;
-    justify-content: center; /* Adjust as needed */
-    gap: 75px;
-    
+  display: flex;
+  justify-content: center; /* Adjust as needed */
+  gap: 75px;
+  margin-top: 3rem;
 }
-
-
-
+ 
 .second-row {
-    margin-top: 3rem;
-    margin-bottom: 3rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
-
-
+ 
 h4,
 h5{
-  color: #393b49;
-
+color: #02092D;
 }
-
-
-a{
-    text-decoration: none;
-}
-
-.inv-button{
-   text-align: center;
-   
-    width: 400px;
-    height: 400px;
-    border-radius: 40px;
-    background: #ffffff;
-    /* box-shadow:  6px 6px 11px #c3c3c3,
-             -6px -6px 11px #fdfdfd; */
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-color:#a8a8a8;
-
-    
-    }
-
-.inv-button:hover{
-    background-color: #FAFAFA;
-    box-shadow: 0px 15px 20px #393b49;
-    color: #676B85;
-    transform: translateY(0);
-    border-color: #C4A468;
-}
-
-
-  
-  .inv-icon svg {
-    width: 60px; /* Adjust the size of the SVG */
-    height: 60px;
-    opacity: 100%;
-    padding-bottom: 1rem;
-    
-  }
-
-  .my-invBox {
-    display: flex;
-    justify-content: center; /* Center the button horizontally */
-    align-items: flex-end; /* Align the icons to the bottom of the button */
-  }
-  
  
-  
-  .inv-icons {
-    display: flex;
-    justify-content: center; /* Center the icons horizontally */
-    align-items: flex-end; /* Align the icons to the bottom of the button */
-    margin-top: auto; /* Push icons to the bottom */
-  }
-  
-
-  
-  .inv-icon:first-child {
-    margin-right: 40px; /* Increase margin for the first icon */
-  }
-  
-  .inv-icon:last-child {
-    margin-left: 40px; /* Increase margin for the last icon */
-  }
-  .inv-button {
-    position: relative; /* To position the list relative to the button */
+.inv-date,
+.inv-atlocation,
+.inv-location,
+.inv-wedding-title{
+color: #02092D;
 }
-
-
-
+.inv-wedding-title{
+font-size: 1.75rem;
+font-family: "Vidaloka", serif;
+font-weight: 400;
+}
+ 
+.inv-location{
+font-family: "Roboto", sans-serif;
+}
+ 
+a{
+  text-decoration: none;
+}
+ 
+.inv-button{
+ text-align: center;
+ 
+  width: 20em;
+  height: 20em;
+  border-radius: 40px;
+  box-shadow:  6px 6px 11px #c3c3c3,
+           -6px -6px 11px #fdfdfd;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-color:#ffffff;
+  position: relative; /* To position the list relative to the button */
+ 
+  background-size: cover;
+  background-position: center;
+ 
+ 
+  }
+  .inv-button-img{
+     border-radius: 40px;
+     background-size: cover;
+     background-position: center;
+     position: relative;
+     
+     
+     }
+ 
+.inv-button:hover{
+  /* background-color: #FAFAFA; */
+  box-shadow: 0px 15px 20px #393b49;
+  color: #676B85;
+  transform: translateY(0);
+ 
+}
+ 
+.inv-icon svg {
+  width: 2.8em;
+  height: auto;
+  opacity: 100%;
+}
+ 
+.my-invBox {
+  display: flex;
+  justify-content: center; /* Center the button horizontally */
+  align-items: flex-end; /* Align the icons to the bottom of the button */
+}
+ 
+.inv-icons {
+  display: flex;
+  justify-content: center; /* Center the icons horizontally */
+  align-items: flex-end; /* Align the icons to the bottom of the button */
+  margin-top: auto; /* Push icons to the bottom */
+}
+ 
+.inv-icon:first-child {
+  margin-right: 40px;
+}
+ 
+.inv-icon:last-child {
+  margin-left: 40px;
+}
+ 
 .inv-button ul {
-    position: absolute;
-    left: 0;
-    top: 50%; /* Adjust as needed */
-    transform: translateY(-50%);
-    width: 100%; /* Ensure the list takes the full width of the button */
-    padding: 0;
-    list-style: none;
-    text-align: left; /* Align list items to the left */
-    padding-left: 5rem;
-    padding-bottom: 5rem;
+  position: absolute;
+  left: 0;
+  top: 50%; /* Adjust as needed */
+  transform: translateY(-50%);
+  width: 100%; /* Ensure the list takes the full width of the button */
+  padding: 0;
+  list-style: none;
+  text-align: left; /* Align list items to the left */
+  padding-left: 5rem;
+  padding-bottom: 3rem;
 }
-
+ 
 .inv-button ul li {
-    margin-bottom: 25px; /* Adjust spacing between list items */
+  margin-bottom: 25px; /* Adjust spacing between list items */
 }
-
+ 
 .inv-button ul li h2,
 .inv-button ul li h4,
 .inv-button ul li h5 {
-    margin: 0;
+  margin: 0;
 }
  
-  
-
+.inv-button-background{
+width: 400px;
+height:400px;
+}  
  
-
-
-  
-
-
-
+ 
+.inv-icon:nth-child(1):hover svg {
+fill: rgb(147, 207, 147); /* Change to the desired color for Yes */
+}
+ 
+.inv-icon:nth-child(3):hover svg {
+fill: rgb(233, 190, 197); /* Change to the desired color for No */
+}
+ 
+.inv-button-img::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(255, 255, 255, 0.6);
+}
+ 
+.card {
+  background-color: #D5D9E1;
+  border-radius: 36px;
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  max-width: 18em;
+  max-height: 50em;
+  border: none;
+  margin-top: 2em;
+}
+ 
+.card:hover {
+  border: 2px solid #02092D;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+ 
+.card-title {
+  font-size: 1.5rem;
+  margin: .5em 0em;
+}
+ 
+.card-image {
+  width: 100%;
+  height: auto;
+  border-radius: 30px 30px 0px 0px;
+}
+ 
+.card-description {
+  font-size: 1rem; /* Description font size */
+  line-height: 1.5; /* Line spacing for readability */
+}
+ 
+.description {margin-bottom: 1em;}
+ 
+.top-boxes {margin: 1em 3em 3em 3em;}
+/* .inv-button-img > div {
+position: relative;
+z-index: 1;
+} */
+ 
+/* For small and medium screens */
+@media (max-width: 991px) {
+  .top-boxes {
+      display: grid;
+      grid-template-columns: 1fr; /* Single column layout */
+      grid-gap: 20px; /* Add some space between boxes */
+  }
+ 
+  .second-row {
+      display: grid;
+      grid-template-columns: 1fr; /* Single column layout for the second row */
+      grid-gap: 20px; /* Add some space between boxes */
+  }
+ 
+  .my-invBox {
+      width: 100%; /* Each box takes up full width */
+  }
+}
+ 
+/* For large screens */
+@media (min-width: 992px) {
+  .top-boxes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Two columns layout */
+      grid-gap: 20px; /* Add some space between boxes */
+  }
+ 
+  .second-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Two columns layout for the second row */
+      grid-gap: 20px; /* Add some space between boxes */
+  }
+}

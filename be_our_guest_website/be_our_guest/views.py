@@ -480,6 +480,47 @@ def send_password_email(request):
     message = f'Password email(s) sent successfully to: {", ".join(successful_emails)}'
     return Response({'message': message}, status=200)
 
+@api_view(['GET'])
+@permission_classes([AllowAny])  # Adjust permissions if needed for authentication
+def get_user_events(request, user_id):
+    """
+    Retrieves events a user has been invited to.
+
+    Args:
+        request: The incoming request object.
+        user_id: The ID of the user to get events for.
+
+    Returns:
+        A JSON response with a list of events and their details.
+    """
+
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=404)
+
+    # Get invitations for the user
+    invitations = EventInvitation.objects.filter(guest=user)
+
+    # Prepare a list to store event details
+    event_data = []
+
+    for invitation in invitations:
+        event = invitation.event
+
+        # Include relevant event details 
+        event_data.append({
+            'id': event.id,
+            'date': event.date.strftime('%Y-%m-%d'),  # Format date for JSON
+            'respond_by_date': event.respond_by_date.strftime('%Y-%m-%d'),
+            'venue_1_time': event.venue_1_time.strftime('%H:%M:%S'),  # Format time for JSON
+            'venue_2_time': event.venue_2_time.strftime('%H:%M:%S') if event.venue_2_time else None,
+            'venue_3_time': event.venue_3_time.strftime('%H:%M:%S') if event.venue_3_time else None,
+            'is_attending': invitation.is_attending,  
+        })
+
+    return Response({'events': event_data})
+
 # Custom password validation function
 def validate_password(password):
     if len(password) < 8:
@@ -491,6 +532,13 @@ def validate_password(password):
     if not re.search("[!@#$%^&*()_+=\-[\]{};':\"|,.<>?]", password):
         return False, "Password must contain at least one special character."
     return True, None
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def get_event_date(request, user_id):
+    dates = Event.objects.filter(host_user_id=user_id)
+    serializer = EventSerializer(dates, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 @api_view(["GET"])
 @permission_classes([AllowAny])  # Override parent permissions

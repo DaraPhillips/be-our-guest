@@ -20,7 +20,7 @@ import AddGuestList from './Pages/addGuestList';
 import AuthService from './Pages/AuthService';
 import Invitations from './Pages/invitations';
 import RsvpPage from './Pages/rsvpPage';
-
+import CrudEvent from './Pages/crudEvent';
 function App() {
     return (
         <Router>
@@ -41,7 +41,7 @@ function App() {
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/rsvpPage" element={<RsvpPage />} />
                         <Route path="/invitations" element={<Invitations/>} />
-
+                        <Route path="/crudEvent" element={<CrudEvent/>} />
 
                         <Route path="/addGuestList" element={<AddGuestList />} />
                     </Routes>
