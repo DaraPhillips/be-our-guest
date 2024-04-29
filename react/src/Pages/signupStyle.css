@@ -9,12 +9,12 @@
 
 .signUp-form::before {
   content: '';
-  position: absolute;
+  position: fixed; /* or absolute */
   top: 0;
   left: 0;
   width: 100%;
-  height: 158%;
-  background-image: url('/src/images/signUpImage.jpg'); /* Update the path to your image */
+  height: 100%;
+  background-image: url(/src/images/signUpImage.jpg);
   opacity: 0.5;
   z-index: -1;
   background-size: cover;
@@ -48,6 +48,10 @@
   padding: 9rem;
   color: #02092D;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  display: flex; /* Add this line */
+  flex-direction: column; /* Add this line */
+  justify-content: center; /* Add this line */
+  align-items: center; /* Add this line */
 }
 
 .title {
@@ -65,7 +69,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 0 10%;
+  margin-left: 29%;
 }
 
 .signup {
@@ -114,8 +118,11 @@
 }
 
 .error-message {
-  padding-top: .5em;
   color: red;
+  font-size: 1.2em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  text-align: center;
 }
 
 .input-container {
@@ -133,12 +140,12 @@
   width: 4em;
 }
 
-.Eye, .ClosedEye {
+.password-rule {font-size: 14px; color: red; padding-top: .5em;}
+
+.toggle {
   position: absolute;
-  top: 64%;
+  top: 3em;
   transform: translateY(-50%);
-  left: 21.8em;
+  left: 0em;
   width: 4em;
 }
-
-.password-rule {font-size: 14px; color: red; padding-top: .5em;}

@@ -1,0 +1,122 @@
+h1 {
+    font-family: "Vidaloka", serif;
+    margin: 0em;
+    padding: 0em;
+    margin-top: 1em;
+}
+
+.title {margin-top: 2em;}
+
+.about-page {
+    padding: 20px;
+}
+
+.breadcrumb-container {
+    margin-bottom: 20px;
+}
+
+.about-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.centered-container {
+    display: flex;
+    justify-content: center;
+}
+
+.about-box {
+    width: 100%;
+    max-width: 800px; /* Adjust maximum width as needed */
+    background-color: #D5D9E1;
+    padding: 6em;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    margin-bottom: 3em;
+}
+
+.about-text {
+    margin: 0;
+}
+
+.lists-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.left-list, .right-list {
+    flex: 1;
+}
+
+.wedding-image {
+    width: 21em;
+    position: absolute;
+    margin: 40em 2em 2em 10em;
+  }
+
+/* Adjust text size for different screen sizes */
+@media (max-width:1204px) {
+    .wedding-image {
+        width: 18em;
+        position: absolute;
+        margin: 40em 2em 2em 6em;
+      }
+}
+@media (max-width:1108px) {
+    .wedding-image {
+        width: 16em;
+        position: absolute;
+        margin: 40em 2em 2em 4em;
+      }
+}
+@media (max-width:870px) {
+    .wedding-image {
+        width: 13em;
+        position: absolute;
+        margin: 43em 2em 2em 2em;
+      }
+}
+@media (max-width: 768px) {
+    .about-box {
+        padding: 15px;
+    }
+
+    .about-title h1 {
+        font-size: 24px;
+    }
+
+    .about-text h2 {
+        font-size: 20px;
+    }
+
+    .left-list, .right-list {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .wedding-image {
+        width: 10em;
+        position: absolute;
+        margin: 25em 2em 2em 2em;
+      }
+}
+
+@media (max-width: 576px) {
+    .about-box {
+        padding: 10px;
+    }
+
+    .about-title h1 {
+        font-size: 20px;
+    }
+
+    .about-text h2 {
+        font-size: 18px;
+    }
+    .wedding-image {
+        width: 7em;
+        position: absolute;
+        margin: 25em 2em 2em 0em;
+      }
+}

@@ -1,132 +1,95 @@
-
 import { SvgInvYes } from '../Icons/SvgInvYes';
 import { SvgInvNo } from '../Icons/SvgInvNo';
 import { SvgChat } from '../Icons/SvgChat';
-import React, { useState, useEffect } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './invitationsStyle.css';
 
+export default function Invite() {
+    const [boxes, setBoxes] = useState([
+        {
+            backgroundColor: 'rgb(213, 217, 225)',
+            locationStatus: '',  // Just used for Invite Accept / Decline
+            backgroundImage: '/src/images/paul-unsplash.jpg'
+        },
+        {
+            backgroundColor: 'rgb(213, 217, 225)',
+            locationStatus: '',  // Just used for Invite Accept / Decline
+            backgroundImage: '/src/images/createEventBackgroundImg.png'
+        },
+        {
+            backgroundColor: 'rgb(213, 217, 225)',
+            locationStatus: '',  // Just used for Invite Accept / Decline
+            backgroundImage: '/src/images/homeBackground.jpg'
+        },
+        {
+            backgroundColor: 'rgb(213, 217, 225)',
+            locationStatus: '',  // Just used for Invite Accept / Decline
+            backgroundImage: '/src/images/sharday.jpg'
+        },
+        {
+            backgroundColor: 'rgb(213, 217, 225)',
+            locationStatus: '',  // Just used for Invite Accept / Decline
+            backgroundImage: '/src/images/rings.jpg'
+        },
+        // Add more boxes here if needed
+    ]);
 
-export default function CreateEvent() {
+    const toggleStatus = (index, newStatus) => {
+        setBoxes(prevBoxes => {
+            const updatedBoxes = [...prevBoxes];
+            const currentStatus = updatedBoxes[index].locationStatus;
+            const updatedStatus = currentStatus === newStatus ? '' : newStatus;
+            updatedBoxes[index] = {
+                ...updatedBoxes[index],
+                backgroundColor: updatedStatus === 'ACCEPTED' ? 'rgba(144, 238, 144, 0.5)' : (updatedStatus === 'DECLINED' ? 'rgba(255, 192, 203, 0.5)' : 'rgb(213, 217, 225)'),
+                locationStatus: updatedStatus
+            };
 
-    
-    
+            // Move the box to the start of the queue if it is accepted
+            if (updatedStatus === 'ACCEPTED') {
+                const acceptedBox = updatedBoxes.splice(index, 1)[0];
+                updatedBoxes.unshift(acceptedBox);
+            }
+
+            return updatedBoxes;
+        });
+    };
+
     return (
         <div className='invitations-page'>
-
-            <div className='topyoke'>
-                <h3 className='home-tab-top-thingy'>Dashboard / </h3>
-                <h3 className='home-tab-top-thingy'> My Invitations / </h3>
-
-                <h3 className='other-tab-at-top'> Page 1</h3>
+            <div className='breadcrumb-container'>
+                <Link to="/dashboard" className='dash-breadcrumb'>Dashboard / </Link>
+                <h3 className='currentPage-breadcrumb'> My Invitations </h3>
             </div>
 
-            <div className='wedding-details-header'>
-
-                <h1>My Invitations</h1>
-
-                {/* TOP ROW */}
-
-                <div className='top-boxes'>
-
-                    <div className='my-invBox'>
-                    <Link to="/rsvpPage" className="inv-button-link">
-
-                        <button className='inv-button'>
-                        <img className='inv-button-background' src="/react/src/images/homeLoggedInBackground.jpg"  />
-
-                            <ul>
-                           <li><h4>Wedding Title</h4></li>
-                           <li><h4>Location</h4></li>
-                            <li><h5>@Location</h5></li>
-                            <li><h5>Date</h5></li>
-                            </ul>
-                            <div className="inv-icons">
-                                <div className="inv-icon">
-                                    <SvgInvYes />
-                                </div>
-                                <div className="inv-icon" >
-                                <Link to="/rsvpPage"/>
-                                    <SvgChat />
-                                </div>
-                                <div className="inv-icon">
-                                    <SvgInvNo />
-                                </div>
+            <div className='top-boxes'>
+                {boxes.map((box, index) => (
+                    <div key={index} className='card' style={{ backgroundColor: box.backgroundColor }}>
+                        <img src={box.backgroundImage} alt="Card Image" className="card-image" />
+                        <h2 className="card-title">Wedding Title</h2>
+                        <div className='description'>
+                            <p className="card-description">Rsvp status: {box.locationStatus}</p>
+                            <p className="card-description">Location:</p>
+                            <p className="card-description">Ceremony date:</p>
+                            <p className="card-description">Respond by date:</p>
+                        </div>
+                        <div className="inv-icons">
+                            <div className="inv-icon" onClick={() => toggleStatus(index, 'ACCEPTED')}>
+                                <SvgInvYes />
                             </div>
-                        </button>
-                        
-                        </Link>
+                            <div className="inv-icon">
+                                <Link to="/rsvpPage" className="inv-button-link">
+                                    <SvgChat />
+                                </Link>
+                            </div>
+                            <div className="inv-icon" onClick={() => toggleStatus(index, 'DECLINED')}>
+                                <SvgInvNo />
+                            </div>
+                        </div>
                     </div>
-
-                    <div className='my-invBox'>
-                        <button className='inv-button'></button>
-                    </div>
-                    <div className='my-invBox'>
-                        <button className='inv-button'></button>
-                    </div>
-                    <div className='my-invBox'>
-                        <button className='inv-button'></button>
-                    </div>
-
-
-
-
-
-
-
-
-
-                </div>
-
-                {/* BOTTOM ROW */}
-
-                <div className='second-row'>
-
-
-                <div className='my-invBox'>
-                        <button className='inv-button'></button>
-                    </div>
-                    <div className='my-invBox'>
-                        <button className='inv-button'></button>
-                    </div>
-                    <div className='my-invBox'>
-                        <button className='inv-button'></button>
-                    </div>
-                    <div className='my-invBox'>
-                        <button className='inv-button'></button>
-                    </div>
-
-
-                </div>
-
-
+                ))}
             </div>
-
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    )
-
-
+    );
 }
