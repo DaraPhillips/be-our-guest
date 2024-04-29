@@ -13,11 +13,11 @@ import jwt
 from be_our_guest.models import (County, Event, User, Venue, VenueType,
                                  WeddingType)
 from be_our_guest.serializers import MyTokenObtainPairSerializer
-from be_our_guest.views import (create_event, events, get_users, get_venues,
-                                login, login_view, register_user,
+from be_our_guest.views import (create_event, events, get_venues,
+                                 register_user,
                                 send_password_email, update_event)
 from be_our_guest.views import (
-    events, create_event, update_event, get_venues, send_password_email, login_view
+    events, create_event, update_event, get_venues, send_password_email
 )
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -98,12 +98,7 @@ class TestUrls(SimpleTestCase):
     def test_token_refresh_url_is_resolved(self):
         url = reverse('token_refresh')
         self.assertEqual(resolve(url).func.__name__, TokenRefreshView.as_view().__name__)
-
-    def test_login_url_is_resolved(self):
-        url = reverse('login')
-        self.assertEqual(resolve(url).func, views.login_view)
-    
-        
+           
 #--------------VIEWS TESTS---------------------       
 class TestUserViews(TestCase):
     def setUp(self):
@@ -237,8 +232,8 @@ class EventCreationTestCase(TestCase):
         self.create_event_url = reverse('create_event')
         self.token = self.generate_jwt_token(self.user)
         print("JWT Token:", self.token)
-        user_id = 123  # Replace with the user ID you want to use for testing
-        email = "test@example.com"  # Replace with the email you want to use for testing
+        user_id = 123  
+        email = "test@example.com"
         self.mock_token = MockToken(user_id=user_id, email=email)
 
         # Create Venue instance with all required fields
@@ -303,7 +298,7 @@ class EventCreationTestCase(TestCase):
         # Add more assertions as needed
 
     #create event in the past
-        def test_create_event_in_past(self):
+    def test_create_event_in_past(self):
             past_date = datetime.now() - timedelta(days=1)
             event_data = {
             'host_user': self.user.id,
@@ -497,17 +492,6 @@ class EventCreationTestCase(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-
-
-
-
-
-
-
-
-
-
-    
     def test_create_event_with_hotel_in_church_id(self):
         event_data = {
             "event": {
