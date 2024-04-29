@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 const Home = () => {
   return (
-    <div>
+    
       <div className='home-container'>
         <div className='home-pageDiv'>
           <header className='header'>
@@ -21,7 +21,7 @@ const Home = () => {
         <SimpleSlider />
 
       </div>
-    </div>
+    
   );
 };
 

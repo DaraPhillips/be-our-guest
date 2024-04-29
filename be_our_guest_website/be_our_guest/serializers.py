@@ -49,29 +49,27 @@ class EventSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-
 class EventUpdateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Event  # Assuming your model class name is Event
+        model = Event  
         fields = (
+            'weddingTitle',
             'date',
             'respond_by_date',
             'venue_1_time',
             'venue_2_time',
             'venue_3_time',
-            'host_user_id',  # Assuming a foreign key relationship with a User model
-            'venue_1_id',  # Assuming a foreign key relationship with a Venue model
-            'venue_2_id',  # Optional foreign key (can be null)
-            'venue_3_id',  # Optional foreign key (can be null)
-            'wedding_type_id',  # Assuming a foreign key relationship with a WeddingType model
+            'host_user_id',
+            'venue_1_id',
+            'venue_2_id',
+            'venue_3_id',  
+            'wedding_type_id',  
         )
-
-        # Optional fields for handling optional foreign keys (venue_2_id, venue_3_id)
+ 
         extra_kwargs = {
             'venue_2_id': {'required': False},
             'venue_3_id': {'required': False},
         }
-
 
 class GuestRsvpSerializer(serializers.ModelSerializer):
     class Meta:

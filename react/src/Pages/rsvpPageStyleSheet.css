@@ -1,8 +1,6 @@
 .rsvp-eventDetailsBox {
-    background-color: aliceblue;
+    background-color: #D5D9E1;
     margin-left: 5rem;
-    width: 750px;
-    height: 750px;
     border-radius: 30px;
     background-image: url(/src/images/Rectangle\ 133.png);
     background-size: cover;
@@ -11,7 +9,6 @@
 .rsvp-eventDetailsList {
     padding-left: 2rem;
     padding-top: 2rem;
-
 }
 
 .rsvp-eventDetailsButtonCon {
@@ -32,24 +29,20 @@
 }
 
 .rsvp-inputboxMain {
-    background-color: #E9EDF5;
-    /* margin-left: 5rem; */
+    background-color: #D5D9E1;
     width: 750px;
     height: 450px;
     border-radius: 30px;
+  }
 
-
-}
-
-.rsvp-giftBox {
-    background-color: #E9EDF5;
+  .rsvp-giftBox {
+    background-color: #D5D9E1;
     border-radius: 30px;
     width: 750px;
     height: 270px;
     margin-bottom: 5rem;
     margin-top: 2rem;
-
-}
+  }
 
 
 .rsvp-boxesWrap {
@@ -62,7 +55,6 @@
     text-align: bottom;
     padding: 2rem 6rem 2rem 6rem;
     float: left;
-
 }
 
 .rsvpnamesInput{
@@ -72,7 +64,6 @@
     font-family: "Roboto", sans-serif;
     color: #02092D;
     opacity: 45%;
-
 }
 
 .rsvp-sendGiftText{
@@ -92,8 +83,6 @@
 
 .rsvpInput{
 padding-left: 2rem;
-
-
 }
 
 .rsvpInputCancel{
@@ -101,13 +90,12 @@ padding-left: 2rem;
     border:2px solid #676B85;
     color: #676B85;
     padding: 16px 32px 16px 32px ;
-
 }
+
 .rsvpInputSend{
     padding: 16px 32px 16px 32px ;
     border:2px solid #E9EDF5;
     color: #E9EDF5;
-
 }
 
 .rsvp-brideGroomInput{
@@ -125,11 +113,25 @@ padding-left: 2rem;
     background-position: 1rem;
     text-indent: 3rem;
 }
+
 .rsvp-hostNames{
     color: #393b49;
     font-family: "Poiret One", sans-serif;
 }
-/* .rsvp-rsvpTitle h1{
-    font-family: "Poiret One", sans-serif;
 
-} */
+.breadcrumb-container-invite { 
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin: 2em 0em;
+    margin-left: 5rem;
+    margin-right: 5rem;
+  }
+
+  .breadcrumb {
+    padding-left: .5em;
+    margin-top: 0em;
+    color: #02092d80;
+  }
+
+  .names {color: #02092d;}

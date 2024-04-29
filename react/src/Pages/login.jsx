@@ -67,14 +67,14 @@ export default function Login() {
           <div className="input-group">
             <label htmlFor="login-email"></label>
             <div className="input-container">
-              <div className="icon"><SvgEmail /></div>
+              <div className="iconA"><SvgEmail /></div>
               <input type="text" name="email" id="login-email" placeholder="Email" onChange={handleChange} />
             </div>
           </div>
           <div className="input-group">
             <label htmlFor="login-password"></label>
             <div className="input-container">
-              <div className="icon"><SvgPassword /></div>
+              <div className="iconB"><SvgPassword /></div>
               <input
                 type={showPassword ? 'text' : 'password'}
                 name="password"
@@ -83,8 +83,8 @@ export default function Login() {
                 onChange={handleChange}
               />
               {/* Eye icon for password visibility toggle */}
-              <div className="icon" onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? <SvgEye /> : <SvgClosedEye />}
+              <div className="eye" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? <SvgEye left="21.5em" /> : <SvgClosedEye left="21.5em" />}
               </div>
             </div>
             <div className="forgot">
