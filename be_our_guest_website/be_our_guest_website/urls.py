@@ -22,8 +22,7 @@ from be_our_guest.viewsets import EventViewSet, UsersViewSet
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
-
-from be_our_guest.views import create_event, events, get_event_date, get_user_events, login, get_venues, update_event, get_event_type, update_event, delete_event, get_county,get_venues_by_county_and_event_type, get_invitations
+from be_our_guest.views import create_event, events, login, get_venues, update_event, get_event_type, update_event, delete_event, get_county,get_venues_by_county_and_event_type, get_event_date, get_event_title, get_invitations
 from be_our_guest import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.contrib.auth.views import LogoutView
@@ -58,25 +57,21 @@ urlpatterns = [
     path('create_event/', create_event, name='create_event'),
     path('update_event/<int:user_id>/', update_event, name='update_event'),
     path('delete_event/<int:user_id>/', delete_event, name='delete_event'),
+    path ('get_event_date/<int:user_id>/', get_event_date, name='get_event_date'),
+    path ('get_event_title/<int:user_id>/', get_event_title, name='get_event_title'),
 
-    path('users/', views.get_users, name='users'),
 
-    path('venues/', get_venues, name='venues'),
     path('venues/<int:id>/', views.get_venues_by_county, name='get_venues_by_country'),
-    path('venues/<int:county_id>/<int:venue_type_id>/', get_venues_by_county_and_event_type, name='get_venues_by_county_and_event_type'),
- 
+    path('get_invitations/', views.get_invitations, name='get_invitations'),
 
     path('users/', views.get_users, name='users'),
     path('register/', views.register_user, name='register'),
     path('login_with_validation/', login, name='login_with_validation'),
+    path('venues/', get_venues, name='venues'),
     path('send-password-email/', views.send_password_email, name='send_password_email'),  # Name for reverse URL lookup
-    path('get_invitations/', views.get_invitations, name='get_invitations'),
-    path('get_user_events/<int:user_id>/', views.get_user_events, name='get_user_events'),
-    path ('get_event_date/<int:user_id>/', get_event_date, name='get_event_date'),
     
     path('event_type/', get_event_type, name='event_type'),
     path('county/', get_county, name='county'),
-
 
 
     path('api/token/logout/', LogoutView.as_view(), name='token_logout'),

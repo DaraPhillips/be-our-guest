@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import UserInitial from './Pages/UserInitialCircle';
+import UserInitialCircle from './Pages/userInitialCircle';
 import SvgBellIcon from './Icons/SvgBellIcon';
 import './Pages/navbar.css';
 import axios from 'axios'; // Import axios here
@@ -19,8 +19,16 @@ const Navbar = () => {
       setButtonText('Sign up');
     } else if (location.pathname === '/signUp') {
       setButtonText('Log in');
-    } else if (location.pathname === '/create_event') {
-      setButtonText('Dashboard');
+    } else if (location.pathname === '/createEvent' || location.pathname === '/addGuestList') {
+      setButtonText('Log out');
+    } else if (location.pathname === '/addEvent' || location.pathname === '/addEvent') {
+      setButtonText('Log out');
+    } else if (location.pathname === '/crudEvent' || location.pathname === '/crudEvent') {
+      setButtonText('Log out');
+    } else if (location.pathname === '/invitations' || location.pathname === '/invitations') {
+      setButtonText('Log out');
+    }  else if (location.pathname === '/rsvpPage' || location.pathname === '/rsvpPage') {
+        setButtonText('Log out');
     } else {
       setButtonText('Log in');
     }
@@ -66,6 +74,10 @@ const Navbar = () => {
     } else if (location.pathname === '/create_event') {
       navigate('/dashboard');  // Navigate to '/dashboard' on 'createEvent' button click
       console.log('Custom dashboard button clicked');
+    } else if (location.pathname === '/my_event' || location.pathname === '/my_guest_list') {
+      localStorage.removeItem('jwtToken'); // Remove token on logout
+      navigate('/login');
+      console.log('Custom logout button clicked');
     } else {
       navigate('/login');
       console.log('Default login button clicked');
@@ -95,10 +107,7 @@ const Navbar = () => {
                   <Link to="/about" class="nav-link">About</Link>
                 </li>
                 <li class="nav-item">
-                  <Link to="/features" class="nav-link">Features</Link>
-                </li>
-                <li class="nav-item">
-                  <Link to="/gallery" class="nav-link">Pricing</Link>
+                  <Link to="/pricing" class="nav-link">Pricing</Link>
                 </li>
               </ul>
             </div>
@@ -122,7 +131,7 @@ const Navbar = () => {
       )}
 
       {/* Conditional rendering for different routes */}
-      <div>
+      <div className='logInContainer'>
         {location.pathname === '/create_event' ? (
           <button className="createEventButton" onClick={handleButtonClick}>
             {buttonText}

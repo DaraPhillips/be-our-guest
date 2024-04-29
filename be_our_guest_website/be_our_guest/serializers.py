@@ -49,7 +49,6 @@ class EventSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-
 class EventUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event  
@@ -60,18 +59,17 @@ class EventUpdateSerializer(serializers.ModelSerializer):
             'venue_1_time',
             'venue_2_time',
             'venue_3_time',
-            'host_user_id', 
-            'venue_1_id', 
-            'venue_2_id', 
+            'host_user_id',
+            'venue_1_id',
+            'venue_2_id',
             'venue_3_id',  
             'wedding_type_id',  
         )
-
+ 
         extra_kwargs = {
             'venue_2_id': {'required': False},
             'venue_3_id': {'required': False},
         }
-
 
 class GuestRsvpSerializer(serializers.ModelSerializer):
     class Meta:

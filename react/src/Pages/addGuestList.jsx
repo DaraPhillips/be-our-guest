@@ -4,7 +4,7 @@ import './addGuestList.css';
 import SvgName from '../Icons/Name';
 import EmailIcon from '../Icons/EmailIcon';
 import SvgDelete from '../Icons/SvgDelete';
-import axios from 'axios'; 
+import axios from 'axios';
 // Define your inputFields array
 const inputFields = [
   { name: 'first_name', placeholder: 'First Name', icon: <SvgName /> },
@@ -145,7 +145,7 @@ export default function AddGuestList() {
   const closeSendInvitationsModal = async () => {
     setIsSendInvitationsModalOpen(false); // Close the send invitations confirmation modal
     setIsSendingInvitations(true); // Set sending invitations state to true
-
+ 
     try {
       // Extracting guest data from guestList
       const guestData = guestList.map(({ fullName, email }) => ({
@@ -157,78 +157,78 @@ export default function AddGuestList() {
       console.log('guests:', guestData);
  
       const fetchUserId = async () => {
-
+ 
         try {
-    
+   
           const token = localStorage.getItem('jwtToken');
-    
+   
      
-    
+   
           let url = 'http://127.0.0.1:8000/users/';
-    
+   
           if (token) {
-    
+   
             url += `?token=${token}`; // Assuming the API endpoint filters by token
-    
+   
           }
-    
+   
      
-    
+   
           const response = await axios.get(url);
-    
+   
           console.log('API response:', response); // Log the entire response object (optional)
-    
+   
      
-    
+   
           if (response.data) { // Check if there's data in the response
-    
+   
             const userId = response.data.id;
-    
+   
             console.log('User ID log:', response.data); // Log the user ID (optional)
-    
+   
             return userId; // Return the user ID
-    
+   
           } else {
-    
+   
             console.error('No user data found in response.'); // Handle cases where no data is found
-    
+   
           }
-    
+   
         } catch (error) {
-    
+   
           console.error('Error fetching user ID:', error); // Handle errors during API call
-    
+   
         }
-    
+   
       };
-    
+   
       fetchUserId();
-    
+   
      
-    
-    
-    
+   
+   
+   
       const user_id = await fetchUserId();
-    
+   
       console.log("user id: ", user_id);
-    
-    
-    
-    
-    
+   
+   
+   
+   
+   
       const eventUrl = `http://127.0.0.1:8000/events/${user_id}/`;  
-    
-    
-    
+   
+   
+   
       const eventResponse = await fetch(eventUrl);
-    
+   
       const eventData = await eventResponse.json();
-    
+   
       const event_Id = eventData[0].id;
-      
-
+     
+ 
       console.log("Event ID: ", event_Id,": ", eventData);
-
+ 
       // Send API request to send invitations
       const response = await fetch('http://127.0.0.1:8000/send-password-email/', {
         method: 'POST',
@@ -259,9 +259,9 @@ export default function AddGuestList() {
       // Reset sending state
       setIsSendingInvitations(false);
     }
-
+ 
   };
-
+ 
   const fetchSentGuests = async (eventId) => {
     try {
       const accessToken = localStorage.getItem('jwtToken');
@@ -271,7 +271,7 @@ export default function AddGuestList() {
         });
         const sentGuestData = response.data;
         setSentGuests(sentGuestData);
-        console.log('Invitees:', sentGuestData); 
+        console.log('Invitees:', sentGuestData);
       } else {
         console.error('No access token or event ID found for fetching sent guests.');
       }

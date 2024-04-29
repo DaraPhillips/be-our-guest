@@ -1,6 +1,3 @@
-
-//This one works!!!!!
-
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -9,18 +6,19 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import About from './Pages/About';
 import Features from './Pages/Features';
-import Gallery from './Pages/Gallery';
+import Pricing from './Pages/pricing';
 import Home from './Pages/Home';
-import Login from './Pages/login';
+import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
-import CreateEvent from './Pages/createEvent';
-import ScrollToTop from './Pages/ScrollToTop'; 
+import CreateEvent from './Pages/addEvent';
+import ScrollToTop from './Pages/ScrollToTop'; // Import the ScrollToTop component
 import Dashboard from './Pages/dashboard';
-import AddGuestList from './Pages/addGuestList';
-import AuthService from './Pages/AuthService';
 import Invitations from './Pages/invitations';
 import RsvpPage from './Pages/rsvpPage';
+
+import AddGuestList from './Pages/AddGuestList';
 import CrudEvent from './Pages/crudEvent';
+
 function App() {
     return (
         <Router>
@@ -33,7 +31,7 @@ function App() {
                         <Route path="/home" element={<Home />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/features" element={<Features />} />
-                        <Route path="/gallery" element={<Gallery />} />
+                        <Route path="/pricing" element={<Pricing />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signUp" element={<SignUp />} />
                         <Route path="/create_event" element={<CreateEvent />} />
@@ -42,7 +40,6 @@ function App() {
                         <Route path="/rsvpPage" element={<RsvpPage />} />
                         <Route path="/invitations" element={<Invitations/>} />
                         <Route path="/crudEvent" element={<CrudEvent/>} />
-
                         <Route path="/addGuestList" element={<AddGuestList />} />
                     </Routes>
                 </div>

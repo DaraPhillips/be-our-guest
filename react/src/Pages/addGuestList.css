@@ -4,21 +4,21 @@ h1,
 h3 {
   font-family: "Roboto", sans-serif;
 }
- 
+
 .wedding-details-header,
 h1 {
   font-weight: 350;
   padding-left: 1.5rem;
 }
- 
+
 h3 {
   font-weight: 500;
   font-size: 1em;
   padding: 1em 0;
 }
- 
+
 /* Form Styles */
- 
+
 .addGuestDetails-container {
   background-color: #d5d9e1;
   border-radius: 30px;
@@ -31,9 +31,9 @@ h3 {
   align-items: center;
   justify-content: flex-start;
 }
- 
+
 /* Media Queries for Responsiveness */
- 
+
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
   .addGuestDetails-container {
@@ -41,36 +41,36 @@ h3 {
     padding: 1.5em;
   }
 }
- 
+
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
   .addGuestDetails-container {
     margin: 3.5em 10%;
   }
 }
- 
+
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
   .addGuestDetails-container {
     margin: 3.5em 15%;
   }
 }
- 
+
 /* Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
   .addGuestDetails-container {
     margin: 3.5em 17%;
   }
 }
- 
+
 /* Layout */
- 
+
 .breadcrumb-container {
   margin-top: 3rem;
   padding-left: 3rem;
   display: flex;
 }
- 
+
 /* Typography and Styling */
 label {
   color: rgba(2, 9, 45, 0.46);
@@ -80,7 +80,7 @@ label {
   font-weight: 500;
   text-align: start;
 }
- 
+
 input,
 select {
   width: 100%;
@@ -94,25 +94,25 @@ select {
   margin-top: 0.8em;
   background-color: #fff;
 }
- 
+
 /* Breadcrumb Navigation */
 .dash-breadcrumb,
 .currentPage-breadcrumb {
   text-align: left;
   display: inline;
 }
- 
+
 .dash-breadcrumb {
   color: #02092d80;
   text-decoration: none;
 }
- 
+
 .currentPage-breadcrumb {
   color: #02092d;
   margin-top: 0;
   padding: 0.1em 0 0 .5em;
 }
- 
+
 /* Buttons */
 .addGuest-button,
 .SendLinks-button,
@@ -124,13 +124,13 @@ select {
   margin-top: 0em;
   font-weight: 500;
 }
- 
+
 .addGuest-button {
   margin-top: 1.5em;
 }
- 
+
 /* Separator line */
- 
+
 .line1 {
   width: 100%;
   max-width: 39em;
@@ -138,11 +138,11 @@ select {
   background-color: white;
   margin: 3em 0;
 }
- 
+
 .line-container {background-color: none;}
- 
+
 /*Send links/ Cancel Button Container */
- 
+
 .SendLinks-button {
   padding: 0.2em;
   font-size: 1.8em;
@@ -154,7 +154,7 @@ select {
   border-radius: 50px;
   border: 3px solid #02092d;
 }
- 
+
 .SendLinks-button:hover {
   padding: 0.2em;
   font-size: 1.8em;
@@ -166,7 +166,7 @@ select {
   border-radius: 50px;
   border: 3px solid #02092d;
 }
- 
+
 .cancel-button {padding: 0.2em;
   font-size: 1.8em;
   width: 25%;
@@ -174,7 +174,7 @@ select {
   background-color: #fff;
   border: 3px solid #02092d;
   color: #02092d;}
- 
+
   .cancel-button:hover {padding: 0.2em;
     font-size: 1.8em;
     width: 25%;
@@ -182,7 +182,7 @@ select {
     border: 3px solid #02092d;
     color: #ffffff;
     background-color: #c4a468;}
- 
+
     .invitation-button-container {
       margin-top: 0.5em;
       margin-bottom: 1.5em;
@@ -195,7 +195,7 @@ select {
       padding: 2em 0em;
       border-radius: 20em;
     }
- 
+
 .addNearlyWed-button {
   padding: 0.2em;
   font-size: 1.8em;
@@ -203,9 +203,9 @@ select {
   margin: 1.5em 0em;
   font-weight: 500;
 }
- 
+
 .deleteGuestIcon {
- 
+
   padding: 0em 0em;
   font-size: 0em;
   letter-spacing: 0px;
@@ -217,9 +217,9 @@ select {
   border: none;
   vertical-align: text-top;
   }
- 
+
   .deleteGuestIcon:hover {
- 
+
     padding: 0em 0em;
     font-size: 0em;
     letter-spacing: 0px;
@@ -230,14 +230,14 @@ select {
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
     vertical-align: text-top;
     }
- 
+
   .secondName{
     margin-left: 1em;
     margin-right: 4em;
     }
- 
- 
- 
+
+
+
 /* Background Image */
 .weddingDetails-page::before {
   content: '';
@@ -251,11 +251,11 @@ select {
   z-index: -1;
   background-size: cover;
 }
- 
+
 #password-id {
   border-radius: 4px;
 }
- 
+
 /* Form Inputs in Input Group */
 .input-group input {
   width: 100%;
@@ -274,13 +274,13 @@ select {
   text-align: start;
   margin-top: 0.8em;
 }
- 
+
 /* Form Input Group Styling */
 .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
   margin-left: calc(var(--bs-border-width) * -1);
   border-radius: 4px;
 }
- 
+
 /* Form Added Guests Icon */
 .guestListIcon {
   position: absolute;
@@ -289,7 +289,7 @@ select {
   left: 2em;
   width: 4em;
 }
- 
+
 /* Form Column */
 .form-column {
   width: 50%;
@@ -297,14 +297,14 @@ select {
   padding: 0em 1em;
   position: relative;
 }
- 
+
 .form-nearly-column {
   width: 100%;
   float: left;
   padding: 0em 2em;
   position: relative;
 }
- 
+
 .addGuest-headings {
   font-size: 1.8em;
   margin-bottom: 0;
@@ -312,12 +312,12 @@ select {
   font-weight: 500;
   text-align: start;
 }
- 
+
 option {
   font-size: .8em;
   text-decoration-line: underline;
 }
- 
+
 /* Error Messages */
 .error {
   color: rgb(240, 0, 0);
@@ -333,12 +333,12 @@ option {
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   display: none; /* Hide error messages by default */
 }
- 
+
 /* Show error messages when error occurs */
 .error:not(:empty) {
   display: block;
 }
- 
+
 /* Wedding Details Header */
 .wedding-details-header,
 .event-header h1 {
@@ -346,7 +346,7 @@ option {
   font-weight: 350;
   padding-left: 1.5rem;
 }
- 
+
 /* Event Page Wrap */
 .event-page-wrap {
   flex-direction: row;
@@ -355,7 +355,7 @@ option {
   display: flex;
   gap: 3.5em;
 }
- 
+
 /* Event Details Container */
 .event-details-container {
   max-width: 43em;
@@ -371,33 +371,33 @@ option {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   margin: 3em 0em;
 }
- 
+
 /* Event Column 2 */
 .event-details-container .event-col2 {
   padding-bottom: 9rem;
   font-family: "Roboto", sans-serif;
 }
- 
+
 /* Add Guest Button */
 .event-details-container .add-guest-button {
   font-size: 7px;
   padding-top: .5rem;
   padding-bottom: .5rem;
 }
- 
+
 /* Home Tab Top Thingy, Other Tab at Top */
 .event-details-container .home-tab-top-thingy,
 .event-details-container .other-tab-at-top {
   text-align: left;
   display: inline;
 }
- 
+
 /* Top Yoke */
 .event-details-container .topyoke {
   margin-top: 3rem;
   padding-left: 3rem;
 }
- 
+
 /* Create Event Button */
 .event-details-container .createEvent-button {
   padding: .2em;
@@ -405,7 +405,7 @@ option {
   width: 100%;
   margin-top: 1em;
 }
- 
+
 /* Wedding Details Page Background */
 .wedding-details-page::before {
   content: '';
@@ -419,14 +419,14 @@ option {
   z-index: -1;
   background-size: cover;
 }
- 
+
 /* Event Details Button Container */
 .event-details-container .event-details-buttoncontainer {
   display: flex;
   align-items: center;
   justify-content: center;
 }
- 
+
 /* Venue Details, Church Details */
 .event-details-container .Venue-deets,
 .event-details-container .church-deets {
@@ -436,7 +436,7 @@ option {
   font-weight: 500;
   text-align: start;
 }
- 
+
 /* Venue Icon */
 .event-details-container .venueIcon {
   position: absolute;
@@ -445,7 +445,7 @@ option {
   left: 5px;
   width: 4em;
 }
- 
+
 /* Input Focus */
 #churchAddress3-id:focus,
 #churchName:focus,
@@ -467,19 +467,19 @@ option {
   border-color: #c4a468;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
- 
+
 .form-Nearlywed-column {
   width: 50%;
   float: left;
   padding: 0em 2em;
   position: relative;
 }
- 
+
 /* Style for blurred background */
 body.-active {
   filter: blur(5px);
 }
- 
+
 /* Style for blurred background */
 .modal-background {
   position: fixed;
@@ -491,7 +491,7 @@ body.-active {
   backdrop-filter: blur(5px); /* Apply the blur effect */
   z-index: 9998; /* Ensure the background appears behind the modal */
 }
- 
+
 /* Style for modal */
 .confirmation-modal {
   position: fixed;
@@ -504,11 +504,11 @@ body.-active {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   z-index: 9999;
 }
- 
+
 .modal-content {
   text-align: center;
 }
- 
+
 .cancelBtn, .confirm-button {
   margin: 0 10px;
   padding: 5px 10px;
@@ -521,7 +521,7 @@ body.-active {
   border-radius: 50px;
   padding: .5em 1em;
 }
- 
+
 .cancelBtn:hover, .confirm-button:hover {
   background-color: #c4a468;
   color: white;
@@ -531,7 +531,7 @@ body.-active {
   border: 3px solid #02092d;
   box-shadow: 0px 8px 15px rgba(184, 178, 13, 0.1);
 }
- 
+
 .guest-item-guest-header {
   width: 100%;
   background-color: rgb(255, 255, 255);
@@ -539,14 +539,14 @@ body.-active {
   border: 1px solid #02092d;
   border-radius: 4px;
 }
- 
+
 .guest-item {
   color: #02092d;
   text-align: right;
   border-bottom: 1px solid #02092d;
   padding: .75em .75em;
 }
- 
+
 .guest-emails {
   background-color: rgb(255, 255, 255);
   border: 1px solid #02092d;
@@ -554,15 +554,15 @@ body.-active {
   margin-top: 1.5em;
   border-radius: 4px 4px 0px 0px;
 }
- 
+
 .host-form1 {
   width: 100%;
   max-width: 55em;
   margin-top: auto;
 }
- 
+
 /* Guest List - with invites sent! */
- 
+
 .sent-guests {
   background-color: #d5d9e1;
   border-radius: 30px 30px 0px 0px;
@@ -578,13 +578,13 @@ body.-active {
   margin-left: auto;
   margin-right: auto;
 }
- 
+
 .sentEmails {
   margin-top: 1.5em;
   color: #74798f;
   margin-bottom: 1em;
 }
- 
+
 .sentEmailsContainer {
   background-color: #fff;
   padding: 1em 2em;
@@ -592,18 +592,18 @@ body.-active {
   border: 1px solid #02092d;
   border-radius: 4px;
 }
- 
+
 /* CSV UPLOAD */
- 
+
 .file-upload-container {
   display: flex;
   flex-direction: column;
 }
- 
+
 .file-upload-input {
   display: none; /* Hide the default file input */
 }
- 
+
 .custom-file-upload-button {
   padding: 0.2em;
   font-size: 1.8em;
@@ -615,13 +615,13 @@ body.-active {
   border-radius: 50px;
   border: 3px solid #02092d;
 }
- 
+
 .custom-file-upload-button:hover {
   background-color: #676b85;
   color: white;
   transition: background-color 0.3s;
 }
- 
+
 .custom-file-upload-label {
   padding: 0.5em;
   font-size: 1.5em;
@@ -632,34 +632,34 @@ body.-active {
   background-color: #02092d;
   color: white;
 }
- 
+
 .custom-file-upload-label:hover {
   background-color: #676b85;
   color: white;
   transition: background-color 0.3s;
 }
- 
+
 .uploaded-file-details {
   font-size: 1.2em;
   margin-top: 1em;
 }
- 
+
 .uploaded-file-name {
   margin-top: 0.5em;
   font-weight: bold;
 }
- 
+
 .uploaded-file-count {
   margin-top: 0.5em;
 }
- 
+
 .uploaded-file-error {
   margin-top: 0.5em;
   color: red;
 }
- 
+
 /* Wedding Host Page */
- 
+
 .wedding-host-page::before {
   content: '';
   position: absolute;
@@ -672,7 +672,7 @@ body.-active {
   z-index: -1;
   background-size: cover;
 }
- 
+
 .weddingHost-headings {
   font-size: 2.8em;
   margin-bottom: 0;
@@ -680,7 +680,7 @@ body.-active {
   font-weight: 500;
   text-align: center;
 }
- 
+
 /* Contact Info Container */
 .contact-info-container {
   max-width: 43em;
@@ -696,7 +696,7 @@ body.-active {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
   margin: 3em auto;
 }
- 
+
 /* Send Links Button */
 .send-links-button {
   padding: 0.2em;
@@ -705,33 +705,33 @@ body.-active {
   margin-top: 1em;
   font-weight: 500;
 }
- 
+
 /* Event Details Button Container */
 .contact-info-container .event-details-buttoncontainer {
   display: flex;
   align-items: center;
   justify-content: center;
 }
- 
+
 /* View Links Button */
 .contact-info-container .view-links-button {
   margin-top: 1em;
 }
- 
+
 /* Hide 'Create Event' and 'Go to Dashboard' Buttons on Small Screens */
 @media (max-width: 576px) {
   .event-details-container .createEvent-button,
   .contact-info-container .event-details-buttoncontainer {
     display: none;
   }
- 
+
   .form-column {
     width: 100%;
     float: left;
     padding: 0em 1em;
     position: relative;
   }
- 
+
   .invitation-button-container {
     margin-top: 0em;
     margin-bottom: 1.5em;
@@ -744,8 +744,7 @@ body.-active {
     padding: .5em .2em;
     border-radius: 25em;
   }
- 
+
   .SendLinks-button {width: 75%;
                      padding: .25em .2em;}
 }
- 

@@ -7,11 +7,11 @@ import image3 from '../images/3.svg';
 import image4 from '../images/4.svg';
 import image5 from '../images/5.svg';
 import image6 from '../images/6.svg';
- 
+
 const SimpleSlider = () => {
   const [isHovered, setIsHovered] = useState(false);
   const sliderRef = useRef();
- 
+
   const settings = {
     dots: false,
     infinite: true,
@@ -24,7 +24,7 @@ const SimpleSlider = () => {
     fade: true,
     pauseOnHover: true,
   };
- 
+
   const handleHover = (status) => {
     setIsHovered(status);
     if (status) {
@@ -33,7 +33,7 @@ const SimpleSlider = () => {
       sliderRef.current.slickPlay(); // Resume autoplay when not hovered
     }
   };
- 
+
   return (
     <Slider ref={sliderRef} {...settings} onMouseEnter={() => handleHover(true)} onMouseLeave={() => handleHover(false)}>
       <div>
@@ -57,5 +57,5 @@ const SimpleSlider = () => {
     </Slider>
   );
 };
- 
+
 export default SimpleSlider;

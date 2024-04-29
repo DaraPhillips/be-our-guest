@@ -1,19 +1,14 @@
-
+import { Link } from 'react-router-dom';
 import './rsvpPageStyleSheet.css'
 
 export default function rsvpPage() {
 
     return (
         <div className='rsvpPage-Main'>
-            <div className='topyoke'>
-                <h3 className='home-tab-top-thingy'>Dashboard / </h3>
-                <h3 className='home-tab-top-thingy'>My Invitations / </h3>
-                <h3 className='home-tab-top-thingy'>Page 1 / </h3>
-                <h3 className='other-tab-at-top'>Name and Name </h3>
-            </div>
-
-            <div className='rsvp-rsvpTitle'>
-                <h1>RSVP</h1>
+            <div className='breadcrumb-container-invite'>
+            <Link to="/dashboard" className='breadcrumb'>Dashboard / </Link>
+            <Link to="/invitations" className='breadcrumb'>My Invitations / </Link>
+            <h3 className='breadcrumb'><span className='names'>Wedding Title</span> </h3>
             </div>
 
             {/* EVENT DETAILS BOX */}
@@ -23,10 +18,10 @@ export default function rsvpPage() {
                     <div className='rsvp-eventDetailsList'>
 
                         <div className='rsvp-hostNames'>
-                            <h2>Name and Name,</h2>
+                            <h2>Wedding title</h2>
                         </div>
-                        <h3>Counrey Location</h3>
-                        <h3>@Wherever</h3>
+                        <h3>County description</h3>
+                        <h3>Venue description</h3>
                         <h3>Date</h3>
 
                     </div>
@@ -41,10 +36,10 @@ export default function rsvpPage() {
                 <div className='rsvp-rightBoxes'>
                     <div className='rsvp-inputboxMain'>
                         <div className='rsvpnamesInput'>
-                            <h2>Dear Name and Name,</h2>
+                            <h2>Message for the nearly-weds</h2>
                         </div>
                         <div className='rsvpInput'>
-                            <input className='rsvp-brideGroomInput' placeholder='Message for the Bride & Groom' id='rsvp-messageHost'></input>
+                            <input className='rsvp-brideGroomInput' placeholder='Leave a message..' id='rsvp-messageHost'></input>
                         </div>
                         <div className='rsvp-CancelSendButtons'>
                             <button className='rsvpInputCancel'> Cancel </button>
@@ -66,16 +61,8 @@ export default function rsvpPage() {
                             <button className='rsvpInputSend' id='rsvp-sendGift'> Send </button>
                         </div>
                     </div>
-
                 </div>
             </div>
-
-
-
-
-
-
-
         </div>
     )
 }

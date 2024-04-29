@@ -141,7 +141,7 @@ export default function Dashboard() {
           </div>
  
       </div>
- 
+
       <div className='dash-sidebar'>
         <ul className="side_bar">
           {/* Use navigate function onClick instead of Link */}
@@ -162,15 +162,15 @@ export default function Dashboard() {
             <img className='dashSprite-imageslist' src='/src/images/invites.svg' />
             My Invitations
           </li>
-          <li className="sideBarItems" onClick={() => navigate('/invitations')}>
+          <li className="sideBarItems" onClick={() => navigate('/profile')}>
             <img className='dashSprite-imageslist' src='/src/images/profile.svg' />
             My Profile
           </li>
-          <li className="sideBarItems" onClick={() => navigate('/invitations')}>
+          <li className="sideBarItems" onClick={() => navigate('/chat')}>
             <img className='dashSprite-imageslist' src='/src/images/chat.svg' />
             Chat
           </li>
-          <li className="sideBarItems" onClick={() => navigate('/invitations')}>
+          <li className="sideBarItems" onClick={() => navigate('/post')}>
             <img className='dashSprite-imageslist' src='/src/images/post.svg' />
             Post
           </li>
@@ -201,9 +201,9 @@ export default function Dashboard() {
           </li>
         </ul>
       </div>
- 
+
       <div className='dash-mainbox'>
- 
+
       <div className='card-container'>
         <div className='dash-createEvent'>
           <h3 className="createEvent">Add an event</h3>
@@ -215,9 +215,9 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
- 
+
         <div className='vertical-separator'></div>
-       
+        
         <div className='dash-createEvent'>
           <h3 className="createEvent">My invitations</h3>
           <div className='createEvent-box-wrapper'>
@@ -229,12 +229,12 @@ export default function Dashboard() {
           </div>
         </div>
         </div>
- 
+
         <div className='dash-recentPosts'>
           <h3 className="posts">Recent posts</h3>
           <hr className='commentdash-line' />
         </div>
- 
+
         <div className='dash-recentPosts' style={{ maxHeight: '400px', overflowY: 'auto' }}>
           {likeImages.map((likeImage, index) => (
             <div className='commentbox-dash' key={index}>

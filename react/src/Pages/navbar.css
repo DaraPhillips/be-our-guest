@@ -59,7 +59,7 @@
   border: 3px solid #02092d;
   border-radius: 50px;
   background-color: #fff;
-  margin: 0em 0em 0em 16.5em;
+  margin: 1em 0em 0em 18em;
 }
 
 .loginBtn:hover {
@@ -268,7 +268,7 @@
     transition-timing-function: ease-in-out, ease-in-out, ease-in-out, ease-in-out;
     transition-delay: 0s, 0s, 0s, 0s;
     padding: .5em 3em;
-    margin: 1.2em 0em 0em 16em;
+    margin: 1em 0em 0em 18em;
 
 }
 .btn-primary {
@@ -292,4 +292,44 @@
 .bg-body-tertiary {
   --bs-bg-opacity: 0;
   background-color: rgba(var(--bs-tertiary-bg-rgb),var(--bs-bg-opacity)) !important;
+}
+
+/* Media Query for Responsive Behavior */
+@media (max-width: 576px) {
+
+.logInContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+}
+.btn-primary {
+  color: #fff;
+  width: 100%;
+  text-align: center;
+  margin-left: 0em;
+  margin-top: 0em;
+}
+
+.navbar-logo {
+  width: 184px;
+  height: 57px;
+  margin-right: 2em;
+  margin-bottom: 2em;
+}
+
+.container-fluid {
+  width: 12em;
+  margin: 1em 0em 2em 1em;
+}
+.slick-slider.slick-initialized {
+  width: 100%;
+  margin: 0em;;
+}
+
+.carousel-images {
+  margin-top: 0em;
+  margin-bottom: 0em;
+  padding: 0em;
+}
 }
