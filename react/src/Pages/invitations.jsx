@@ -1,4 +1,3 @@
-
 import { SvgInvYes } from '../Icons/SvgInvYes';
 import { SvgInvNo } from '../Icons/SvgInvNo';
 import { SvgChat } from '../Icons/SvgChat';

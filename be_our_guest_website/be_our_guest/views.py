@@ -1,15 +1,16 @@
+
 """
 The views for the be_our_guest app.
 """
 import random
 import string
 from django.http import HttpResponse
-
+ 
 from datetime import datetime, date
 import re
 import logging
 import jwt
-
+ 
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password, check_password
@@ -33,31 +34,31 @@ from rest_framework_jwt.settings import api_settings
 
 from .serializers import ChatSerializer, ChatMessageSerializer, ChatMemberSerializer, CountySerializer, EventSerializer, EventUpdateSerializer,GuestRsvpSerializer,MyTokenObtainPairSerializer,TableSerializer,UserSerializer,VenueSerializer,VenueTypeSerializer,WeddingTypeSerializer,EventInvitationSerializer
 from .models import Chat, ChatMember, ChatMessage, County, Event, EventInvitation,EventTable,User,UserManager,Venue,VenueType,WeddingType
-
+ 
 from jwt import decode, ExpiredSignatureError, InvalidTokenError
 from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
-
+ 
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
-from rest_framework import generics
-
-
-
-
+ 
+ 
+ 
+ 
+ 
 def index(_) -> HttpResponse:
     """The index view of the website.
-
+ 
     Args:
         _ (request): The request object.
-
+ 
     Returns:
         HttpResponse: The response object.
     """
     return HttpResponse("Hello, world. You're at the Be our guest index.")
-
-
-
+ 
+ 
+ 
 @api_view(["POST"])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
@@ -126,7 +127,7 @@ def create_event(request):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
                 event_data.setdefault("respondByDate", None)  # Set default for optional field
-
+ 
         wedding_type_id = event_data.pop("weddingTypeID", None)
         venue_1_id = event_data.pop("venue_1", None)
         venue_2_id = event_data.pop("venue2", None)
@@ -136,10 +137,10 @@ def create_event(request):
         venue_3_time = event_data.pop("venue3Time", None)
         weddingTitle= event_data.pop("weddingTitle", None)
     # at_table_id = event_data.pop("atTableID", None)
-
+ 
         # Retrieve host ID from authenticated user (unchanged)
         host_id = request.user.id
-
+ 
         # Add all data to event_data dictionary
         event_data["weddingType"] = wedding_type_id
         event_data["venue_1"] = venue_1_id
@@ -151,7 +152,7 @@ def create_event(request):
         event_data["weddingTitle"] = weddingTitle
     # event_data["at_table"] = at_table_id
         event_data["host_user"] = host_id
-        
+       
         logger.debug("Creating event instance...")
         # Create event instance
         event_serializer = EventSerializer(data=event_data)
@@ -177,36 +178,33 @@ def create_event(request):
         return Response(
             {"error": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED
         )
-
+ 
 @api_view(["PUT", "PATCH"])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def update_event(request, user_id):
     user = request.user  # Assuming user is retrieved from request
-
+ 
     try:
-    # Access events through the related manager 'events'
+        # Access events through the related manager 'events'
         event = user.events.get(host_user_id=user.id)  # Filter by user's ID via 'host_user_id' field
     except Event.DoesNotExist:
         return Response({"error": "Event not found"}, status=status.HTTP_404_NOT_FOUND)
-
-    # Check user permission before proceeding
+ 
+    # Check user permission before proceeding (uncomment if needed)
     # if event.host_user != request.user.id:
     #     return Response(
     #         {"error": "You are not allowed to edit this event"},
     #         status=status.HTTP_403_FORBIDDEN,
     #     )
-
-    # Extract data from request (considering multiple fields)
+ 
     serializer = EventUpdateSerializer(event, data=request.data, partial=True)
     if serializer.is_valid():
-        # Access and update specific fields as needed
-        if "date" in request.data:
-            event.date = request.data["date"]
-        if "time" in request.data:
-            event.time = request.data["time"]
-
-        # Update venue if provided
+        # Update specific fields based on request data
+        for field in request.data:
+                setattr(event, field, request.data[field])  # Update the corresponding attribute
+ 
+        # Update venue if provided (logic remains the same)
         venue_name = request.data.get("venue")
         if venue_name:
             try:
@@ -216,57 +214,58 @@ def update_event(request, user_id):
                 return Response(
                     {"error": "Venue details not found"}, status=status.HTTP_400_BAD_REQUEST
                 )
-
+ 
         # Save updated event instance
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+ 
 @api_view(["DELETE"])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def delete_event(request, user_id):
-
+ 
     user = request.user  # Assuming user is retrieved from request
-
+ 
     try:
         # Access events through the related manager 'events'
         event = user.events.get(host_user_id=user.id)  # Filter by user's ID via 'host_user_id' field
     except Event.DoesNotExist:
         return Response({"error": "Event not found"}, status=status.HTTP_404_NOT_FOUND)
-
+ 
     # Optional: Permission check (e.g., only event owner can delete)
     # if event.host_user_id != request.user.id:
     #     return Response({"error": "You are not allowed to delete this event"}, status=status.HTTP_403_FORBIDDEN)
-
+ 
     event.delete()
     return Response({"message": "Event deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
-
+ 
 def dashboard(request):
     # Retrieve the event from the database (assuming you have a model named Event)
     event = (
         Event.objects.first()
     )  # You may need to modify this query to get the correct event
-
+ 
     if event:
         # Calculate the time remaining until the event
         current_time = datetime.now()
         time_remaining = event.date - current_time
-
+ 
         # Pass the time remaining to the dashboard template
         return render(request, "app/dashboard.html", {"time_remaining": time_remaining})
     else:
         # Handle case where there are no events
         return render(request, "app/dashboard.html", {"time_remaining": None})
+    
 
-def events(request):
-    events = Event.objects.all()
-    # Serialize all objects
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def events(request, host_user_id):
+    events = Event.objects.filter(host_user=host_user_id)  # Filter by user ID in URL path
     serializer = EventSerializer(events, many=True)
-    # Return serialized data as JSON response
     return JsonResponse(serializer.data, safe=False)
-
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_users(request):
@@ -296,28 +295,28 @@ def get_venues(request):
     venues = Venue.objects.all()
     serializer = VenueSerializer(venues, many=True)
     return JsonResponse(serializer.data, safe=False)
-
+ 
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def get_event_type(request):
     event_types = WeddingType.objects.all()
     serializer = WeddingTypeSerializer(event_types, many=True)
     return JsonResponse(serializer.data, safe=False)
-
+ 
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def get_county(request):
     counties = County.objects.all()
     serializer = CountySerializer(counties, many=True)
     return JsonResponse(serializer.data, safe=False)
-
+ 
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def get_event_date(request, user_id):
     dates = Event.objects.filter(host_user_id=user_id)
     serializer = EventSerializer(dates, many=True)
     return JsonResponse(serializer.data, safe=False)
-
+ 
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def get_event_title(request, user_id):
@@ -338,7 +337,7 @@ def generate_password(length=10):
     uppercase_letters = string.ascii_uppercase
     digits = string.digits
     special_characters = string.punctuation
-
+ 
     # Ensure at least one character from each category
     guaranteed_characters = [
         random.choice(lowercase_letters),
@@ -346,22 +345,22 @@ def generate_password(length=10):
         random.choice(digits),
         random.choice(special_characters),
     ]
-
+ 
     # Calculate the remaining length for all character categories
     remaining_length = length - len(guaranteed_characters)
-
+ 
     # Generate the remaining characters with a preference for lowercase letters
     character_categories = lowercase_letters + uppercase_letters + digits + special_characters
     weights = [1] * len(lowercase_letters) + [1] * len(uppercase_letters) + [1] * len(digits) + [2] * len(special_characters)
     password_characters = guaranteed_characters + random.choices(character_categories, k=remaining_length, weights=weights)
-
+ 
     # Shuffle the characters to ensure randomness
     random.shuffle(password_characters)
-
+ 
     # Concatenate the characters to form the password
     password = ''.join(password_characters)
     return password
-
+ 
 @api_view(["POST"])
 @permission_classes([AllowAny])  # Allow any user to register
 def register_user(request):
@@ -387,7 +386,8 @@ def register_user(request):
                 status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+ 
+ 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def send_password_email(request):
@@ -551,7 +551,8 @@ def get_invitations(request):
       return Response({'message': 'No invitations found for the specified event ID.'}, status=404)
  
     return Response(invitation_data, status=200)
-
+ 
+   
 # Custom password validation function
 def validate_password(password):
     if len(password) < 8:
@@ -563,21 +564,21 @@ def validate_password(password):
     if not re.search("[!@#$%^&*()_+=\-\[\]{};':\"|,.<>?]", password):  # Corrected escape sequence
         return False, "Password must contain at least one special character."
     return True, None
-
+ 
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def get_venues_by_county(request, id ):
     venues = Venue.objects.filter(county_id=id)
     serializer = VenueSerializer(venues, many=True)
     return JsonResponse(serializer.data, safe=False)
-
+ 
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def get_venues_by_county_and_event_type(request, county_id, venue_type_id):
     venues = Venue.objects.filter(county_id=county_id, venue_type_id=venue_type_id)
     serializer = VenueSerializer(venues, many=True)
     return JsonResponse(serializer.data, safe=False)
-
+ 
 @authentication_classes([JWTAuthentication])
 @api_view(["POST"])
 @permission_classes([AllowAny])
@@ -586,14 +587,14 @@ def login(request):
         # Extract email and password from the request data
         checkemail = request.data.get("email")
         password = request.data.get("password")
-
+ 
         # Check if email and password are provided
         if not checkemail or not password:
             return Response(
                 {"error": "Email and password are required"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
+ 
         try:
             # Retrieve the user from the database or return a 404 if not found
             user = User.objects.get(email=checkemail)
@@ -604,7 +605,7 @@ def login(request):
                 {"error": "User with this email does not exist"},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
+ 
         # Check if the provided password matches the hashed password in the database
         if check_password(password, user.password):
             # Passwords match, generate JWT token
@@ -624,7 +625,7 @@ def login(request):
             return Response(
                 {"error": "Invalid details"}, status=status.HTTP_401_UNAUTHORIZED
             )
-
+ 
     else:
         # Handle other HTTP methods
         return Response(

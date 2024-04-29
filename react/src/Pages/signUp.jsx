@@ -137,7 +137,7 @@ export default function SignUp() {
                 />
                 {/* Eye icon for password visibility toggle */}
                 {field.isPassword && (
-                  <div className="icon" onClick={() => field.name === 'password' ? setShowPassword(!showPassword) : setShowConfirmPassword(!showConfirmPassword)}>
+                  <div className="toggle" onClick={() => field.name === 'password' ? setShowPassword(!showPassword) : setShowConfirmPassword(!showConfirmPassword)}>
                     {field.name === 'password' ? (showPassword ? <SvgEye /> : <SvgClosedEye />) : (showConfirmPassword ? <SvgEye /> : <SvgClosedEye />)}
                   </div>
                 )}

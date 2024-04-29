@@ -54,7 +54,7 @@ class County(models.Model):
 
 class Event(models.Model):
     """Model for events"""
-
+ 
     id = models.AutoField(primary_key=True)
     date = models.DateField()
     host_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="events")  # Related manager name
@@ -73,6 +73,8 @@ class Event(models.Model):
     venue_3_time = models.TimeField(null=True)
     wedding_type = models.ForeignKey("WeddingType", on_delete=models.CASCADE)
     weddingTitle= models.CharField(max_length=255, default="Wedding Title")
+ 
+    objects = models.Manager()  # Explicitly define the manager
 
     objects = models.Manager()  # Explicitly define the manager
 

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './dashboardStyleSheet.css';
 import AuthService from './AuthService';
 import axios from 'axios';
-
+ 
 export default function Dashboard() {
   const [likeImages, setLikeImages] = useState(['/src/images/likeBefore.png']);
   const [pinImages, setPinImages] = useState(['/src/images/pin.png']);
@@ -11,8 +11,7 @@ export default function Dashboard() {
   const [eventDate, setEventDate] = useState(null);
   const [timeRemaining, setTimeRemaining] = useState('Days - Hours - Minutes - Seconds'); // Display time remaining until event starts
   const [weddingTitle, setWeddingTitle] = useState('Wedding Title');
-
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -20,39 +19,39 @@ export default function Dashboard() {
         const eventUrl = `http://127.0.0.1:8000/get_event_date/${userId}/`;
         const response = await axios.get(eventUrl);
         const eventData = response.data;
-        
+       
         // Log eventData
         console.log('Event Data:', eventData);
-    
+   
         // Check if eventData is an array and contains at least one element
         if (!Array.isArray(eventData) || eventData.length === 0) {
           console.error('Event data is either not an array or is empty.');
           return;
         }
-    
+   
         // Access the first element of the array and check if it has the date field
         const firstEvent = eventData[0];
         if (!firstEvent.date) {
           console.error('Event date not found in the response data.');
           return;
         }
-    
+   
         // Parse date string to Date object
         const eventDateString = firstEvent.date;
         console.log('Event Date String:', eventDateString);
         const eventDateParts = eventDateString.split('-');
         const eventDate = new Date(eventDateParts[0], eventDateParts[1] - 1, eventDateParts[2]); // Month is 0-indexed
-    
+   
         // Log eventDate
         console.log('Event Date:', eventDate);
-    
+   
         setEventDate(eventDate);
-
+ 
         // Fetch wedding title
         const titleResponse = await axios.get(`http://127.0.0.1:8000/get_event_title/${userId}/`);
         const titleData = titleResponse.data;
         if (titleData.length > 0) {
-          const weddingTitle = titleData[0].weddingTitle; 
+          const weddingTitle = titleData[0].weddingTitle;
           setWeddingTitle(weddingTitle);
         } else {
           console.error('No wedding title found for the user.');
@@ -61,10 +60,10 @@ export default function Dashboard() {
         console.error('Error fetching data:', error);
       }
     };
-  
+ 
     fetchData();
   }, []);
-
+ 
   const fetchUserId = async () => {
     try {
       const token = localStorage.getItem('jwtToken');
@@ -83,7 +82,7 @@ export default function Dashboard() {
       console.error('Error fetching user ID:', error);
     }
   };
-
+ 
   const toggleLikeImage = (index) => {
     const newImages = [...likeImages];
     newImages[index] =
@@ -92,7 +91,7 @@ export default function Dashboard() {
         : '/src/images/likeBefore.png';
     setLikeImages(newImages);
   };
-
+ 
   const togglePinImage = (index) => {
     const newImages = [...pinImages];
     newImages[index] =
@@ -101,7 +100,7 @@ export default function Dashboard() {
         : '/src/images/pin.png';
     setPinImages(newImages);
   };
-
+ 
   useEffect(() => {
     if (eventDate) {
       const intervalId = setInterval(() => {
@@ -125,13 +124,13 @@ export default function Dashboard() {
       return () => clearInterval(intervalId);
     }
   }, [eventDate]);
-
+ 
   const handleLogout = () => {
     AuthService.logout();
     console.log("Token after logout:", localStorage.getItem('jwtToken'));
     navigate('/login');
   };
-
+ 
   return (
     <div className='dashboard-page-body'>
       <div className='header-wrap-dash'>
@@ -140,7 +139,7 @@ export default function Dashboard() {
           <div>
               <p>{timeRemaining}</p>
           </div>
-
+ 
       </div>
 
       <div className='dash-sidebar'>
@@ -151,48 +150,88 @@ export default function Dashboard() {
             My Dashboards
             <img className='dropdownIcon' src='/src/images/dropdown.svg' />
           </li>
-          <li className="sideBarItems" onClick={() => navigate('/createEvent')}>
+          <li className="sideBarItems" onClick={() => navigate('/crudEvent')}>
             <img className='dashSprite-imageslist' src='/src/images/editMyEvent.svg' />
-            My Event
+            Edit Event
           </li>
           <li className="sideBarItems" onClick={() => navigate('/addGuestList')}>
             <img className='dashSprite-imageslist' src='/src/images/guestList.svg' />
             My Guest List
           </li>
-          <li className="sideBarItems"><img className='dashSprite-imageslist' src='/src/images/invites.svg' />My Invitations</li>
-          <li className="sideBarItems"><img className='dashSprite-imageslist' src='/src/images/profile.svg' />My Profile</li>
-          <li className="sideBarItems"><img className='dashSprite-imageslist' src='/src/images/chat.svg' />Chat</li>
-          <li className="sideBarItems"><img className='dashSprite-imageslist' src='/src/images/post.svg' />Post</li>
+          <li className="sideBarItems" onClick={() => navigate('/invitations')}>
+            <img className='dashSprite-imageslist' src='/src/images/invites.svg' />
+            My Invitations
+          </li>
+          <li className="sideBarItems" onClick={() => navigate('/profile')}>
+            <img className='dashSprite-imageslist' src='/src/images/profile.svg' />
+            My Profile
+          </li>
+          <li className="sideBarItems" onClick={() => navigate('/chat')}>
+            <img className='dashSprite-imageslist' src='/src/images/chat.svg' />
+            Chat
+          </li>
+          <li className="sideBarItems" onClick={() => navigate('/post')}>
+            <img className='dashSprite-imageslist' src='/src/images/post.svg' />
+            Post
+          </li>
         </ul>
         <hr />
         <ul>
-          <li className="sideBarItems"><img className='dashSprite-imageslist' src='/src/images/tablePlan.svg' />Table Plan</li>
-          <li className="sideBarItems"><img className='dashSprite-imageslist' src='/src/images/menu.svg' />Menu</li>
-          <li className="sideBarItems"><img className='dashSprite-imageslist' src='/src/images/info.svg' />About</li>
-          <li className="sideBarItems"><img className='dashSprite-imageslist' src='/src/images/help.svg' />Help</li>
+        <li className="sideBarItems" onClick={() => navigate('/tablePlan')}>
+            <img className='dashSprite-imageslist' src='/src/images/tablePlan.svg' />
+            Table Plan
+          </li>
+          <li className="sideBarItems" onClick={() => navigate('/menu')}>
+            <img className='dashSprite-imageslist' src='/src/images/menu.svg' />
+            Menu
+          </li>
+          <li className="sideBarItems" onClick={() => navigate('/about')}>
+            <img className='dashSprite-imageslist' src='/src/images/info.svg' />
+            About
+          </li>
+          <li className="sideBarItems" onClick={() => navigate('/help')}>
+            <img className='dashSprite-imageslist' src='/src/images/help.svg' />
+            Help
+          </li>
         </ul>
         <ul >
-           <li className='dashlogout' onClick={handleLogout}>
-          <img className='dashSprite-imageslist' src='/src/images/logout.svg' />
-          Log out
-        </li>
+          <li className='dashlogout' onClick={handleLogout}>
+            <img className='dashSprite-imageslist' src='/src/images/logout.svg' />
+            Log out
+          </li>
         </ul>
       </div>
 
       <div className='dash-mainbox'>
+
+      <div className='card-container'>
         <div className='dash-createEvent'>
-          <h3 className="createEvent">Create an Event</h3>
+          <h3 className="createEvent">Add an event</h3>
           <div className='createEvent-box-wrapper'>
             <div className='createEventBox1' onClick={() => navigate('/createEvent')}>
-  <button className='createEvent-Button1'>
-    <img src='/src/images/addEvent.svg' />
-  </button>
-</div>
-</div>
-</div>
+              <button className='createEvent-Button1'>
+                <img src='/src/images/add1.svg' />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className='vertical-separator'></div>
+        
+        <div className='dash-createEvent'>
+          <h3 className="createEvent">My invitations</h3>
+          <div className='createEvent-box-wrapper'>
+            <div className='createEventBox1' onClick={() => navigate('/invitations')}>
+              <button className='createEvent-Button1'>
+                <img src='/src/images/invite1.svg' width={60} height={60} />
+              </button>
+            </div>
+          </div>
+        </div>
+        </div>
 
         <div className='dash-recentPosts'>
-          <h3 className="posts">Recent Posts</h3>
+          <h3 className="posts">Recent posts</h3>
           <hr className='commentdash-line' />
         </div>
 

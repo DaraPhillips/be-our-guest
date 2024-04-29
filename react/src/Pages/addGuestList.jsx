@@ -12,8 +12,6 @@ const inputFields = [
   { name: 'email', placeholder: 'Email', icon: <EmailIcon /> },
 ];
  
-//addGuestList page
- 
 // Define your component
 export default function AddGuestList() {
   // Define your state variables
