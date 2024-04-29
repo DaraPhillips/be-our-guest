@@ -9,9 +9,81 @@ export default function Dashboard() {
   const [pinImages, setPinImages] = useState(['/src/images/pin.png']);
   const navigate = useNavigate();
   const [eventDate, setEventDate] = useState(null);
-  const [timeRemaining, setTimeRemaining] = useState(null);
+  const [timeRemaining, setTimeRemaining] = useState('Days - Hours - Minutes - Seconds'); // Display time remaining until event starts
+  const [weddingTitle, setWeddingTitle] = useState('Wedding Title');
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userId = await fetchUserId();
+        const eventUrl = `http://127.0.0.1:8000/get_event_date/${userId}/`;
+        const response = await axios.get(eventUrl);
+        const eventData = response.data;
+        
+        // Log eventData
+        console.log('Event Data:', eventData);
+    
+        // Check if eventData is an array and contains at least one element
+        if (!Array.isArray(eventData) || eventData.length === 0) {
+          console.error('Event data is either not an array or is empty.');
+          return;
+        }
+    
+        // Access the first element of the array and check if it has the date field
+        const firstEvent = eventData[0];
+        if (!firstEvent.date) {
+          console.error('Event date not found in the response data.');
+          return;
+        }
+    
+        // Parse date string to Date object
+        const eventDateString = firstEvent.date;
+        console.log('Event Date String:', eventDateString);
+        const eventDateParts = eventDateString.split('-');
+        const eventDate = new Date(eventDateParts[0], eventDateParts[1] - 1, eventDateParts[2]); // Month is 0-indexed
+    
+        // Log eventDate
+        console.log('Event Date:', eventDate);
+    
+        setEventDate(eventDate);
+
+        // Fetch wedding title
+        const titleResponse = await axios.get(`http://127.0.0.1:8000/get_event_title/${userId}/`);
+        const titleData = titleResponse.data;
+        if (titleData.length > 0) {
+          const weddingTitle = titleData[0].weddingTitle; 
+          setWeddingTitle(weddingTitle);
+        } else {
+          console.error('No wedding title found for the user.');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
   
+    fetchData();
+  }, []);
+
+  const fetchUserId = async () => {
+    try {
+      const token = localStorage.getItem('jwtToken');
+      let url = 'http://127.0.0.1:8000/users/';
+      if (token) {
+        url += `?token=${token}`;
+      }
+      const response = await axios.get(url);
+      if (response.data) {
+        const userId = response.data.id;
+        return userId;
+      } else {
+        console.error('No user data found in response.');
+      }
+    } catch (error) {
+      console.error('Error fetching user ID:', error);
+    }
+  };
+
   const toggleLikeImage = (index) => {
     const newImages = [...likeImages];
     newImages[index] =
@@ -30,26 +102,14 @@ export default function Dashboard() {
     setPinImages(newImages);
   };
 
-  
-
   useEffect(() => {
-    // Fetch event date from the backend
-    axios.get('http://127.0.0.1:8000/event-date')
-      .then(response => {
-        const eventData = response.data;
-        setEventDate(new Date(eventData.date)); // Convert string date to Date object
-      })
-      .catch(error => {
-        console.error('Error fetching event date:', error);
-      });
-  }, []);
-
-  useEffect(() => {
-    // Calculate time remaining until the event
     if (eventDate) {
       const intervalId = setInterval(() => {
         const now = new Date();
-        const difference = eventDate - now;
+        const difference = eventDate.getTime() - now.getTime(); // Get time in milliseconds
+        console.log('Event Date:', eventDate);
+        console.log('Now:', now);
+        console.log('Difference:', difference);
         if (difference <= 0) {
           clearInterval(intervalId);
           setTimeRemaining('Event has started!');
@@ -58,22 +118,17 @@ export default function Dashboard() {
           const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
           const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+          console.log('Time Remaining:', `${days}d ${hours}h ${minutes}m ${seconds}s`);
           setTimeRemaining(`${days}d ${hours}h ${minutes}m ${seconds}s`);
         }
       }, 1000);
-      // Cleanup function to clear interval
       return () => clearInterval(intervalId);
     }
   }, [eventDate]);
 
   const handleLogout = () => {
-    // Call your authentication service logout method
     AuthService.logout();
-
-    // Verify that the token is cleared from local storage
     console.log("Token after logout:", localStorage.getItem('jwtToken'));
-
-    // Redirect to the login page or perform any other actions
     navigate('/login');
   };
 
@@ -81,11 +136,11 @@ export default function Dashboard() {
     <div className='dashboard-page-body'>
       <div className='header-wrap-dash'>
         <h3 className="dashboard">Dashboard</h3>
-        <h1 className="weddingNames">Name and Name's Wedding</h1>
-              <div>
-                  <h1>Event Countdown</h1>
-                  {timeRemaining && <p>{timeRemaining}</p>}
-              </div>
+        <h1 className="weddingNames">{weddingTitle}</h1> {/* Render wedding title here */}
+          <div>
+              <p>{timeRemaining}</p>
+          </div>
+
       </div>
 
       <div className='dash-sidebar'>

@@ -4,272 +4,244 @@ h1,
 h3 {
   font-family: "Roboto", sans-serif;
 }
-
+ 
 .wedding-details-header,
 h1 {
   font-weight: 350;
   padding-left: 1.5rem;
 }
-
+ 
 h3 {
   font-weight: 500;
   font-size: 1em;
   padding: 1em 0;
 }
-
+ 
 /* Form Styles */
-.addGuestDetails-container form {
-  margin-bottom: 20px;
-  padding: 20px;
-}
-
+ 
 .addGuestDetails-container {
   background-color: #d5d9e1;
   border-radius: 30px;
   padding: 1em;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-  margin: 3.5em 10%;
-  min-height: 34em; /* Change height to min-height */
+  margin: 3.5em 5%; /* Adjusted margin for smaller screens */
+  min-height: 29em;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 }
-
-/* Layout */
-.event-col1,
-.event-col2,
-.event-col3 {
-  display: flex;
-  justify-content: center;
-  gap: 75px;
-  padding-bottom: 7rem;
+ 
+/* Media Queries for Responsiveness */
+ 
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .addGuestDetails-container {
+    margin: 3.5em 5%;
+    padding: 1.5em;
+  }
 }
-
+ 
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .addGuestDetails-container {
+    margin: 3.5em 10%;
+  }
+}
+ 
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .addGuestDetails-container {
+    margin: 3.5em 15%;
+  }
+}
+ 
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .addGuestDetails-container {
+    margin: 3.5em 17%;
+  }
+}
+ 
+/* Layout */
+ 
 .breadcrumb-container {
   margin-top: 3rem;
   padding-left: 3rem;
   display: flex;
 }
-
+ 
 /* Typography and Styling */
- label {
+label {
   color: rgba(2, 9, 45, 0.46);
-    font-size: 1.8em;
-    margin-bottom: 0;
-    width: 100%;
-    font-weight: 500;
-    text-align: start;
+  font-size: 1.8em;
+  margin-bottom: 0;
+  width: 100%;
+  font-weight: 500;
+  text-align: start;
 }
-
-input, select {
+ 
+input,
+select {
   width: 100%;
   border-radius: 4px;
   border: 1px solid rgb(55, 65, 81);
-  padding: .3em 2.5em;
+  padding: .3em 2em;
   color: #02092d;
   font-weight: 500;
   font-size: 1.8em;
   text-align: start;
   margin-top: 0.8em;
+  background-color: #fff;
 }
-
-input, select:hover {
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-}
-
+ 
 /* Breadcrumb Navigation */
 .dash-breadcrumb,
 .currentPage-breadcrumb {
   text-align: left;
   display: inline;
 }
-
+ 
 .dash-breadcrumb {
   color: #02092d80;
   text-decoration: none;
 }
-
+ 
 .currentPage-breadcrumb {
   color: #02092d;
   margin-top: 0;
   padding: 0.1em 0 0 .5em;
 }
-
+ 
 /* Buttons */
 .addGuest-button,
-.SendLinks-button {
+.SendLinks-button,
+.createEvent-button,
+.addNearlyWed-button {
   padding: 0.2em;
   font-size: 1.8em;
   width: 100%;
   margin-top: 0em;
   font-weight: 500;
 }
-
+ 
 .addGuest-button {
-  margin-top: 3.7em;
+  margin-top: 1.5em;
 }
-
+ 
+/* Separator line */
+ 
+.line1 {
+  width: 100%;
+  max-width: 39em;
+  height: 3px;
+  background-color: white;
+  margin: 3em 0;
+}
+ 
+.line-container {background-color: none;}
+ 
+/*Send links/ Cancel Button Container */
+ 
 .SendLinks-button {
   padding: 0.2em;
   font-size: 1.8em;
-  width: 100%;
-  margin-top: 9em;
+  width: 75%;
   font-weight: 500;
+  background: #02092d;
+  color: white;
+  text-align: center;
+  border-radius: 50px;
+  border: 3px solid #02092d;
 }
-
-.addNearlyWed-button{
+ 
+.SendLinks-button:hover {
+  padding: 0.2em;
+  font-size: 1.8em;
+  width: 75%;
+  font-weight: 500;
+  background:#c4a468;
+  color: white;
+  text-align: center;
+  border-radius: 50px;
+  border: 3px solid #02092d;
+}
+ 
+.cancel-button {padding: 0.2em;
+  font-size: 1.8em;
+  width: 25%;
+  font-weight: 500;
+  background-color: #fff;
+  border: 3px solid #02092d;
+  color: #02092d;}
+ 
+  .cancel-button:hover {padding: 0.2em;
+    font-size: 1.8em;
+    width: 25%;
+    font-weight: 500;
+    border: 3px solid #02092d;
+    color: #ffffff;
+    background-color: #c4a468;}
+ 
+    .invitation-button-container {
+      margin-top: 0.5em;
+      margin-bottom: 1.5em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2em;
+      width: 30em;
+      background: #fff;
+      padding: 2em 0em;
+      border-radius: 20em;
+    }
+ 
+.addNearlyWed-button {
   padding: 0.2em;
   font-size: 1.8em;
   width: 100%;
-  margin-top: 0.5em;
+  margin: 1.5em 0em;
   font-weight: 500;
 }
-
-.Eye, .ClosedEye {
-  position: absolute;
-  top: 64%;
-  transform: translateY(-50%);
-  left: 18.5em;
-  width: 4em;
-}
-
+ 
 .deleteGuestIcon {
-  position: absolute;
-  top: 12%;
-  transform: translateY(-50%);
-  left: 10.75em;
-  width: 4em;
-  background: none;
-  padding: 0;
+ 
+  padding: 0em 0em;
+  font-size: 0em;
+  letter-spacing: 0px;
+  font-size: 0em;
+  letter-spacing: 0px;
+  color: #ffffff;
+  cursor: pointer;
+  background: transparent;
   border: none;
-  box-shadow: none;
-  background: #02092D;
-}
-
+  vertical-align: text-top;
+  }
+ 
+  .deleteGuestIcon:hover {
+ 
+    padding: 0em 0em;
+    font-size: 0em;
+    letter-spacing: 0px;
+    font-size: 0em;
+    color: #ffffff;
+    cursor: pointer;
+    background-color: transparent;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
+    vertical-align: text-top;
+    }
+ 
+  .secondName{
+    margin-left: 1em;
+    margin-right: 4em;
+    }
+ 
+ 
+ 
 /* Background Image */
 .weddingDetails-page::before {
   content: '';
   position: fixed;
-section #form-left{width: 50%;}
-
-.wedding-details-header, h1{
-    font-family: "Roboto", sans-serif;
-    font-weight: 350;
-    padding-left: 1.5rem;
-}
-
-.event-details-container {
-    width: 54em;
-    height: 55em;
-    grid-gap: 20px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    background-color: #D5D9E1;
-    border-radius: 30px;
-    padding: 1em;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    margin-top: 3em;
-  }
-
-.event-details-container form {
-    margin-bottom: 20px;
-    padding: 20px;
-}
-
-.details-group{
-    margin-bottom: 10px;
-    margin-top: 2px;   
-}
-
-.groom-group,
-.bride-group{
-    padding-bottom: 1rem;
-}
-
-
-.event-col1,
-.event-col2{
-    
-    /* display: grid; */
-    
-    /* grid-gap: 20px;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center; */
-
-    display: flex;
-    justify-content: center; /* Adjust as needed */
-    gap: 75px;
-    padding-bottom: 7rem;
-    
-}
-
-label{
-  font-family: "Roboto", sans-serif;
-  color: rgba(2, 9, 45, .45);
-}
-input{
-  width: 100%;
-  border-radius: 0.375rem;
-  border: 1px solid rgb(55, 65, 81);
-  padding: 1em 4rem;
-  padding-left: 4rem;
-  padding-left: 4rem;
-  color: #02092D;
-  font-weight: 500;
-  font-size: 1em;
-  text-align: start;
-  margin-top: 0.2em;
-}
-
-
-.add-guest-button{
-    font-size: 7px;
-    padding-top: .5rem;
-    padding-bottom: .5rem;
-}
-
-.home-tab-top-thingy ,
-.other-tab-at-top {
-    text-align: left;
-    display: inline;
-}
- 
-.topyoke{
-    margin-top: 3rem;
-    padding-left: 3rem;
-}
-
-h3 {font-family: "Roboto", sans-serif;
-      font-weight: 500;
-      font-size: 1em;
-      padding: 1em 0em 1em 0em;}
-
-
-.home-tab-top-thingy {
-    color: #02092D80;
-}
-
-.other-tab-at-top{
-color:#02092D;
-}
-
-.createEvent-button{
-  padding: .2em;
-  font-size: 1.8em;
-  width: 17em;
-  margin-top: 1em;
-  font-weight: 500;
-}
-
-.weddingDetails-page::before {
-  content: '';
-  position: fixed; /* or absolute */
-
   top: 0;
   left: 0;
   width: 100%;
@@ -279,165 +251,501 @@ color:#02092D;
   z-index: -1;
   background-size: cover;
 }
-
-
-.event-details-buttoncontainer{
-    
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        /* background-color:#D5D9E1 ; */
-        /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
-
+ 
+#password-id {
+  border-radius: 4px;
 }
-
-.Venue-deets {
-    font-size: 1.8em;
+ 
+/* Form Inputs in Input Group */
+.input-group input {
+  width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(55, 65, 81, 1);
+  border-top-color: rgb(55, 65, 81);
+  border-right-color: rgb(55, 65, 81);
+  border-bottom-color: rgb(55, 65, 81);
+  border-left-color: rgb(55, 65, 81);
+  outline: 0;
+  background-color: rgb(255, 255, 255);
+  padding: 0.75rem 4rem;
+  color: #02092d;
+  font-weight: 500;
+  font-size: 1.5em;
+  text-align: start;
+  margin-top: 0.8em;
+}
+ 
+/* Form Input Group Styling */
+.input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+  margin-left: calc(var(--bs-border-width) * -1);
+  border-radius: 4px;
+}
+ 
+/* Form Added Guests Icon */
+.guestListIcon {
+  position: absolute;
+  top: 7.75em;
+  transform: translateY(-50%);
+  left: 2em;
+  width: 4em;
+}
+ 
+/* Form Column */
+.form-column {
+  width: 50%;
+  float: left;
+  padding: 0em 1em;
+  position: relative;
+}
+ 
+.form-nearly-column {
+  width: 100%;
+  float: left;
+  padding: 0em 2em;
+  position: relative;
+}
+ 
+.addGuest-headings {
+  font-size: 1.8em;
+  margin-bottom: 0;
+  width: 100%;
+  font-weight: 500;
+  text-align: start;
+}
+ 
+option {
+  font-size: .8em;
+  text-decoration-line: underline;
+}
+ 
+/* Error Messages */
+.error {
+  color: rgb(240, 0, 0);
+  font-size: .8em;
+  margin-bottom: 0.1em;
+  width: 100%;
+  font-weight: 700;
+  text-align: start;
+  background-color: #fff;
+  border: 2px solid red;
+  padding: 0.5em 0.5em;
+  border-radius: 4px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  display: none; /* Hide error messages by default */
+}
+ 
+/* Show error messages when error occurs */
+.error:not(:empty) {
+  display: block;
+}
+ 
+/* Wedding Details Header */
+.wedding-details-header,
+.event-header h1 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 350;
+  padding-left: 1.5rem;
+}
+ 
+/* Event Page Wrap */
+.event-page-wrap {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 3.5em;
+}
+ 
+/* Event Details Container */
+.event-details-container {
+  max-width: 43em;
+  max-height: 69em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #d5d9e1;
+  border-radius: 30px;
+  padding: 7em;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  margin: 3em 0em;
+}
+ 
+/* Event Column 2 */
+.event-details-container .event-col2 {
+  padding-bottom: 9rem;
+  font-family: "Roboto", sans-serif;
+}
+ 
+/* Add Guest Button */
+.event-details-container .add-guest-button {
+  font-size: 7px;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+ 
+/* Home Tab Top Thingy, Other Tab at Top */
+.event-details-container .home-tab-top-thingy,
+.event-details-container .other-tab-at-top {
+  text-align: left;
+  display: inline;
+}
+ 
+/* Top Yoke */
+.event-details-container .topyoke {
+  margin-top: 3rem;
+  padding-left: 3rem;
+}
+ 
+/* Create Event Button */
+.event-details-container .createEvent-button {
+  padding: .2em;
+  font-size: 1.8em;
+  width: 100%;
+  margin-top: 1em;
+}
+ 
+/* Wedding Details Page Background */
+.wedding-details-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 170%;
+  background-image: url(/src/images/createEventBackgroundImg.png);
+  opacity: 0.5;
+  z-index: -1;
+  background-size: cover;
+}
+ 
+/* Event Details Button Container */
+.event-details-container .event-details-buttoncontainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+ 
+/* Venue Details, Church Details */
+.event-details-container .Venue-deets,
+.event-details-container .church-deets {
+  font-size: 1.8em;
   margin-bottom: 0em;
   width: 100%;
   font-weight: 500;
-  font-size: 1.8em;
   text-align: start;
 }
-
- #venue-id, #address1-id, #address2-id, 
- #address3-id,#Zip-id,#respondByDate,#time, #date {font-size: 1.5em;}
-
- #venue-id:focus, #address1-id:focus, #address2-id:focus, 
- #address3-id:focus,#Zip-id:focus,#respondByDate:focus,
- #time:focus, #date:focus{font-size: 1.5em; outline: none;  border: 2px solid #C4A468;box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);}
-
- #venue-id:hover, #address1-id:hover, #address2-id:hover, 
- #address3-id:hover,#Zip-id:hover,#respondByDate:hover,
- #time:hover, #date:hover
- {
-  font-size: 1.5em; 
-  outline: none;  
-  border: 2px solid #C4A468;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);}
-
-
-
-  input:hover {outline: #C4A468;}
-
-
-
-
-#venue-id {
-    width: 100%;
-    border-radius: 0.375rem;
-    border: 1px solid rgba(55, 65, 81, 1);
-    outline: 0;
-    background-color: rgb(255, 255, 255);
-    padding: 0.75rem 4rem;
-    color: #02092D;
-    font-weight: 500;
-    font-size: 1.8em;
-    text-align: start;
-    margin-top: 0.2em;
+ 
+/* Venue Icon */
+.event-details-container .venueIcon {
+  position: absolute;
+  top: 56%;
+  transform: translateY(-50%);
+  left: 5px;
+  width: 4em;
 }
-
-.createEventButton {
-  background-color: #02092d; /* background */
-  border: 2px solid #02092d;
-  color: #fff; /* White text color */
-  font-weight: 500;
+ 
+/* Input Focus */
+#churchAddress3-id:focus,
+#churchName:focus,
+#churchAddress2-id:focus,
+#churchAddress1-id:focus,
+#venue-id:focus,
+#address1-id:focus,
+#address3-id:focus,
+#address2-id:focus,
+#zip-code:focus,
+#Zip-id:focus,
+#weddingTitle:focus,
+#country-id:focus,
+#respondByDate:focus,
+#date:focus,
+#time:focus,
+#church-time:focus,
+.custom-input:focus {
+  border-color: #c4a468;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
-
-.createEventButton:hover {
-  background-color: #fff;
-  border: 2px solid #02092d;/* hover */
+ 
+.form-Nearlywed-column {
+  width: 50%;
+  float: left;
+  padding: 0em 2em;
+  position: relative;
+}
+ 
+/* Style for blurred background */
+body.-active {
+  filter: blur(5px);
+}
+ 
+/* Style for blurred background */
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  backdrop-filter: blur(5px); /* Apply the blur effect */
+  z-index: 9998; /* Ensure the background appears behind the modal */
+}
+ 
+/* Style for modal */
+.confirmation-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 4em;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+}
+ 
+.modal-content {
+  text-align: center;
+}
+ 
+.cancelBtn, .confirm-button {
+  margin: 0 10px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #02092d;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 1em;
+  border-radius: 50px;
+  padding: .5em 1em;
+}
+ 
+.cancelBtn:hover, .confirm-button:hover {
+  background-color: #c4a468;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  border-radius: 50px;
+  border: 3px solid #02092d;
+  box-shadow: 0px 8px 15px rgba(184, 178, 13, 0.1);
+}
+ 
+.guest-item-guest-header {
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  margin-top: 1.25em;
+  border: 1px solid #02092d;
+  border-radius: 4px;
+}
+ 
+.guest-item {
   color: #02092d;
+  text-align: right;
+  border-bottom: 1px solid #02092d;
+  padding: .75em .75em;
+}
+ 
+.guest-emails {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #02092d;
+  padding: 0.5em 0.5em;
+  margin-top: 1.5em;
+  border-radius: 4px 4px 0px 0px;
+}
+ 
+.host-form1 {
+  width: 100%;
+  max-width: 55em;
+  margin-top: auto;
+}
+ 
+/* Guest List - with invites sent! */
+ 
+.sent-guests {
+  background-color: #d5d9e1;
+  border-radius: 30px 30px 0px 0px;
+  padding: 1em;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  min-height: 17em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 79em;
+  margin-left: auto;
+  margin-right: auto;
+}
+ 
+.sentEmails {
+  margin-top: 1.5em;
+  color: #74798f;
+  margin-bottom: 1em;
+}
+ 
+.sentEmailsContainer {
+  background-color: #fff;
+  padding: 1em 2em;
+  width: 60%;
+  border: 1px solid #02092d;
+  border-radius: 4px;
+}
+ 
+/* CSV UPLOAD */
+ 
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+}
+ 
+.file-upload-input {
+  display: none; /* Hide the default file input */
+}
+ 
+.custom-file-upload-button {
+  padding: 0.2em;
+  font-size: 1.8em;
+  width: 100%;
+  font-weight: 500;
+  background: #ffffff;
+  color: #02092d;
+  text-align: center;
+  border-radius: 50px;
+  border: 3px solid #02092d;
+}
+ 
+.custom-file-upload-button:hover {
+  background-color: #676b85;
+  color: white;
+  transition: background-color 0.3s;
+}
+ 
+.custom-file-upload-label {
+  padding: 0.5em;
+  font-size: 1.5em;
+  width: 100%;
+  text-align: center;
+  border-radius: 50px;
+  border: 3px solid #02092d;
+  background-color: #02092d;
+  color: white;
+}
+ 
+.custom-file-upload-label:hover {
+  background-color: #676b85;
+  color: white;
+  transition: background-color 0.3s;
+}
+ 
+.uploaded-file-details {
+  font-size: 1.2em;
+  margin-top: 1em;
+}
+ 
+.uploaded-file-name {
+  margin-top: 0.5em;
+  font-weight: bold;
+}
+ 
+.uploaded-file-count {
+  margin-top: 0.5em;
+}
+ 
+.uploaded-file-error {
+  margin-top: 0.5em;
+  color: red;
+}
+ 
+/* Wedding Host Page */
+ 
+.wedding-host-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(/src/images/hostPageImg.svg);
+  opacity: 0.5;
+  z-index: -1;
+  background-size: cover;
+}
+ 
+.weddingHost-headings {
+  font-size: 2.8em;
+  margin-bottom: 0;
+  width: 100%;
+  font-weight: 500;
+  text-align: center;
+}
+ 
+/* Contact Info Container */
+.contact-info-container {
+  max-width: 43em;
+  max-height: 39em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #d5d9e1;
+  border-radius: 30px;
+  padding: 7em;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  margin: 3em auto;
+}
+ 
+/* Send Links Button */
+.send-links-button {
+  padding: 0.2em;
+  font-size: 1.8em;
+  width: 100%;
+  margin-top: 1em;
   font-weight: 500;
 }
-
-.createEventButton:active {
-  background-color: #676B85;
-  border: 2px solid #02092d;
-  color: #fff;
-  font-weight: 500;
-  /* on active/click state */
+ 
+/* Event Details Button Container */
+.contact-info-container .event-details-buttoncontainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-.home-tab-top-thingy {
-    color: #02092D80;
-    text-decoration: none;
+ 
+/* View Links Button */
+.contact-info-container .view-links-button {
+  margin-top: 1em;
+}
+ 
+/* Hide 'Create Event' and 'Go to Dashboard' Buttons on Small Screens */
+@media (max-width: 576px) {
+  .event-details-container .createEvent-button,
+  .contact-info-container .event-details-buttoncontainer {
+    display: none;
   }
-
+ 
   .form-column {
-    width: 50%;
+    width: 100%;
     float: left;
-    padding: 2em 2em;
-  }
-  
-  .details-group {
-    margin-bottom: 20px;
-  }
-  
-  .guests-container {
-    display: flex;
-  }
-
-  .guests-container {
-    width: 54em;
-    height: 55em;
-    grid-gap: 20px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+    padding: 0em 1em;
     position: relative;
-    background-color: #D5D9E1;
-    border-radius: 30px;
-    padding: 1em;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    margin-top: 3em;
   }
-  
-  .event-col1 {
-    width: 100%;
+ 
+  .invitation-button-container {
+    margin-top: 0em;
+    margin-bottom: 1.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0em;
+    width: 30em;
+    background: none;
+    padding: .5em .2em;
+    border-radius: 25em;
   }
-
-  #guest-list {
-    width: 100%;
-    border-radius: 0.375rem;
-    border: 1px solid rgb(55, 65, 81);
-    padding: 1em 4rem;
-    padding-left: 4rem;
-    color: #02092D;
-    font-weight: 500;
-    font-size: 1em;
-    text-align: start;
-    margin-top: 1.35em;
-    background: #fff;
-  }
-
-  .SendLinks-button {
-    padding: .2em;
-    font-size: 1.8em;
-    width: 17em;
-    margin-top: 19.6em;
-    font-weight: 500;
-  }
-  
-  .input-group input {
-    width: 100%;
-    border-radius: 0.375rem;
-    border: 1px solid rgba(55, 65, 81, 1);
-      border-top-color: rgb(55, 65, 81);
-      border-right-color: rgb(55, 65, 81);
-      border-bottom-color: rgb(55, 65, 81);
-      border-left-color: rgb(55, 65, 81);
-    border-top-color: rgb(55, 65, 81);
-    border-right-color: rgb(55, 65, 81);
-    border-bottom-color: rgb(55, 65, 81);
-    border-left-color: rgb(55, 65, 81);
-    outline: 0;
-    background-color: rgb(255, 255, 255);
-    padding: 0.75rem 4rem;
-    color: #02092D;
-    font-weight: 500;
-    font-size: 1.8em;
-    text-align: start;
-    margin-top: 0.8em;
-  }
+ 
+  .SendLinks-button {width: 75%;
+                     padding: .25em .2em;}
+}
+ 

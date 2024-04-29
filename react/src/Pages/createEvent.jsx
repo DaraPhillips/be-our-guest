@@ -23,22 +23,23 @@ export default function CreateEvent() {
  
     const [eventData, setEventData] = useState({
         weddingTitle: '',
-        eventType: '',
+        wedding_type: '',
         county1: '',
-        venue1: '',
+        venue2: '',
         venue1_address1: '',
         venue1_address2: '',
         venue1_address3: '',
         venue1_zip: '',
-        venue1_time: '',
-        venue2: '',
+        venue_1_time: '',
+        venue_1: '',
         venue2_address1: '',
         venue2_address2: '',
         venue2_address3: '',
         venue2_zip: '',
-        respondByDate: '',
+        respond_by_date: '',
         time: '',
         date: ''
+        
 
     });
     
@@ -49,7 +50,32 @@ export default function CreateEvent() {
 
     const [venues, setVenues] = useState([]);
 
-    const [eventType, setEventType] = useState([]);
+    const [wedding_type, setEventType] = useState([]);
+
+    const fetchUserDetails = async () => {
+        try {
+          const token = localStorage.getItem('jwtToken');
+     
+          let url = 'http://127.0.0.1:8000/users/';
+          if (token) {
+            url += `?token=${token}`; // Assuming your API endpoint retrieves user details by token
+          }
+     
+          const response = await axios.get(url);
+          console.log('API response:', response); // Log the entire response object
+     
+          if (response.data && response.data.id) { // Check for data & user ID
+            const userId = response.data.id;
+            console.log('Received user ID:', userId);
+            // Use the userId here (e.g., return it or store it in state)
+            return userId; // You can return the userId for further use
+          } else {
+            console.error('No user ID found in response.');
+          }
+        } catch (error) {
+          console.error('Error fetching user ID:', error);
+        }
+      };
 
 
 
@@ -107,16 +133,31 @@ export default function CreateEvent() {
     }, []); // Empty dependency array to run only once on mount
 
     useEffect(() => {
-        if (eventData.country) {
-            axios.get(`http://127.0.0.1:8000/venues/${eventData.country}/`)
-                .then(response => {
-                    setVenues(response.data);
-                })
-                .catch(error => {
-                    console.error('Error fetching venues:', error);
-                });
+        if (eventData.county1) {
+          const countyId = parseInt(eventData.county1, 10); // Convert county1 to number
+          axios.get(`http://127.0.0.1:8000/venues/${countyId}/`)
+            .then((response) => {
+              setVenues(response.data);
+            })
+            .catch((error) => {
+              console.error('Error fetching venues:', error);
+            });
         }
-    }, [eventData.country]);
+      }, [eventData.county1]);
+
+
+      useEffect(() => {
+        if (eventData.county2) {
+          const countyId = parseInt(eventData.county2, 10); // Convert county1 to number
+          axios.get(`http://127.0.0.1:8000/venues/${countyId}/`)
+            .then((response) => {
+              setVenues(response.data);
+            })
+            .catch((error) => {
+              console.error('Error fetching venues:', error);
+            });
+        }
+      }, [eventData.county2]);
 
    
 
@@ -126,11 +167,12 @@ export default function CreateEvent() {
         try {
             // Retrieve authentication token from localStorage or wherever it's stored
             const token = localStorage.getItem('jwtToken');
+            const host_user = await fetchUserDetails();
 
             // Send POST request to create event with authentication token included in headers
             const response = await axios.post(
                 'http://127.0.0.1:8000/create_event/',
-                { event: eventData },
+                { event: eventData,host_user},
                 {
                     headers: {
                         Authorization: `Bearer ${token}` // Include the JWT token in the Authorization header
@@ -161,45 +203,34 @@ export default function CreateEvent() {
         }));
 
     };
-
     const handleVenueSelect1 = (event) => {
-
-        console.log("Venues:", venues); // Check if venues array is populated
-
-        console.log("Venue selected:", event.target.value); // Check if venueId is correct
-
         const venueId = parseInt(event.target.value, 10); // Convert to number
-
-        const selectedVenue = venues.find(venue => venue.venueDetailsID === venueId);
-
-        console.log("Selected venue:", selectedVenue); // Check if selectedVenue is correct
-
+      
+        // Find the selected venue from the venues array
+        const selectedVenue = venues.find((venue) => venue.id === venueId);
+      
         if (selectedVenue) {
-
-            setEventData(prevEventData => ({
-                ...prevEventData,
-                venue: selectedVenue.venueDetailsID,
-                churchAddress1: selectedVenue.address1,
-                churchAddress2: selectedVenue.address2,
-                churchAddress3: selectedVenue.address3,
-                zip_code1: selectedVenue.zipcode, // Ensure this property matches the property in the venue object
-                
-            }));
-            
-
+          setEventData((prevEventData) => ({
+            ...prevEventData,
+            venue2: selectedVenue.id,
+            venue1_address1: selectedVenue.address1,
+            venue1_address2: selectedVenue.address2,
+            venue1_address3: selectedVenue.address3,
+            venue1_zip: selectedVenue.zipcode, // Ensure property names match
+          }));
+        } else {
+          console.error('Selected venue not found:', venueId);
         }
+      };
 
-    };
 
     const handleVenueSelect2 = (event) => {
 
-        console.log("Venues:", venues); // Check if venues array is populated
-
-        console.log("Venue selected:", event.target.value); // Check if venueId is correct
+ 
 
         const venueId = parseInt(event.target.value, 10); // Convert to number
 
-        const selectedVenue = venues.find(venue => venue.venueDetailsID === venueId);
+        const selectedVenue = venues.find(venue=> venue.id === venueId);
 
         console.log("Selected venue:", selectedVenue); // Check if selectedVenue is correct
 
@@ -207,11 +238,11 @@ export default function CreateEvent() {
 
             setEventData(prevEventData => ({
                 ...prevEventData,
-                venue: selectedVenue.venueDetailsID,
-                address1: selectedVenue.address1,
-                address2: selectedVenue.address2,
-                address3: selectedVenue.address3,
-                zip: selectedVenue.zipcode, // Ensure this property matches the property in the venue object
+                venue_1: selectedVenue.id,
+                venue2_address1: selectedVenue.address1,
+                venue2_address2: selectedVenue.address2,
+                venue2_address3: selectedVenue.address3,
+                venue2_zip: selectedVenue.zipcode, // Ensure this property matches the property in the venue object
             }));
             
 
@@ -223,7 +254,7 @@ export default function CreateEvent() {
 
     if (eventCreated) {
 
-        return <Navigate to="./Pages/dashboard" />;
+        return <Navigate to="/dashboard" />;
 
     }
 
@@ -273,13 +304,13 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
                                     {/* this is the event type dorpdown */}
-                                <select name="event" id="event-id" value={eventData.eventType1} onChange={handleChange}>
+                                <select name="wedding_type" id="event-id" value={eventData.wedding_type} onChange={handleChange}>
 
                                     <option key="" value="">Event type</option>
 
-                                     {eventType.map(eventType1 => (
+                                     {wedding_type.map(wedding_type => (
 
-                                        <option key={eventType1.id} value={eventType1.id}>{eventType1.name}</option>
+                                        <option key={wedding_type.id} value={wedding_type.id}>{wedding_type.name}</option>
 
                                     ))}
 
@@ -291,39 +322,37 @@ export default function CreateEvent() {
                             <hr />
 
                             <label className="church-deets" htmlFor="church-details">Church details</label>
-
                                                         
                             {/* COUNTRY DETAILS */}
                                       {/* county dropdown for church or civil  */}
-                            <label className="country-deets" htmlFor="country-details"></label>
+                                      <label className="country-deets" htmlFor="country-details"></label>
 
-                            <div className='details-group'>
+<div className='details-group'>
 
-                                <select name="county1" id="county1-id" value={eventData.county1} onChange={handleChange}>
+    <select name="county1" id="county1" value={eventData.county1} onChange={handleChange}>
 
-                                    <option key="" value="">Select County</option>
+        <option key="" value="">Select County</option>
 
-                                    {counties.map(county1 => (
+        {counties.map(county1 => (
 
-                                        <option key={county1.id} value={county1.id}>{county1.name}</option>
+            <option key={county1.id} value={county1.id}>{county1.name}</option>
 
-                                    ))}
+        ))}
 
-                                </select>
+    </select>
 
-                            </div>
-
-                            <div className='details-group'>
+</div>
+<div className='details-group'>
                                       {/* venue dorpdown for church or civil  */}
-                                <select name="venue1" id="venue1-id" value={eventData.venue1} onChange={handleVenueSelect1}>
+                                <select name="venue2" id="venue2" value={eventData.venue2} onChange={handleVenueSelect1}>
 
                                     <option key="" value="">Select Venue</option>
 
-                                    {venues.map((venue1) => (
+                                    {venues.map((venue2) => (
 
-                                        <option key={venue1.venueDetailsID} value={venue1.venueDetailsID}>
+                                        <option key={venue2.id} value={venue2.id}>
 
-                                            {venue1.name}
+                                            {venue2.name}
 
                                         </option>
 
@@ -352,10 +381,12 @@ export default function CreateEvent() {
                                 <div className="input-container">
                                     <input
                                         type="text"
-                                        name="churchAddress1"
+                                        name="venue1_address1"
                                         id="churchAddress1-id"
                                         placeholder=" Address line 1"
-                                        onChange={handleChange}
+                                         onChange={handleChange}
+                                        value={eventData.venue1_address1 || ''} // Ensure value is not null
+                                        readOnly
                                         
                                     />
                                     {/* <div className="icon">
@@ -368,10 +399,12 @@ export default function CreateEvent() {
                                 <div className="input-container">
                                     <input
                                         type="text"
-                                        name="churchAddress2"
+                                        name="venue1_address2"
                                         id="churchAddress2-id"
                                         placeholder=" Address line 2"
                                         onChange={handleChange}
+                                        value={eventData.venue1_address2 || ''} // Ensure value is not null
+                                        readOnly
                                     />
                                     {/* <div className="icon">
                                         <SvgPin />
@@ -382,10 +415,12 @@ export default function CreateEvent() {
                                 <div className="input-container">
                                     <input
                                         type="text"
-                                        name="churchAddress3"
+                                        name="venue1_address3"
                                         id="churchAddress3-id"
                                         placeholder=" Address line 3"
                                         onChange={handleChange}
+                                        value={eventData.venue1_address3 || ''} // Ensure value is not null
+                                        readOnly
                                     />
                                     {/* <div className="icon">
                                         <SvgPin />
@@ -396,10 +431,13 @@ export default function CreateEvent() {
                             <div className="input-container">
                                     <input
                                         type="text"
-                                        name="zip_code1"
-                                        id="zip_code1"
+                                        name="venue1_zip"
+                                        id="venue1_zip"
                                         placeholder=" Zip code"
                                         onChange={handleChange}
+                                        value={eventData.venue1_zip || ''} // Ensure value is not null
+                                        readOnly
+                                        
 
                                     />
                                 {/* <div className="icon">
@@ -413,7 +451,7 @@ export default function CreateEvent() {
                             <label htmlFor="username">Enter time</label>
 
                             <div className='details-group'>
-                                <input type="time" id="church-time" name="church-time" onChange={handleChange} required />
+                                <input type="time" id="venue_1_time" name="venue_1_time" onChange={handleChange} required />
                             </div>
 
                         </div>
@@ -465,15 +503,15 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
 
-                                <select name="venue2" id="venue2-id" value={eventData.venue2} onChange={handleVenueSelect2}>
+                                <select name="venue_1" id="venue_1-id" value={eventData.venue_1} onChange={handleVenueSelect2}>
 
                                     <option key="" value="">Select Venue</option>
 
-                                    {venues.map((venue2) => (
+                                    {venues.map((venue_1) => (
 
-                                        <option key={venue2.venueDetailsID} value={venue2.venueDetailsID}>
+                                        <option key={venue_1.id} value={venue_1.id}>
 
-                                            {venue2.name}
+                                            {venue_1.name}
 
                                         </option>
 
@@ -491,15 +529,15 @@ export default function CreateEvent() {
 
                                     type="text"
 
-                                    name="address1"
+                                    name="venue2_address1"
 
-                                    id="address1-id"
+                                    id="venue2_address1-id"
 
                                     placeholder=" Address line 1"
 
                                     onChange={handleChange}
 
-                                    value={eventData.address1 || ''} // Ensure value is not null
+                                    value={eventData.venue2_address1 || ''} // Ensure value is not null
 
                                     readOnly
 
@@ -518,15 +556,15 @@ export default function CreateEvent() {
 
                                     type="text"
 
-                                    name="address2"
+                                    name="venue2_address2"
 
-                                    id="address2-id"
+                                    id="venue2_address2"
 
                                     placeholder=" Address line 2"
 
                                     onChange={handleChange}
 
-                                    value={eventData.address2 || ''} // Ensure value is not null
+                                    value={eventData.venue2_address2 || ''} // Ensure value is not null
 
                                     readOnly
 
@@ -545,15 +583,15 @@ export default function CreateEvent() {
 
                                     type="text"
 
-                                    name="address3"
+                                    name="venue2_address3"
 
-                                    id="address3-id"
+                                    id="venue2_address3"
 
                                     placeholder=" Address line 3"
 
                                     onChange={handleChange}
 
-                                    value={eventData.address3 || ''} // Ensure value is not null
+                                    value={eventData.venue2_address3 || ''} // Ensure value is not null
 
                                     readOnly
 
@@ -572,15 +610,15 @@ export default function CreateEvent() {
 
                                     type="text"
 
-                                    name="zip"
+                                    name="venue2_zip"
 
-                                    id="Zip-id"
+                                    id="venue2_zip"
 
                                     placeholder=" Zip code"
 
                                     onChange={handleChange}
 
-                                    value={eventData.zip || ''} // Ensure value is not null
+                                    value={eventData.venue2_zip || ''} // Ensure value is not null
 
                                     readOnly
 
@@ -597,7 +635,7 @@ export default function CreateEvent() {
 
                             <div className='details-group'>
 
-                                <input type="date" id="respondByDate" name="respondByDate" onChange={handleChange} />
+                                <input type="date" id="respond_by_date" name="respond_by_date" onChange={handleChange} />
 
                             </div>
 
@@ -640,4 +678,8 @@ export default function CreateEvent() {
             </div>
         </div>
     );
-</div>)}
+
+}
+
+
+
