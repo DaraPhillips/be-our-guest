@@ -1,7 +1,6 @@
 """
 Serializers for the models in the be_our_guest app.
 """
-
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import (
@@ -46,6 +45,11 @@ class CountySerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
+        fields = "__all__"
+        
+class EventInvitationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventInvitation
         fields = "__all__"
 
 
@@ -128,3 +132,25 @@ class WeddingTypeSerializer(serializers.ModelSerializer):
         model = WeddingType
         fields = "__all__" 
         
+
+class MyCountySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = County
+        fields = ['name']
+
+class MyVenueSerializer(serializers.ModelSerializer):
+    county = MyCountySerializer()  # Serialize County details for the venue
+
+    class Meta:
+        model = Venue
+        fields = ['county', 'name', 'address1', 'address2', 'address3', 'zipcode']
+
+class MyEventInvitationSerializer(serializers.ModelSerializer):
+    event_wedding_title = serializers.CharField(source='event.weddingTitle')  # Access weddingTitle from related Event
+    event_date = serializers.DateField(source='event.date')  # Access date from related Event
+    event_respond_by_date = serializers.DateField(source='event.respond_by_date')  # Access respond_by_date from related Event
+    venue = MyVenueSerializer(source='event.venue_1')  # Serialize Venue details from related Event
+
+    class Meta:
+        model = EventInvitation
+        fields = ['id', 'event_wedding_title', 'event_date', 'event_respond_by_date', 'venue', 'is_attending']

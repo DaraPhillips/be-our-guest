@@ -72,6 +72,7 @@ class Event(models.Model):
     )
     venue_3_time = models.TimeField(null=True)
     wedding_type = models.ForeignKey("WeddingType", on_delete=models.CASCADE)
+    weddingTitle= models.CharField(max_length=255, default="Wedding Title")
 
     objects = models.Manager()  # Explicitly define the manager
 

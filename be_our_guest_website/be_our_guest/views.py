@@ -31,7 +31,7 @@ from drf_yasg import openapi
 from rest_framework_jwt.settings import api_settings
 
 
-from .serializers import ChatSerializer, ChatMessageSerializer, ChatMemberSerializer, CountySerializer, EventSerializer, EventUpdateSerializer,GuestRsvpSerializer,MyTokenObtainPairSerializer,TableSerializer,UserSerializer,VenueSerializer,VenueTypeSerializer,WeddingTypeSerializer
+from .serializers import ChatSerializer, ChatMessageSerializer, ChatMemberSerializer, CountySerializer, EventSerializer, EventUpdateSerializer,GuestRsvpSerializer,MyTokenObtainPairSerializer,TableSerializer,UserSerializer,VenueSerializer,VenueTypeSerializer,WeddingTypeSerializer,EventInvitationSerializer
 from .models import Chat, ChatMember, ChatMessage, County, Event, EventInvitation,EventTable,User,UserManager,Venue,VenueType,WeddingType
 
 from jwt import decode, ExpiredSignatureError, InvalidTokenError
@@ -40,7 +40,7 @@ from django.core.mail import send_mail
 
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
-
+from rest_framework import generics
 
 
 
@@ -128,12 +128,13 @@ def create_event(request):
                 event_data.setdefault("respondByDate", None)  # Set default for optional field
 
         wedding_type_id = event_data.pop("weddingTypeID", None)
-        venue_1_id = event_data.pop("venue1ID", None)
-        venue_2_id = event_data.pop("venue2ID", None)
+        venue_1_id = event_data.pop("venue_1", None)
+        venue_2_id = event_data.pop("venue2", None)
         venue_3_id = event_data.pop("venue3ID", None)
-        venue_1_time = event_data.pop("venue1Time", None)
-        venue_2_time = event_data.pop("venue2Time", None)
+        venue_1_time = event_data.pop("time", None)
+        venue_2_time = event_data.pop("venue_1_time", None)
         venue_3_time = event_data.pop("venue3Time", None)
+        weddingTitle= event_data.pop("weddingTitle", None)
     # at_table_id = event_data.pop("atTableID", None)
 
         # Retrieve host ID from authenticated user (unchanged)
@@ -147,8 +148,9 @@ def create_event(request):
         event_data["venue_1_time"] = venue_1_time
         event_data["venue_2_time"] = venue_2_time
         event_data["venue_3_time"] = venue_3_time
+        event_data["weddingTitle"] = weddingTitle
     # event_data["at_table"] = at_table_id
-        event_data["hostUser"] = host_id
+        event_data["host_user"] = host_id
         
         logger.debug("Creating event instance...")
         # Create event instance
@@ -266,6 +268,7 @@ def events(request):
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def get_users(request):
     token = request.GET.get('token')
     if token:
@@ -288,23 +291,46 @@ def get_users(request):
         return Response(data)
  
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def get_venues(request):
     venues = Venue.objects.all()
     serializer = VenueSerializer(venues, many=True)
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def get_event_type(request):
     event_types = WeddingType.objects.all()
     serializer = WeddingTypeSerializer(event_types, many=True)
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def get_county(request):
     counties = County.objects.all()
     serializer = CountySerializer(counties, many=True)
     return JsonResponse(serializer.data, safe=False)
 
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def get_event_date(request, user_id):
+    dates = Event.objects.filter(host_user_id=user_id)
+    serializer = EventSerializer(dates, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def get_event_title(request, user_id):
+    title = Event.objects.filter(host_user_id=user_id)
+    serializer = EventSerializer(title, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def get_event_by_id(request, user_id):
+    events = EventInvitation.objects.get(guest_id=user_id)
+    serializer = EventInvitationSerializer(events)
+    return JsonResponse(serializer.data, safe=False)
 
 def generate_password(length=10):
     # Define sets of characters to choose from
@@ -362,84 +388,170 @@ def register_user(request):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def send_password_email(request):
-    if request.method == 'POST':
-        # Extract recipient data from the request data
-        recipient_emails = request.data.get('recipients', [])  # Expect a list of dictionaries
+  eventData = request.data.get("eventData")
+  if isinstance(eventData, list):
+    # Access the first dictionary in the list (if applicable)
+    eventData = eventData[0]
+ 
+  if request.method == 'POST':
+    recipient_emails = request.data.get('recipients', [])  # Expect a list of dictionaries
+ 
+    # Validate data structure
+    if not isinstance(recipient_emails, list):
+      return Response({'error': 'Invalid request format: "recipients" list expected'}, status=400)
+ 
+    successful_emails = []  # Track successfully sent emails for the response
+ 
+    for recipient in recipient_emails:
+      email = recipient.get('email')
+      first_name = recipient.get('first_name')
+      last_name = recipient.get('last_name')
+ 
+      if not email or not first_name or not last_name:
+        return Response({
+          'error': 'Missing required fields: email, first_name, last_name, {email}, {first_name}, {last_name}'
+        }, status=400)
+ 
+      # Generate and validate password (existing logic)
+      password = generate_password()
+      is_valid_password, password_error = validate_password(password)
+      if not is_valid_password:
+        return Response({'error': f'Generated password failed validation: {password_error}'}, status=400)
+ 
+      hashed_password = make_password(password)
+ 
+      # Prepare user data with the generated password
+      user_data = {
+        'email': email,
+        'password': hashed_password,
+        'first_name': first_name,
+        'last_name': last_name,
+      }
+ 
+      user, created = User.objects.get_or_create(email=email, defaults=user_data)
+      user_id = user.id
+      # **Create Event Invitation for each recipient:**
+      event_id = eventData["id"]
+      if event_id:
+        try:
+          event = Event.objects.get(pk=event_id)
+          invitation = EventInvitation.objects.get_or_create(guest=user, event=event, is_emailed=True)
+        except (User.DoesNotExist, Event.DoesNotExist) as e:
+          print(f"Error creating invitation for {email}: {e}")
+          # Consider returning a specific error response here
+ 
+      # Construct email content with event details
+      try:
+        if request.data.get('eventData') is None:
+          raise ValueError("Missing event data in request", request.data.get('eventData'))
+        email_body = f'Hello {first_name} {last_name},\n\n'
+        email_body = f'This password grants you access to a wedding on the {eventData["date"]}.\n\nThe respond by date for this wedding is: {eventData["respond_by_date"]}. For further details on venue times please see the website(http://localhost:5173/login) using the password below\n\n'
+        if User.DoesNotExist:
+            email_body += f'Your password is: "{password}"\n\n'
+           
+        send_mail(
+          'Your New Password',
+          email_body,
+          'sender@example.com',
+          [email],
+          fail_silently=False,
+        )
+        successful_emails.append(email)
+      except Exception as e:
+        return Response({'error': f'Failed to send email to {email}: {e}'}, status=500)
+ 
+    # Return a success message with details on sent emails
+    message = f'Password email(s) sent successfully to: {", ".join(successful_emails)}'
+    return Response({'message': message}, status=200)
+ 
 
-        # Validate data structure
-        if not isinstance(recipient_emails, list):
-            return Response({'error': 'Invalid request format: "recipients" list expected'}, status=400)
+@api_view(['GET'])
+@permission_classes([AllowAny])  # Adjust permissions if needed for authentication
+def get_user_events(request, user_id):
+    """
+    Retrieves events a user has been invited to.
+ 
+    Args:
+        request: The incoming request object.
+        user_id: The ID of the user to get events for.
+ 
+    Returns:
+        A JSON response with a list of events and their details.
+    """
+ 
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=404)
+ 
+    # Get invitations for the user
+    invitations = EventInvitation.objects.filter(guest_id=user)
+ 
+    # Prepare a list to store event details
+    event_data = []
+ 
+    for invitation in invitations:
+        event = invitation.event
+        
+         # Include relevant event details
+        venue_1 = {
+            'name': event.venue_1.name,
+            'address': f"{event.venue_1.address1}, {event.venue_1.address2}, {event.venue_1.address3}",
+            'zipcode': event.venue_1.zipcode,
+            'county': str(event.venue_1.county),  # Assuming County has a __str__ method
+        }
+ 
+        # Include relevant event details
+        event_data.append({
+            'id': event.id,
+            'name': event.weddingTitle,
+            'date': event.date.strftime('%Y-%m-%d'),  # Format date for JSON
+            'respond_by_date': event.respond_by_date.strftime('%Y-%m-%d'),
+            'venue_1': venue_1,
+            'venue_1_time': event.venue_1_time.strftime('%H:%M:%S'),  # Format time for JSON
+            'venue_2_time': event.venue_2_time.strftime('%H:%M:%S') if event.venue_2_time else None,
+            'venue_3_time': event.venue_3_time.strftime('%H:%M:%S') if event.venue_3_time else None,
+            'is_attending': invitation.is_attending, 
+        })
+ 
+    return Response({'events': event_data})
 
-        successful_emails = []  # Track successfully sent emails for the response
 
-        for recipient in recipient_emails:
-            email = recipient.get('email')
-            first_name = recipient.get('first_name')
-            last_name = recipient.get('last_name')
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_invitations(request):
+  event_id = request.query_params.get('event_id')  # Get event_id from query parameters
+ 
+  if request.method == 'GET':
+    invitations = EventInvitation.objects.filter(event__pk=event_id) \
+      .select_related('guest', 'event')  
+ 
+    invitation_data = []
+    for invitation in invitations:
+      guest_data = {
+        'id': invitation.guest.id,
+        'email': invitation.guest.email,
+        'first_name': invitation.guest.first_name,
+        'last_name': invitation.guest.last_name,
+      }
+      event_data = {
+        'id': invitation.event.id,
+      }
+      invitation_data.append({
+        'guest': guest_data,
+        'event': event_data,
+        'is_attending': invitation.is_attending,
+        'is_emailed': invitation.is_emailed,
+      })
+ 
+    if not invitations:
+      return Response({'message': 'No invitations found for the specified event ID.'}, status=404)
+ 
+    return Response(invitation_data, status=200)
 
-            if not email or not first_name or not last_name:
-                return Response({
-                    'error': 'Missing required fields: email, first_name, last_name, {email}, {first_name}, {last_name}'
-                }, status=400)
-
-            # Generate and validate password (same logic as before)
-            password = generate_password()
-            is_valid_password, password_error = validate_password(password)
-            if not is_valid_password:
-                return Response({'error': f'Generated password failed validation: {password_error}'}, status=400)
-
-            hashed_password = make_password(password)
-
-            # Prepare user data with the generated password
-            user_data = {
-                'email': email,
-                'password': hashed_password,
-                'first_name': first_name,
-                'last_name': last_name,
-            }
-
-            # Create a new user account using the serializer
-            serializer = UserSerializer(data=user_data)
-            if serializer.is_valid():
-                serializer.save()  # This will hash the password before saving the user
-                successful_emails.append(email)
-
-                # Add user to EventInvitation table
-                try:
-                    event_id = request.data.get('event_id')  # Get event ID from request data (assuming it's provided)
-                    if event_id:
-                        user = User.objects.get(email=email)  # Retrieve the created user
-                        event = Event.objects.get(pk=event_id)  # Retrieve the event
-                        invitation = EventInvitation.objects.create(guest=user, event=event)
-                        invitation.is_emailed = True  # Mark the invitation as emailed
-                        invitation.save()
-                except (User.DoesNotExist, Event.DoesNotExist) as e:
-                    print(f"Error creating invitation for {email}: {e}")  # Log the error
-
-            else:
-                # Handle potential serializer errors (optional)
-                return Response(serializer.errors, status=400)
-
-            try:
-                # Send the email regardless of user creation (informational)
-                send_mail(
-                    'Your New Password',
-                    f'Your new password is: "{password}"',
-                    'sender@example.com',
-                    [email],  # Use the individual email address
-                    fail_silently=False,
-                )
-            except Exception as e:
-                # Handle potential errors (e.g., sending failure)
-                return Response({'error': f'Failed to send email to {email}: {e}'}, status=500)
-
-        # Return a success message with details on sent emails
-        message = f'Password email(s) sent successfully to: {", ".join(successful_emails)}'
-        return Response({'message': message}, status=200)
-    
 # Custom password validation function
 def validate_password(password):
     if len(password) < 8:
@@ -448,25 +560,27 @@ def validate_password(password):
         return False, "Password must contain at least one capital letter."
     if not re.search("[0-9]", password):
         return False, "Password must contain at least one digit."
-    if not re.search("[!@#$%^&*()_+=\-[\]{};':\"|,.<>?]", password):
+    if not re.search("[!@#$%^&*()_+=\-\[\]{};':\"|,.<>?]", password):  # Corrected escape sequence
         return False, "Password must contain at least one special character."
     return True, None
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def get_venues_by_county(request, id ):
     venues = Venue.objects.filter(county_id=id)
     serializer = VenueSerializer(venues, many=True)
     return JsonResponse(serializer.data, safe=False)
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def get_venues_by_county_and_event_type(request, county_id, venue_type_id):
     venues = Venue.objects.filter(county_id=county_id, venue_type_id=venue_type_id)
     serializer = VenueSerializer(venues, many=True)
     return JsonResponse(serializer.data, safe=False)
 
 @authentication_classes([JWTAuthentication])
-@permission_classes([AllowAny])
 @api_view(["POST"])
+@permission_classes([AllowAny])
 def login(request):
     if request.method == "POST":
         # Extract email and password from the request data
@@ -517,4 +631,40 @@ def login(request):
             {"error": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED
         )
 
+@api_view(['PUT'])
+@permission_classes([AllowAny])
+def update_invitation_status(request, event_id):
+    """
+    Updates the invitation status of an event.
+    
+    Args:
+        request: The incoming request object.
+        event_id: The ID of the event to update.
 
+    Returns:
+        A JSON response indicating the success or failure of the update.
+    """
+    try:
+        invitation = EventInvitation.objects.get(event_id=event_id)
+        # Extract the new is_attending status from the request data
+        is_attending = request.data.get('is_attending')
+        # Update the is_attending field of the invitation
+        invitation.is_attending = is_attending
+        invitation.save()
+        return Response({'message': 'Invitation status updated successfully'})
+    except EventInvitation.DoesNotExist:
+        return Response({'error': 'Event invitation not found'}, status=404)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)
+    
+class UpdateInvitationStatus(generics.UpdateAPIView):
+    queryset = EventInvitation.objects.all()
+    serializer_class = EventInvitationSerializer
+    
+
+class UpdateInvitationStatus(generics.UpdateAPIView):
+    serializer_class = EventInvitationSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return EventInvitation.objects.filter(guest=user)
