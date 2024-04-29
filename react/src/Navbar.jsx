@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import UserInitial from './Pages/UserInitialCircle';
+import UserInitialCircle from './Pages/userInitialCircle';
 import SvgBellIcon from './Icons/SvgBellIcon';
 import './Pages/navbar.css';
 import axios from 'axios'; // Import axios here
@@ -21,6 +21,14 @@ const Navbar = () => {
       setButtonText('Log in');
     } else if (location.pathname === '/createEvent' || location.pathname === '/addGuestList') {
       setButtonText('Log out');
+    } else if (location.pathname === '/addEvent' || location.pathname === '/addEvent') {
+      setButtonText('Log out');
+    } else if (location.pathname === '/crudEvent' || location.pathname === '/crudEvent') {
+      setButtonText('Log out');
+    } else if (location.pathname === '/invitations' || location.pathname === '/invitations') {
+      setButtonText('Log out');
+    }  else if (location.pathname === '/rsvpPage' || location.pathname === '/rsvpPage') {
+        setButtonText('Log out');
     } else {
       setButtonText('Log in');
     }
@@ -99,10 +107,7 @@ const Navbar = () => {
                   <Link to="/about" class="nav-link">About</Link>
                 </li>
                 <li class="nav-item">
-                  <Link to="/features" class="nav-link">Features</Link>
-                </li>
-                <li class="nav-item">
-                  <Link to="/gallery" class="nav-link">Pricing</Link>
+                  <Link to="/pricing" class="nav-link">Pricing</Link>
                 </li>
               </ul>
             </div>

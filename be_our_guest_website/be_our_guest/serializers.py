@@ -50,27 +50,26 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class EventUpdateSerializer(serializers.ModelSerializer):
-    venueDetailsID = serializers.PrimaryKeyRelatedField(queryset=Venue.objects.all())
-    venue = serializers.CharField(max_length=255, source="venueDetailsID.name")
-    address1 = serializers.CharField(max_length=255, source="venueDetailsID.address1")
-    address2 = serializers.CharField(max_length=255, source="venueDetailsID.address2")
-    address3 = serializers.CharField(max_length=255, source="venueDetailsID.address3")
-    zip = serializers.CharField(max_length=20, source="venueDetailsID.zipcode")
-
     class Meta:
-        model = Event
-        fields = [
-            "eventType",
-            "venue",
-            "address1",
-            "address2",
-            "address3",
-            "zip",
-            "time",
-            "date",
-            "respondByDate",
-        ]
-
+        model = Event  
+        fields = (
+            'weddingTitle',
+            'date',
+            'respond_by_date',
+            'venue_1_time',
+            'venue_2_time',
+            'venue_3_time',
+            'host_user_id',
+            'venue_1_id',
+            'venue_2_id',
+            'venue_3_id',  
+            'wedding_type_id',  
+        )
+ 
+        extra_kwargs = {
+            'venue_2_id': {'required': False},
+            'venue_3_id': {'required': False},
+        }
 
 class GuestRsvpSerializer(serializers.ModelSerializer):
     class Meta:

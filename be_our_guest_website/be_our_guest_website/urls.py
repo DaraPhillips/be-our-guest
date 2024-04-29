@@ -55,7 +55,8 @@ urlpatterns = [
 
     path('events/<int:host_user_id>/', events, name='events'),
     path('create_event/', create_event, name='create_event'),
-    path('update_event/<int:event_id>/', update_event, name='update_event'),
+    path('update_event/<int:user_id>/', update_event, name='update_event'),
+    path('delete_event/<int:user_id>/', delete_event, name='delete_event'),
     path ('get_event_date/<int:user_id>/', get_event_date, name='get_event_date'),
     path ('get_event_title/<int:user_id>/', get_event_title, name='get_event_title'),
 

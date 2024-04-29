@@ -29,8 +29,7 @@ export default function Footer() {
             <ul className="list-unstyled">
               <li><Link to="/home">Home</Link></li>
               <li><Link to="/about">About</Link></li>
-              <li><Link to="/features">Features</Link></li>
-              <li><Link to="/gallery">Gallery</Link></li>
+              <li><Link to="/pricing">Pricing</Link></li>
             </ul>
           </div>
 
@@ -39,7 +38,6 @@ export default function Footer() {
             <h4 className='head4'>Follow</h4>
             <ul className="list-unstyled">
               <li><a href="https://twitter.com/?lang=en" className="footer-link" target="_blank" rel="noopener noreferrer">X</a></li>
-              <li><a href="https://www.reddit.com/?rdt=38743" className="footer-link" target="_blank" rel="noopener noreferrer">Reddit</a></li>
               <li><a href="https://www.facebook.com/" className="footer-link" target="_blank" rel="noopener noreferrer">Facebook</a></li>
               <li><a href="https://www.instagram.com/" className="footer-link" target="_blank" rel="noopener noreferrer">Instagram</a></li>
             </ul>
@@ -51,8 +49,6 @@ export default function Footer() {
             <ul className="list-unstyled">
               <li><Link to="/login" className="footer-link">Log in</Link></li>
               <li><Link to="/signUp" className="footer-link">Sign up</Link></li>
-              <Link to="/rsvpPage"><li>rsvp Page</li></Link>
-              <li><Link to="/invitations" className="footer-link">Inv</Link></li>
             </ul>
           </div>
         </div>

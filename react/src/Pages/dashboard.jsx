@@ -162,15 +162,15 @@ export default function Dashboard() {
             <img className='dashSprite-imageslist' src='/src/images/invites.svg' />
             My Invitations
           </li>
-          <li className="sideBarItems" onClick={() => navigate('/invitations')}>
+          <li className="sideBarItems" onClick={() => navigate('/profile')}>
             <img className='dashSprite-imageslist' src='/src/images/profile.svg' />
             My Profile
           </li>
-          <li className="sideBarItems" onClick={() => navigate('/invitations')}>
+          <li className="sideBarItems" onClick={() => navigate('/chat')}>
             <img className='dashSprite-imageslist' src='/src/images/chat.svg' />
             Chat
           </li>
-          <li className="sideBarItems" onClick={() => navigate('/invitations')}>
+          <li className="sideBarItems" onClick={() => navigate('/post')}>
             <img className='dashSprite-imageslist' src='/src/images/post.svg' />
             Post
           </li>
@@ -203,19 +203,35 @@ export default function Dashboard() {
       </div>
 
       <div className='dash-mainbox'>
+
+      <div className='card-container'>
         <div className='dash-createEvent'>
-          <h3 className="createEvent">Create an Event</h3>
+          <h3 className="createEvent">Add an event</h3>
           <div className='createEvent-box-wrapper'>
             <div className='createEventBox1' onClick={() => navigate('/createEvent')}>
               <button className='createEvent-Button1'>
-                <img src='/src/images/addEvent.svg' />
+                <img src='/src/images/add1.svg' />
               </button>
             </div>
           </div>
         </div>
 
+        <div className='vertical-separator'></div>
+        
+        <div className='dash-createEvent'>
+          <h3 className="createEvent">My invitations</h3>
+          <div className='createEvent-box-wrapper'>
+            <div className='createEventBox1' onClick={() => navigate('/invitations')}>
+              <button className='createEvent-Button1'>
+                <img src='/src/images/invite1.svg' width={60} height={60} />
+              </button>
+            </div>
+          </div>
+        </div>
+        </div>
+
         <div className='dash-recentPosts'>
-          <h3 className="posts">Recent Posts</h3>
+          <h3 className="posts">Recent posts</h3>
           <hr className='commentdash-line' />
         </div>
 

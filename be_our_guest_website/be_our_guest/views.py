@@ -186,28 +186,25 @@ def update_event(request, user_id):
     user = request.user  # Assuming user is retrieved from request
  
     try:
-    # Access events through the related manager 'events'
+        # Access events through the related manager 'events'
         event = user.events.get(host_user_id=user.id)  # Filter by user's ID via 'host_user_id' field
     except Event.DoesNotExist:
         return Response({"error": "Event not found"}, status=status.HTTP_404_NOT_FOUND)
  
-    # Check user permission before proceeding
+    # Check user permission before proceeding (uncomment if needed)
     # if event.host_user != request.user.id:
     #     return Response(
     #         {"error": "You are not allowed to edit this event"},
     #         status=status.HTTP_403_FORBIDDEN,
     #     )
  
-    # Extract data from request (considering multiple fields)
     serializer = EventUpdateSerializer(event, data=request.data, partial=True)
     if serializer.is_valid():
-        # Access and update specific fields as needed
-        if "date" in request.data:
-            event.date = request.data["date"]
-        if "time" in request.data:
-            event.time = request.data["time"]
+        # Update specific fields based on request data
+        for field in request.data:
+                setattr(event, field, request.data[field])  # Update the corresponding attribute
  
-        # Update venue if provided
+        # Update venue if provided (logic remains the same)
         venue_name = request.data.get("venue")
         if venue_name:
             try:
@@ -434,7 +431,7 @@ def send_password_email(request):
       if event_id:
         try:
           event = Event.objects.get(pk=event_id)
-          invitation = EventInvitation.objects.create(guest=user, event=event, is_emailed=True)
+          invitation = EventInvitation.objects.get_or_create(guest=user, event=event, is_emailed=True)
         except (User.DoesNotExist, Event.DoesNotExist) as e:
           print(f"Error creating invitation for {email}: {e}")
           # Consider returning a specific error response here
@@ -444,8 +441,10 @@ def send_password_email(request):
         if request.data.get('eventData') is None:
           raise ValueError("Missing event data in request", request.data.get('eventData'))
         email_body = f'Hello {first_name} {last_name},\n\n'
-        email_body = f'This password grants you access to a wedding on the {eventData["date"]}.\n\nThe respond by date for this wedding is: {eventData["respond_by_date"]}. For further details on venue times please see the website(http://localhost:5173/rsvp?event_id={event_id}?user_id={user_id}) using the password below\n\n'
-        email_body += f'Your password is: "{password}"\n\n'
+        email_body = f'This password grants you access to a wedding on the {eventData["date"]}.\n\nThe respond by date for this wedding is: {eventData["respond_by_date"]}. For further details on venue times please see the website(http://localhost:5173/login) using the password below\n\n'
+        if User.DoesNotExist:
+            email_body += f'Your password is: "{password}"\n\n'
+           
         send_mail(
           'Your New Password',
           email_body,
@@ -456,6 +455,10 @@ def send_password_email(request):
         successful_emails.append(email)
       except Exception as e:
         return Response({'error': f'Failed to send email to {email}: {e}'}, status=500)
+ 
+    # Return a success message with details on sent emails
+    message = f'Password email(s) sent successfully to: {", ".join(successful_emails)}'
+    return Response({'message': message}, status=200)
     
 @api_view(['GET'])
 @permission_classes([AllowAny])

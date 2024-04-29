@@ -59,7 +59,7 @@
   border: 3px solid #02092d;
   border-radius: 50px;
   background-color: #fff;
-  margin: 0em 0em 0em 16.5em;
+  margin: 1em 0em 0em 18em;
 }
 
 .loginBtn:hover {
@@ -268,7 +268,7 @@
     transition-timing-function: ease-in-out, ease-in-out, ease-in-out, ease-in-out;
     transition-delay: 0s, 0s, 0s, 0s;
     padding: .5em 3em;
-    margin: 1em 0em 0em 16em;
+    margin: 1em 0em 0em 18em;
 
 }
 .btn-primary {

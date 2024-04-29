@@ -1,8 +1,6 @@
 .rsvp-eventDetailsBox {
-    background-color: aliceblue;
+    background-color: #D5D9E1;
     margin-left: 5rem;
-    width: 750px;
-    height: 750px;
     border-radius: 30px;
     background-image: url(/src/images/Rectangle\ 133.png);
     background-size: cover;
@@ -31,21 +29,20 @@
 }
 
 .rsvp-inputboxMain {
-    background-color: #E9EDF5;
-    /* margin-left: 5rem; */
+    background-color: #D5D9E1;
     width: 750px;
     height: 450px;
     border-radius: 30px;
-}
+  }
 
-.rsvp-giftBox {
-    background-color: #E9EDF5;
+  .rsvp-giftBox {
+    background-color: #D5D9E1;
     border-radius: 30px;
     width: 750px;
     height: 270px;
     margin-bottom: 5rem;
     margin-top: 2rem;
-}
+  }
 
 
 .rsvp-boxesWrap {
