@@ -157,7 +157,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     # Use Django's standard `django.contrib.auth` permissions, or allow read-only access for unauthenticated users.
     "DEFAULT_PERMISSION_CLASSES": [
-       # "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+        #"rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
         
         "rest_framework.permissions.AllowAny"
     ],
@@ -169,14 +169,14 @@ REST_FRAMEWORK = {
 SECRET_KEY = 'f1bd2a4b-eaff-48c7-a492-b32c0ed11766'
 # JWT settings
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=20),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=45),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": False,
 
     "ALGORITHM": "HS256",
-    "VERIFYING_KEY": "",
+    "VERIFYING_KEY": SECRET_KEY,
     "AUDIENCE": None,
     "ISSUER": None,
     "JSON_ENCODER": None,

@@ -57,7 +57,6 @@ urlpatterns = [
     path('create_event/', create_event, name='create_event'),
     path('update_event/<int:event_id>/', update_event, name='update_event'),
  
-    path('users/', views.get_users, name='users'),
 
    # path('venues/<int:country_id>/', views.get_venues_by_country, name='get_venues_by_country'),
 
