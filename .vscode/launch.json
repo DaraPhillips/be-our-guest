@@ -11,7 +11,16 @@
             "program": "${workspaceFolder}/be_our_guest_website/manage.py",
             "django": true,
             "console": "integratedTerminal",
-            "args": ["runserver"]
+            "args": [
+                "runserver"
+            ]
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "React",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/react"
         }
     ]
 }
