@@ -30,9 +30,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from rest_framework_jwt.settings import api_settings
- 
- 
-from .serializers import ChatSerializer, ChatMessageSerializer, ChatMemberSerializer, CountySerializer, EventSerializer, EventUpdateSerializer,GuestRsvpSerializer,MyTokenObtainPairSerializer,TableSerializer,UserSerializer,VenueSerializer,VenueTypeSerializer,WeddingTypeSerializer
+
+
+from .serializers import ChatSerializer, ChatMessageSerializer, ChatMemberSerializer, CountySerializer, EventSerializer, EventUpdateSerializer,GuestRsvpSerializer,MyTokenObtainPairSerializer,TableSerializer,UserSerializer,VenueSerializer,VenueTypeSerializer,WeddingTypeSerializer,EventInvitationSerializer
 from .models import Chat, ChatMember, ChatMessage, County, Event, EventInvitation,EventTable,User,UserManager,Venue,VenueType,WeddingType
  
 from jwt import decode, ExpiredSignatureError, InvalidTokenError
@@ -323,7 +323,14 @@ def get_event_title(request, user_id):
     title = Event.objects.filter(host_user_id=user_id)
     serializer = EventSerializer(title, many=True)
     return JsonResponse(serializer.data, safe=False)
- 
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def get_event_by_id(request, user_id):
+    events = EventInvitation.objects.get(guest_id=user_id)
+    serializer = EventInvitationSerializer(events)
+    return JsonResponse(serializer.data, safe=False)
+
 def generate_password(length=10):
     # Define sets of characters to choose from
     lowercase_letters = string.ascii_lowercase
@@ -459,7 +466,60 @@ def send_password_email(request):
     # Return a success message with details on sent emails
     message = f'Password email(s) sent successfully to: {", ".join(successful_emails)}'
     return Response({'message': message}, status=200)
-    
+ 
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  # Adjust permissions if needed for authentication
+def get_user_events(request, user_id):
+    """
+    Retrieves events a user has been invited to.
+ 
+    Args:
+        request: The incoming request object.
+        user_id: The ID of the user to get events for.
+ 
+    Returns:
+        A JSON response with a list of events and their details.
+    """
+ 
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found'}, status=404)
+ 
+    # Get invitations for the user
+    invitations = EventInvitation.objects.filter(guest_id=user)
+ 
+    # Prepare a list to store event details
+    event_data = []
+ 
+    for invitation in invitations:
+        event = invitation.event
+        
+         # Include relevant event details
+        venue_1 = {
+            'name': event.venue_1.name,
+            'address': f"{event.venue_1.address1}, {event.venue_1.address2}, {event.venue_1.address3}",
+            'zipcode': event.venue_1.zipcode,
+            'county': str(event.venue_1.county),  # Assuming County has a __str__ method
+        }
+ 
+        # Include relevant event details
+        event_data.append({
+            'id': event.id,
+            'name': event.weddingTitle,
+            'date': event.date.strftime('%Y-%m-%d'),  # Format date for JSON
+            'respond_by_date': event.respond_by_date.strftime('%Y-%m-%d'),
+            'venue_1': venue_1,
+            'venue_1_time': event.venue_1_time.strftime('%H:%M:%S'),  # Format time for JSON
+            'venue_2_time': event.venue_2_time.strftime('%H:%M:%S') if event.venue_2_time else None,
+            'venue_3_time': event.venue_3_time.strftime('%H:%M:%S') if event.venue_3_time else None,
+            'is_attending': invitation.is_attending, 
+        })
+ 
+    return Response({'events': event_data})
+
+
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def get_invitations(request):
@@ -571,6 +631,41 @@ def login(request):
         return Response(
             {"error": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED
         )
- 
- 
- 
+
+@api_view(['PUT'])
+@permission_classes([AllowAny])
+def update_invitation_status(request, event_id):
+    """
+    Updates the invitation status of an event.
+    
+    Args:
+        request: The incoming request object.
+        event_id: The ID of the event to update.
+
+    Returns:
+        A JSON response indicating the success or failure of the update.
+    """
+    try:
+        invitation = EventInvitation.objects.get(event_id=event_id)
+        # Extract the new is_attending status from the request data
+        is_attending = request.data.get('is_attending')
+        # Update the is_attending field of the invitation
+        invitation.is_attending = is_attending
+        invitation.save()
+        return Response({'message': 'Invitation status updated successfully'})
+    except EventInvitation.DoesNotExist:
+        return Response({'error': 'Event invitation not found'}, status=404)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)
+    
+class UpdateInvitationStatus(generics.UpdateAPIView):
+    queryset = EventInvitation.objects.all()
+    serializer_class = EventInvitationSerializer
+    
+
+class UpdateInvitationStatus(generics.UpdateAPIView):
+    serializer_class = EventInvitationSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return EventInvitation.objects.filter(guest=user)

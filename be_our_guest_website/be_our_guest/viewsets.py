@@ -1,8 +1,8 @@
 
 from rest_framework import viewsets
 from rest_framework.response import Response
-from .models import Event, User
-from .serializers import EventSerializer, UserSerializer
+from .models import Event, EventInvitation, User
+from .serializers import EventSerializer, MyEventInvitationSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticated  # Import the permission class
 
 class UsersViewSet(viewsets.ViewSet):
@@ -37,7 +37,22 @@ class EventViewSet(viewsets.ViewSet):
         serializer = EventSerializer(queryset, many=True)
         return Response(serializer.data)
 
+class RSVPViewSet(viewsets.ViewSet):
+    """
+    A simple ViewSet for interacting with your API.
+    """
+    permission_classes = [IsAuthenticated]  # Define permission classes for the viewset
 
+    def list(self, _):
+        """Return a list of all events."""
+        queryset = Event.objects.all()
+        serializer = EventSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class EventInvitationViewSet(viewsets.ModelViewSet):
+    queryset = EventInvitation.objects.all()
+    serializer_class = MyEventInvitationSerializer
 
 
 
