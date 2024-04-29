@@ -34,6 +34,7 @@ const Navbar = () => {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
   const fetchUserInitial = async () => {
     try {
       const token = localStorage.getItem('jwtToken');
@@ -44,7 +45,6 @@ const Navbar = () => {
       }
   
       const response = await axios.get(url);
-      console.log('API response:', response); // Log the entire response object
       const user = response.data;
       console.log('Received users:', user); // Log the users data
   
@@ -60,8 +60,8 @@ const Navbar = () => {
       console.error('Error fetching user initial:', error);
     }
   };
-  
   fetchUserInitial();
+}, []);
 
   const handleButtonClick = () => {
     // Update the button text dynamically based on the current route
