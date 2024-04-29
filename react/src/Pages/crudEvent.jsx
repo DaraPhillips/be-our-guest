@@ -109,6 +109,10 @@ export default function CrudEvent() {
       useEffect(() => {
         fetchAllVenues();
       }, []);
+    //   console.log('filteredVenues1:', filteredVenues1);
+    //   console.log('filteredVenues2:', filteredVenues2);
+    //   console.log('filteredVenues1:', filteredVenues1[0]?.id);
+    //   console.log('filteredVenues2:', filteredVenues2[0]?.id);
 
     useEffect(() => {    
         axios.get('http://127.0.0.1:8000/event_type/')
