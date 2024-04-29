@@ -109,10 +109,6 @@ export default function CrudEvent() {
       useEffect(() => {
         fetchAllVenues();
       }, []);
-      console.log('filteredVenues1:', filteredVenues1);
-      console.log('filteredVenues2:', filteredVenues2);
-      console.log('filteredVenues1:', filteredVenues1[0]?.id);
-      console.log('filteredVenues2:', filteredVenues2[0]?.id);
 
     useEffect(() => {    
         axios.get('http://127.0.0.1:8000/event_type/')
@@ -187,29 +183,81 @@ export default function CrudEvent() {
         event.preventDefault();
         try {
             const token = localStorage.getItem('jwtToken');
-            const host_user = await fetchUserDetails();
-            const response = await axios.post(
-                'http://127.0.0.1:8000/create_event/',
-                { event: eventData, host_user },
+            let url = 'http://127.0.0.1:8000/users/';
+            
+            if (token) {
+                url += `?token=${token}`; // Assuming the API endpoint filters by token
+            }
+            
+            const userResponse = await axios.get(url);
+            
+            const userId = userResponse.data.id;
+            
+            const updatedEventData = {
+                date: eventData.date, 
+                respond_by_date: eventData.respond_by_date, 
+                venue_1_time: eventData.venue_1_time, 
+                venue_2_time: eventData.time, 
+                weddingTitle: eventData.weddingTitle, 
+                wedding_type_id: parseInt(eventData.wedding_type, 10), 
+                venue_1_id: parseInt(eventData.venue_1, 10), 
+                venue_2_id: parseInt(eventData.venue2, 10)
+            };
+    
+            const response = await axios.patch(
+                `http://127.0.0.1:8000/update_event/${userId}/`,
+                updatedEventData,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 }
             );
-            setEventCreated(true);
+            console.log('Event updated:', response.data);
+            // Handle success, e.g., show a success message or redirect the user
         } catch (error) {
-            console.error('Error creating event:', error);
+            console.error('Error updating event:', error);
+            // Handle error, e.g., display an error message to the user
         }
     };
 
+    const handleDeleteEvent = async () => {
+        try {
+            const token = localStorage.getItem('jwtToken');
+            let url = 'http://127.0.0.1:8000/users/';
+    
+            if (token) {
+                url += `?token=${token}`;
+            }
+    
+            const userResponse = await axios.get(url);
+    
+            const userId = userResponse.data.id;
+    
+            const response = await axios.delete(
+                `http://127.0.0.1:8000/delete_event/${userId}/`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+    
+            console.log('Event deleted:', response.data);
+            // Handle success, e.g., show a success message or redirect the user
+        } catch (error) {
+            console.error('Error deleting event:', error);
+            // Handle error, e.g., display an error message to the user
+        }
+    };
+    
     const handleChange = (event) => {
         const { name, value } = event.target;
         setEventData(prevData => ({
             ...prevData,
             [name]: value
         }));
-   
+    
         // Handle changes in county and venue options
         if (name === "county1") {
             const selectedCounty = counties.find(county => county.id === parseInt(value, 10));
@@ -223,8 +271,8 @@ export default function CrudEvent() {
                 }));
             }
         }
-   
-        if (name === "venue1") {
+    
+        if (name === "venue_1") {
             const selectedVenue = venues1.find(venue => venue.id === parseInt(value, 10));
             if (selectedVenue) {
                 setEventData(prevEventData => ({
@@ -237,7 +285,7 @@ export default function CrudEvent() {
                 }));
             }
         }
-   
+    
         if (name === "county2") {
             const selectedCounty = counties.find(county => county.id === parseInt(value, 10));
             if (selectedCounty) {
@@ -250,12 +298,13 @@ export default function CrudEvent() {
                 }));
             }
         }
-   
+    
         if (name === "venue2") {
             const selectedVenue = venues2.find(venue => venue.id === parseInt(value, 10));
             if (selectedVenue) {
                 setEventData(prevEventData => ({
                     ...prevEventData,
+                    venue2: selectedVenue.id,
                     venue2_address1: selectedVenue.address1 || '',
                     venue2_address2: selectedVenue.address2 || '',
                     venue2_address3: selectedVenue.address3 || '',
@@ -263,7 +312,15 @@ export default function CrudEvent() {
                 }));
             }
         }
+        
+        if (name === "wedding_type") {
+            setEventData(prevEventData => ({
+                ...prevEventData,
+                wedding_type: value,
+            }));
+        }
     };
+
     if (eventCreated) {
         return <Navigate to="/dashboard" />;
     }
@@ -286,7 +343,7 @@ export default function CrudEvent() {
                                     type="text"
                                     name="weddingTitle"
                                     id="weddingTitle"
-                                    defaultValue={eventData.weddingTitle} 
+                                    value={eventData.weddingTitle} 
                                     onChange={handleChange}
                                     className="custom-input"
                                     readOnly = {false}
@@ -294,8 +351,8 @@ export default function CrudEvent() {
                                 </div>
                             {/* Ceremony Type Dropdown */}
                             <div className='details-group1'>
-                                <select name="wedding_type" id="event-id" value={eventData.wedding_type || ''}>
-                                    <option disabled value="">Ceremony type</option>
+                                <select name="wedding_type" id="event-id" value="" onChange={handleChange}>
+                                    <option disabled value={eventData.wedding_type}>Ceremony type</option>
                                     {weddingTypeOptions.map(wedding_type => (
                                     <option key={wedding_type.id} value={wedding_type.id}>{wedding_type.name}</option>
                                     ))}
@@ -314,10 +371,10 @@ export default function CrudEvent() {
                             </div>
                             {/* Venue 1 Dropdown */}
                             <div className='details-group1'>
-                            <select name="venue1" id="venue_1" value={eventData.venue_1} onChange={handleChange}>
+                            <select name="venue_1" id="venue_1" value={eventData.venue_1} onChange={handleChange}>
                                 <option disabled key="" value="">{filteredVenues1[0]?.name}</option>
-                                {venues1.map(venue1 => (
-                                    <option key={venue1.id} value={venue1.id}>{venue1.name}</option>
+                                {venues1.map(venue_1 => (
+                                    <option key={venue_1.id} value={venue_1.id}>{venue_1.name}</option>
                                 ))}
                             </select>
                             </div>
@@ -482,8 +539,8 @@ export default function CrudEvent() {
                         </div>
                         {/* Submit Button */}
                         <div className='event-details-buttoncontainer'>
-                            <button className='createEvent-button' type="submit">Update event</button>
-                            <button className='createEvent-button' type="submit">Delete event</button>
+                        <button className='createEvent-button' type="submit" onClick={handleSubmit}>Update event</button>
+                        <button className='createEvent-button' type="button" onClick={handleDeleteEvent}>Delete event</button>
                         </div>
                     </form>
                 </div>
