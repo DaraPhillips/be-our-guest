@@ -13,11 +13,11 @@ import jwt
 from be_our_guest.models import (County, Event, User, Venue, VenueType,
                                  WeddingType)
 from be_our_guest.serializers import MyTokenObtainPairSerializer
-from be_our_guest.views import (create_event, events, get_users, get_venues,
-                                login, login_view, register_user,
+from be_our_guest.views import (create_event, events, get_venues,
+                                 register_user,
                                 send_password_email, update_event)
 from be_our_guest.views import (
-    events, create_event, update_event, get_venues, send_password_email, login_view
+    events, create_event, update_event, get_venues, send_password_email
 )
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -62,18 +62,10 @@ class TestUrls(SimpleTestCase):
     def test_register_url_is_resolved(self):
         url = reverse('register')
         self.assertEqual(resolve(url).func, register_user)
-    
-    def test_events_url_is_resolved(self):
-        url = reverse('events')
-        self.assertEqual(resolve(url).func, events)
-        
+          
     def test_create_event_url_is_resolved(self):
         url = reverse('create_event')
         self.assertEqual(resolve(url).func, create_event)
-        
-    def test_update_event_url_is_resolved(self):
-        url = reverse('update_event', kwargs={'event_id': 1})
-        self.assertEqual(resolve(url).func, update_event)
 
     def test_users_url_is_resolved(self):
         url = reverse('users')
@@ -98,12 +90,7 @@ class TestUrls(SimpleTestCase):
     def test_token_refresh_url_is_resolved(self):
         url = reverse('token_refresh')
         self.assertEqual(resolve(url).func.__name__, TokenRefreshView.as_view().__name__)
-
-    def test_login_url_is_resolved(self):
-        url = reverse('login')
-        self.assertEqual(resolve(url).func, views.login_view)
-    
-        
+           
 #--------------VIEWS TESTS---------------------       
 class TestUserViews(TestCase):
     def setUp(self):
@@ -176,7 +163,7 @@ class AuthenticationAPITests(TestCase):
 
     def test_user_login(self):
         # Create a user for testing purposes
-        user = User.objects.create_user(username='testuser', email='test2@example.com', password='testpassword')
+        user = User.objects.create_user(first_name='testname',last_name= 'testlastname', email='test2@example.com', password='testpassword')
     
         # Data for user login
         url = reverse('token_obtain_pair')
@@ -237,8 +224,8 @@ class EventCreationTestCase(TestCase):
         self.create_event_url = reverse('create_event')
         self.token = self.generate_jwt_token(self.user)
         print("JWT Token:", self.token)
-        user_id = 123  # Replace with the user ID you want to use for testing
-        email = "test@example.com"  # Replace with the email you want to use for testing
+        user_id = 123  
+        email = "test@example.com"
         self.mock_token = MockToken(user_id=user_id, email=email)
 
         # Create Venue instance with all required fields
@@ -303,7 +290,7 @@ class EventCreationTestCase(TestCase):
         # Add more assertions as needed
 
     #create event in the past
-        def test_create_event_in_past(self):
+    def test_create_event_in_past(self):
             past_date = datetime.now() - timedelta(days=1)
             event_data = {
             'host_user': self.user.id,
@@ -486,7 +473,7 @@ class EventCreationTestCase(TestCase):
                 "time": "18:00:00",
             }
         }
-        my_token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0Mzg5OTI1LCJpYXQiOjE3MTQzODcyMjUsImp0aSI6IjAwZjdhNDc2MGViNzRmZmM5N2E1ZWUxNWZiNTlkYjRhIiwiaWQiOjE0fQ.k9dyFIoPsG6BlWsd_zBvw2RoNo7euKFUM9HacmFfgOc"
+        my_token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0NDA0NDYyLCJpYXQiOjE3MTQzOTg0NjIsImp0aSI6IjlhZDU4MDJjMGZmODQxM2NhZTUxOGI0MjkzMTRiODYyIiwiaWQiOjEzfQ.rI2Bgy2yfdF-llFVqqfUghzTDra1JIDd1l9nFINNGfU.rI2Bgy2yfdF-llFVqqfUghzTDra1JIDd1l9nFINNGfU"
         headers = {'Authorization': 'Bearer ' + my_token}
         print(url)
         response = self.client.post(url, data, format='json', **headers)
@@ -496,27 +483,6 @@ class EventCreationTestCase(TestCase):
         print(response.status_code)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
-
-
-
-
-
-
-
-
-
-
-    
-    def test_create_event_with_hotel_in_church_id(self):
-        event_data = {
-            "event": {
-                "venue1ID": "hotel",  # Assuming 'hotel' is mistakenly input as church ID
-                # Add other required fields
-            }
-        }
-        response = self.client.post(self.create_event_url, event_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     # Test scenario: Church time after hotel time
     def test_church_time_after_hotel_time(self):

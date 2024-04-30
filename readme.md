@@ -1,6 +1,5 @@
 # BeOurGuest
 
-
 ## Overview
 
 This project aims to develop a cloud-based software Application to allow its Users to Organise and manage their created wedding events.
@@ -10,21 +9,69 @@ This project aims to develop a cloud-based software Application to allow its Use
 -**Create Event:** Enables User to create an Event.
 -**Edit Event:** Enables the User to edit the Event Details (Time, Date, Venue)
 -**Delete Event:** Enables the User to Delete the Event.
--**Chat Function:** Allows the guests that have been added by the Host to Chat.
 -**Countdown Timer:** Shows the time until the Event.
 -**RSVP Functionality:** Enables event guests to RSVP online by Email.
 
 ## Installation
 
-1. Clone the repository: `git clone <repository_url>`
-2. Open GitHub Desktop, go to the Repo and press Ctrl + Shift + A to open VS Code.
-3. Open a terminal
-   4.`cd be_our_guest_website`
-   5.`npm install`
-   6.`.\website`
-   7.`.\client.cmd`
-   8.`cd react`
-4. Click the Vite Link
+1. **Download Visual Studio Code (VS Code)** :
+
+* Go to the [VS Code website](https://code.visualstudio.com/) and download the installer for your operating system.
+* Follow the installation instructions to install VS Code on your computer.
+
+2. **Clone the repository** :
+
+* Open GitHub Desktop.
+* Go to the repository page on GitHub.
+* Click on the "Code" button and copy the repository URL.
+* In GitHub Desktop, click on "File" in the menu bar, then select "Clone repository".
+* Paste the repository URL and choose a local path to clone the repository to.
+* Click "Clone" to download the repository to your local machine.
+
+3. **Open VS Code from GitHub Desktop** :
+
+* In GitHub Desktop, navigate to the cloned repository.
+* Press Ctrl + Shift + A to open VS Code.
+
+4. **Open a terminal in VS Code** :
+
+* Once VS Code is open, press Ctrl + ` (backtick) to open the integrated terminal.
+* Alternatively, click on "Terminal" in the VS Code menu and select "New Terminal".
+
+5. **Navigate to the project directory** :
+
+* In the terminal, type: `cd be_our_guest_website` and press Enter.
+
+6. **Install dependencies** :
+
+* Run `npm install` in the terminal to install project dependencies.
+
+7. **Start the website server** :
+
+* Run `.\website` in the terminal to start the website server.
+
+8. **Start the client server** :
+
+* Run `.\client.cmd` in the terminal to start the client server.
+
+9. **Navigate to the React directory** :
+
+* In the terminal, type: `cd react` and press Enter.
+
+10. **Open the Vite Link** :
+
+* Once the client server is running, navigate to the provided Vite Link in your web browser to view the React application.
+
+***Install the database:**
+
+* Open the terminal and navigate to the project directory.
+* Run `python manage.py shell` to open the Django shell.
+* Type the following commands:
+  ```python
+  from be_our_guest.utils import setup_system_default_data
+  setup_system_default_data()
+  ```
+* Press Enter to execute the commands.
 
 ## Usage
 
