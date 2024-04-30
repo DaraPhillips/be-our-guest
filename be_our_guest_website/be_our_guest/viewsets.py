@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .models import Event, EventInvitation, User
 from .serializers import EventSerializer, MyEventInvitationSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticated  # Import the permission class
+from rest_framework.permissions import AllowAny 
 
 class UsersViewSet(viewsets.ViewSet):
     """
@@ -53,6 +54,7 @@ class RSVPViewSet(viewsets.ViewSet):
 class EventInvitationViewSet(viewsets.ModelViewSet):
     queryset = EventInvitation.objects.all()
     serializer_class = MyEventInvitationSerializer
+    permission_classes = [AllowAny]  # Set permission to AllowAny for this viewset
 
 
 
