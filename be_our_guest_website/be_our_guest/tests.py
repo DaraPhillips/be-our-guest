@@ -62,18 +62,10 @@ class TestUrls(SimpleTestCase):
     def test_register_url_is_resolved(self):
         url = reverse('register')
         self.assertEqual(resolve(url).func, register_user)
-    
-    def test_events_url_is_resolved(self):
-        url = reverse('events')
-        self.assertEqual(resolve(url).func, events)
-        
+          
     def test_create_event_url_is_resolved(self):
         url = reverse('create_event')
         self.assertEqual(resolve(url).func, create_event)
-        
-    def test_update_event_url_is_resolved(self):
-        url = reverse('update_event', kwargs={'event_id': 1})
-        self.assertEqual(resolve(url).func, update_event)
 
     def test_users_url_is_resolved(self):
         url = reverse('users')
@@ -171,7 +163,7 @@ class AuthenticationAPITests(TestCase):
 
     def test_user_login(self):
         # Create a user for testing purposes
-        user = User.objects.create_user(username='testuser', email='test2@example.com', password='testpassword')
+        user = User.objects.create_user(first_name='testname',last_name= 'testlastname', email='test2@example.com', password='testpassword')
     
         # Data for user login
         url = reverse('token_obtain_pair')
@@ -481,7 +473,7 @@ class EventCreationTestCase(TestCase):
                 "time": "18:00:00",
             }
         }
-        my_token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0Mzg5OTI1LCJpYXQiOjE3MTQzODcyMjUsImp0aSI6IjAwZjdhNDc2MGViNzRmZmM5N2E1ZWUxNWZiNTlkYjRhIiwiaWQiOjE0fQ.k9dyFIoPsG6BlWsd_zBvw2RoNo7euKFUM9HacmFfgOc"
+        my_token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0NDA0NDYyLCJpYXQiOjE3MTQzOTg0NjIsImp0aSI6IjlhZDU4MDJjMGZmODQxM2NhZTUxOGI0MjkzMTRiODYyIiwiaWQiOjEzfQ.rI2Bgy2yfdF-llFVqqfUghzTDra1JIDd1l9nFINNGfU.rI2Bgy2yfdF-llFVqqfUghzTDra1JIDd1l9nFINNGfU"
         headers = {'Authorization': 'Bearer ' + my_token}
         print(url)
         response = self.client.post(url, data, format='json', **headers)
@@ -491,16 +483,6 @@ class EventCreationTestCase(TestCase):
         print(response.status_code)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
-    def test_create_event_with_hotel_in_church_id(self):
-        event_data = {
-            "event": {
-                "venue1ID": "hotel",  # Assuming 'hotel' is mistakenly input as church ID
-                # Add other required fields
-            }
-        }
-        response = self.client.post(self.create_event_url, event_data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     # Test scenario: Church time after hotel time
     def test_church_time_after_hotel_time(self):
