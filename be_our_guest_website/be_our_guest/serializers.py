@@ -147,8 +147,11 @@ class MyEventInvitationSerializer(serializers.ModelSerializer):
     event_wedding_title = serializers.CharField(source='event.weddingTitle')  # Access weddingTitle from related Event
     event_date = serializers.DateField(source='event.date')  # Access date from related Event
     event_respond_by_date = serializers.DateField(source='event.respond_by_date')  # Access respond_by_date from related Event
-    venue = MyVenueSerializer(source='event.venue_1')  # Serialize Venue details from related Event
+    event_venue_1_time = serializers.TimeField(source='event.venue_1_time')  # Access venue_1_time from related Event
+    event_venue_2_time = serializers.TimeField(source='event.venue_2_time')  # Access venue_2_time from related Event
+    venue_1 = MyVenueSerializer(source='event.venue_1')  # Serialize Venue details from related Event
+    venue_2 = MyVenueSerializer(source='event.venue_2')  # Serialize Venue details from related Event
 
     class Meta:
         model = EventInvitation
-        fields = ['id', 'event_wedding_title', 'event_date', 'event_respond_by_date', 'venue', 'is_attending']
+        fields = ['id', 'event_wedding_title', 'event_date', 'event_respond_by_date','event_venue_1_time', 'event_venue_2_time','venue_1','venue_2', 'is_attending']
